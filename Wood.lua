@@ -6,7 +6,7 @@ local TOP = -200
 local HEIGHT = 70
 
 
-function InitWoodTrack(classFileName)
+function InitWoodTrack()
     for index, wood in pairs(WOOD_ID) do
         local icon = C_Item.GetItemIconByID(wood.ID)
         local tex = UIParent:CreateTexture()
@@ -33,7 +33,7 @@ function InitWoodTrack(classFileName)
     end
 end
 
-function UpdWoodTrack(classFileName)
+function UpdWoodTrack()
     for index, wood in pairs(WOOD_ID) do
         if WOOD_LIST == nil or WOOD_LIST[wood.ID] == nil then
             InitWoodTrack()

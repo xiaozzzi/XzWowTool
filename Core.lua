@@ -5,10 +5,11 @@ AceGUI = LibStub("AceGUI-3.0")
 local XzFrame = CreateFrame("Frame", "XzFrame", UIParent, "DialogBoxFrame")
 XzFrame:RegisterEvent("ADDON_LOADED")
 XzFrame:RegisterEvent("BAG_UPDATE_DELAYED")
-XzFrame:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
+XzFrame:RegisterEvent("CURRENCY_DISPLAY_UPDATE") -- 货币变更
+XzFrame:RegisterEvent("PLAYER_LOGIN")            -- 角色登录
 XzFrame:Show()
 
-local classFileName = UnitClass("player")
+local _, classFileName, _ = UnitClass("player")
 
 local function isDruid()
     return classFileName == "DRUID"
@@ -19,6 +20,8 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
         if isDruid() then
             InitWoodTrack()
         end
+    elseif event == 'PLAYER_LOGIN' then
+        self:UnregisterEvent("PLAYER_LOGIN")
         InitCurrencyTrack()
     elseif event == "BAG_UPDATE_DELAYED" and isDruid() then
         UpdWoodTrack()

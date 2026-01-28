@@ -4,8 +4,8 @@ CURRENCY_LIST = {}
 local LEFT = 10
 local TOP = -20
 local WEIGHT = 250
+
 function InitCurrencyTrack()
-    -- print(info.name .. info.quantity .. info.iconFileID)
     for index, currency in pairs(CURRENCY_ID) do
         -- 获取货币信息
         local info = C_CurrencyInfo.GetCurrencyInfo(currency.ID)
@@ -44,7 +44,7 @@ function UpdCurrencyTrack(currencyId)
         return
     end
 
-    if CURRENCY_LIST == nil or CURRENCY_LIST[currencyId] == nil then
+    if next(CURRENCY_LIST) == nil or CURRENCY_LIST[currencyId] == nil then
         InitCurrencyTrack()
     end
 
