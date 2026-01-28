@@ -5,7 +5,6 @@ local LEFT = 10
 local TOP = -200
 local HEIGHT = 70
 
-
 function InitWoodTrack()
     for index, wood in pairs(WOOD_ID) do
         local icon = C_Item.GetItemIconByID(wood.ID)
@@ -27,7 +26,6 @@ function InitWoodTrack()
         countLabel:SetFont(ChatFontNormal:GetFont(), 18, 'OUTLINE')
         countLabel:SetText("" .. count)
         countLabel:SetPoint("TOP", tex, "CENTER", 0, 5)
-        -- countLabel:SetTextColor(0.984, 0.753, 0.176)
         countLabel:SetTextColor(1, 1, 1)
         WOOD_LIST[wood.ID] = countLabel
     end

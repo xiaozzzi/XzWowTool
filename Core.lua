@@ -1,6 +1,6 @@
 local _, ns = ...
 
-AceGUI = LibStub("AceGUI-3.0")
+-- AceGUI = LibStub("AceGUI-3.0")
 
 local XzFrame = CreateFrame("Frame", "XzFrame", UIParent, "DialogBoxFrame")
 XzFrame:RegisterEvent("ADDON_LOADED")
