@@ -39,6 +39,9 @@
         "ID",
         "NAME",
         "CURRENCY",
-        "class"
+        "class",
+        "CLASS",
+        "CR_VERSATILITY_DAMAGE_DONE",
+        "CRIT_ABBR"
     ]
 }

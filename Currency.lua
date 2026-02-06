@@ -1,6 +1,6 @@
 -- 货币监控
 
-CURRENCY_LIST = {}
+CURRENCY_UI_LIST = {}
 local LEFT = 10
 local TOP = -20
 local WEIGHT = 250
@@ -22,7 +22,7 @@ function InitCurrencyTrack()
         countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity)
         countLabel:SetPoint("LEFT", tex, "RIGHT", 0, 0)
         countLabel:SetTextColor(currency.R, currency.G, currency.B)
-        CURRENCY_LIST[currency.ID] = countLabel
+        CURRENCY_UI_LIST[currency.ID] = countLabel
     end
 end
 
@@ -44,15 +44,15 @@ function UpdCurrencyTrack(currencyId)
         return
     end
 
-    if next(CURRENCY_LIST) == nil or CURRENCY_LIST[currencyId] == nil then
+    if next(CURRENCY_UI_LIST) == nil or CURRENCY_UI_LIST[currencyId] == nil then
         InitCurrencyTrack()
     end
 
-    if CURRENCY_LIST[currencyId] == nil then
+    if CURRENCY_UI_LIST[currencyId] == nil then
         return
     end
 
-    local countLabel = CURRENCY_LIST[currencyId]
+    local countLabel = CURRENCY_UI_LIST[currencyId]
     local info = C_CurrencyInfo.GetCurrencyInfo(currencyId)
     countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity)
 end

@@ -2,6 +2,9 @@ local _, ns = ...
 
 -- AceGUI = LibStub("AceGUI-3.0")
 
+local updateInterval = 1 -- 每1秒更新一次
+local timeSinceLastUpdate = 0
+
 local XzFrame = CreateFrame("Frame", "XzFrame", UIParent, "DialogBoxFrame")
 XzFrame:RegisterEvent("ADDON_LOADED")
 XzFrame:RegisterEvent("BAG_UPDATE_DELAYED")
@@ -28,4 +31,14 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     elseif event == "CURRENCY_DISPLAY_UPDATE" then
         UpdCurrencyTrack(unit)
     end
+
+    -- 每帧更新
+    self:SetScript("OnUpdate", function(self, elapsed)
+        timeSinceLastUpdate = timeSinceLastUpdate + elapsed
+
+        if timeSinceLastUpdate >= updateInterval then
+            InitStat()
+            timeSinceLastUpdate = 0
+        end
+    end)
 end)

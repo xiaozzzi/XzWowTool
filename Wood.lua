@@ -1,6 +1,6 @@
 -- 木头监控
 
-WOOD_LIST = {}
+WOOD_UI_LIST = {}
 local LEFT = 10
 local TOP = -200
 local HEIGHT = 70
@@ -27,17 +27,17 @@ function InitWoodTrack()
         countLabel:SetText("" .. count)
         countLabel:SetPoint("TOP", tex, "CENTER", 0, 5)
         countLabel:SetTextColor(1, 1, 1)
-        WOOD_LIST[wood.ID] = countLabel
+        WOOD_UI_LIST[wood.ID] = countLabel
     end
 end
 
 function UpdWoodTrack()
     for index, wood in pairs(WOOD_ID) do
-        if WOOD_LIST == nil or WOOD_LIST[wood.ID] == nil then
+        if WOOD_UI_LIST == nil or WOOD_UI_LIST[wood.ID] == nil then
             InitWoodTrack()
         end
 
-        local countLabel = WOOD_LIST[wood.ID]
+        local countLabel = WOOD_UI_LIST[wood.ID]
         local count = C_Item.GetItemCount(wood.ID, true, true, true, true)
         countLabel:SetText("" .. count)
     end

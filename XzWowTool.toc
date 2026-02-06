@@ -15,5 +15,6 @@
 Contants.lua
 Currency.lua
 Wood.lua
+Stat.lua
 Core.lua
 Functions.lua
