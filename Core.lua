@@ -2,7 +2,7 @@ local _, ns = ...
 
 -- AceGUI = LibStub("AceGUI-3.0")
 
-local updateInterval = 1 -- 每1秒更新一次
+local updateInterval = 3 -- 每1秒更新一次
 local timeSinceLastUpdate = 0
 
 local XzFrame = CreateFrame("Frame", "XzFrame", UIParent, "DialogBoxFrame")
