@@ -3,12 +3,15 @@
 CURRENCY_UI_LIST = {}
 local LEFT = 10
 local TOP = -20
-local WEIGHT = 250
+local WEIGHT = 300
 
 function InitCurrencyTrack()
     for index, currency in pairs(CURRENCY_ID) do
         -- 获取货币信息
         local info = C_CurrencyInfo.GetCurrencyInfo(currency.ID)
+
+        -- 可获取的数量
+        local notEarned = info.maxQuantity - info.totalEarned
 
         -- 货币图标
         local tex = UIParent:CreateTexture()
@@ -16,10 +19,13 @@ function InitCurrencyTrack()
         tex:SetScale(0.3)
         tex:SetTexture(info.iconFileID)
 
+        
+
         -- 货币数量
         local countLabel = UIParent:CreateFontString("XzCurrencyLabel_" .. currency.ID, "OVERLAY", "GameFontNormal")
         countLabel:SetFont(ChatFontNormal:GetFont(), 18, 'OUTLINE')
-        countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity)
+        -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity .. "(" .. notEarned .. ")")
+        countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
         countLabel:SetPoint("LEFT", tex, "RIGHT", 0, 0)
         countLabel:SetTextColor(currency.R, currency.G, currency.B)
         CURRENCY_UI_LIST[currency.ID] = countLabel
