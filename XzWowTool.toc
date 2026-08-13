@@ -1,4 +1,4 @@
-## Interface: 120001, 120000
+## Interface: 120007, 120100
 ## Title: XzWowTool
 ## Notes-zhCN: 自用工具箱
 ## Author: xzzz
@@ -15,6 +15,5 @@
 Contants.lua
 Currency.lua
 Wood.lua
-Stat.lua
 Core.lua
 Functions.lua
