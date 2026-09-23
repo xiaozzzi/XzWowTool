@@ -2,8 +2,9 @@
 ## Title: XzWowTool
 ## Notes-zhCN: 自用工具箱
 ## Author: xzzz
-## Version: v0.1
+## Version: v1.1
 ## DefaultState: enabled
+## SavedVariables: XZ_CONFIG_DB
 
 # Libraries
 # libs/Ace3/LibStub/LibStub.lua
@@ -13,7 +14,10 @@
 # libs/Ace3/AceGUI-3.0/AceGUI-3.0.xml
 
 Contants.lua
+Config.lua
+CommonButton.lua
 Currency.lua
 Wood.lua
 Core.lua
 Functions.lua
+UI.lua
