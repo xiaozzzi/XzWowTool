@@ -37,6 +37,7 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     InitConfigDB()
     InitCurrencyTrack()
     InitCommonCmd()
+    InitCommonButton()
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
@@ -57,5 +58,5 @@ end)
 -- 命令开启
 SLASH_XZWT1 = "/xzwt"
 SlashCmdList["XZWT"] = function(arg1)
-  TriggerFrame()
+  OpenXZWTMainFrame()
 end

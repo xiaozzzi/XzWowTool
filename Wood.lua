@@ -6,8 +6,8 @@ local TOP = -200
 local HEIGHT = 70
 
 local function isShowWood()
-  local showWood = CONFIG:GetValue(UnitGUID("player"), 'showWood')
-  return (showWood == 'SHOW')
+  local SHOW_WOOD = CONFIG:GetValue(UnitGUID("player"), 'SHOW_WOOD')
+  return (SHOW_WOOD == 'SHOW')
 end
 
 function InitWoodTrack()

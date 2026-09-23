@@ -46,6 +46,14 @@
       "UISpecialFrames",
       "EventUtil",
       "EncounterJournal",
-      "PanelTemplates_SetNumTabs"
+      "PanelTemplates_SetNumTabs",
+      "TOY",
+      "ItemUtil",
+      "WeeklyRewardsFrame",
+      "ChatEdit_InsertLink",
+      "ChatFrameUtil"
+    ],
+    "Lua.diagnostics.disable": [
+      "assign-type-mismatch"
     ]
 }

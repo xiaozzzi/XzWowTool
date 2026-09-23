@@ -6,8 +6,8 @@ local TOP = -20
 local WEIGHT = 300
 
 local function isShowCurrency()
-  local showCurrency = CONFIG:GetValue(UnitGUID("player"), 'showCurrency')
-  return (showCurrency == 'SHOW')
+  local SHOW_CURRENCY = CONFIG:GetValue(UnitGUID("player"), 'SHOW_CURRENCY')
+  return (SHOW_CURRENCY == 'SHOW')
 end
 
 function InitCurrencyTrack()
