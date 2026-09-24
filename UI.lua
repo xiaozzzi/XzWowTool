@@ -124,8 +124,11 @@ local function DrawSetting(container)
   -- 遍历所有炉石
   for _, stone in pairs(HEARTH_STONE) do
     local itemName, icon = C_Item.GetItemInfo(stone.ID)
-    table.insert(stoneListOrder, stone.ID)
-    stoneList[stone.ID] = '|TInterface\\Icons\\' .. stone.ICON .. ':0|t ' .. itemName
+    if itemName then
+      -- print(stone.ID, itemName, icon)
+      table.insert(stoneListOrder, stone.ID)
+      stoneList[stone.ID] = '|TInterface\\Icons\\' .. stone.ICON .. ':0|t ' .. itemName
+    end
   end
 
   local stoneIcon = AceGUI:Create("Icon")

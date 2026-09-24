@@ -115,7 +115,7 @@ function AddPlayerToDB()
     SHOW_BTN_HEARTH_STONE = player.SHOW_BTN_HEARTH_STONE
   end
   -- 炉石
-  local HEARTH_STONE = '265100'
+  local HEARTH_STONE = 265100
   if player ~= nil and player.HEARTH_STONE ~= nil then
     HEARTH_STONE = player.HEARTH_STONE
   end
