@@ -49,7 +49,7 @@ end
 local function CreateButton()
   local button = CreateFrame("Button", "MyButton", UIParent, "SecureActionButtonTemplate")
   button:SetSize(ICON_SIZE, ICON_SIZE)
-  button:SetAlpha(0.1)
+  button:SetAlpha(0.3)
   -- 背景纹理（类似 CreateTexture）
   -- local bg = button:CreateTexture(nil, "BACKGROUND")
   -- bg:SetAllPoints()
@@ -68,7 +68,7 @@ local function CreateButton()
   end)
   button:SetScript("OnLeave", function(self)
     -- border:SetColorTexture(0, 0, 0, 1)
-    self:SetAlpha(0.1)
+    self:SetAlpha(0.3)
   end)
   -- btn:SetScript("OnEnter", function(self)
   --   GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -89,6 +89,19 @@ local function SetPosition(button)
   BUTTON_Y = BUTTON_Y + BUTTON_OFFSET
 end
 
+
+--- 设置按钮文字
+---@param button Frame 按钮
+local function CreateButtonText(button)
+  -- 在框体上创建一个字体字符串
+  local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  btnText:SetPoint("CENTER", 0, 0)
+  btnText:SetFont(ChatFontNormal:GetFont(), 17, "OUTLINE")
+  btnText:SetText("")
+  -- btnText:SetTextColor(1, 1, 1, 1)
+  btnText:SetTextColor(0.015686, 1.0, 0.0, 1)
+  return btnText
+end
 
 -- ===================================================================================
 -- 功能按钮
@@ -188,6 +201,11 @@ local BUTTON_CRAFTING = CreateButton()
 local BUTTON_THE_GREAT_VAULT = CreateButton()
 local BUTTON_MACRO_DELVE = CreateButton()
 
+local BUTTON_WAR_BAND_BANK_TEXT = CreateButtonText(BUTTON_WAR_BAND_BANK)
+local BUTTON_MAIL_BOX_TEXT = CreateButtonText(BUTTON_MAIL_BOX)
+local BUTTON_THE_ARCANTINA_TEXT = CreateButtonText(BUTTON_THE_ARCANTINA)
+local BUTTON_HEARTH_STONE_TEXT = CreateButtonText(BUTTON_HEARTH_STONE)
+
 
 function InitCommonButton()
   -- 重置按钮位置
@@ -246,34 +264,66 @@ function InitCommonButton()
   end
 end
 
-local updateInterval = 0.1 -- 更新间隔（秒）
-local timeSinceLastUpdate = 0
+--#region ==================================== 更新按钮文字 ====================================
 
--- COMMON_FRAME:SetScript("OnUpdate", function(self, elapsed)
---   timeSinceLastUpdate = timeSinceLastUpdate + elapsed
---   -- 达到更新间隔时才刷新文字
---   if timeSinceLastUpdate >= updateInterval then
---     timeSinceLastUpdate = 0
+local UPDATE_INTERVAL = 60    -- 更新间隔: 秒
+local timeSinceLastUpdate = 0 -- 上次更新时间:秒
+local firstUpdate = true
 
---     -- 战团冷却时间
---     local cooldownInfo = C_Spell.GetSpellCooldown(460905)
+local function SecondsToMinutesUp(seconds)
+  if not seconds or seconds <= 0 then
+    return 0
+  end
+  return math.ceil(seconds / 60)
+end
 
---     if cooldownInfo and cooldownInfo.duration > 0 then
---       local remainingTime = (cooldownInfo.startTime + cooldownInfo.duration) - GetTime()
+local function handleSpellCDText(text, cooldownInfo)
+  if cooldownInfo and cooldownInfo.duration > 0 then
+    local remainingTime = (cooldownInfo.startTime + cooldownInfo.duration) - GetTime()
+    if remainingTime > 0 then
+      text:SetText(SecondsToMinutesUp(remainingTime))
+    else
+      text:SetText("")
+    end
+  else
+    text:SetText("")
+  end
+end
 
---       if remainingTime > 0 then
---         -- 显示剩余时间，超过1秒显示整数，否则显示一位小数
---         if remainingTime >= 1 then
---           print(remainingTime)
---           -- self.text:SetText(format("%d", remainingTime))
---         else
---           -- self.text:SetText(format("%.1f", remainingTime))
---         end
---       else
---         -- self.text:SetText("")
---       end
---     else
---       -- self.text:SetText("")
---     end
---   end
--- end)
+local function handleItemCDText(text, startTime, duration)
+  if duration and duration > 0 then
+    text:SetText(SecondsToMinutesUp(duration - GetTime() + startTime))
+  else
+    text:SetText("")
+  end
+end
+
+COMMON_FRAME:SetScript("OnUpdate", function(self, elapsed)
+  timeSinceLastUpdate = timeSinceLastUpdate + elapsed
+  if firstUpdate or timeSinceLastUpdate >= UPDATE_INTERVAL then
+    if InCombatLockdown() then
+      timeSinceLastUpdate = 0
+      return
+    end
+    timeSinceLastUpdate = 0
+    firstUpdate = false
+
+    -- 战团银行冷却时间
+    local cooldownInfo = C_Spell.GetSpellCooldown(460905)
+    handleSpellCDText(BUTTON_WAR_BAND_BANK_TEXT, cooldownInfo)
+
+    -- 邮件箱冷却时间
+    local startTime, duration = C_Item.GetItemCooldown(264695)
+    handleItemCDText(BUTTON_MAIL_BOX_TEXT, startTime, duration)
+
+    -- 奥术秘社冷却时间
+    local startTime, duration = C_Item.GetItemCooldown(253629)
+    handleItemCDText(BUTTON_THE_ARCANTINA_TEXT, startTime, duration)
+
+    -- 炉石冷却时间
+    local startTime, duration = C_Item.GetItemCooldown(6948)
+    handleItemCDText(BUTTON_HEARTH_STONE_TEXT, startTime, duration)
+  end
+end)
+
+--#endregion
