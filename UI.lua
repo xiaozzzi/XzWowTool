@@ -3,13 +3,16 @@ local isMainFrameVisible = false
 local XZWTMainFrame        -- 主页面
 local XZWTTabFrame         -- tab 页面
 local ShowCurrencyDropdown -- 显示货币
-local StoneDropdown        -- 显示木材
+local WoodDropdown         -- 显示木材
+local StoneDropdown        -- 选择炉石
 
 -------------------------------------------------------------------------------------------------------------
 -- 设置页面
 -------------------------------------------------------------------------------------------------------------
 local function DrawSetting(container)
   local unitGUID = UnitGUID("player")
+
+  --#region ==================================== 角色选择 ====================================
 
   local settingContainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
   settingContainer:SetFullWidth(true)                   -- 最大宽度
@@ -55,12 +58,15 @@ local function DrawSetting(container)
   playerDropdown:SetCallback("OnValueChanged", function(a, b, key)
     clickPlayer = CONFIG:GetByUnitGUID(key)
     ShowCurrencyDropdown:SetValue(clickPlayer['SHOW_CURRENCY'])
-    StoneDropdown:SetValue(clickPlayer['SHOW_WOOD'])
+    WoodDropdown:SetValue(clickPlayer['SHOW_WOOD'])
+    StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
   end)
   scroll:AddChild(playerDropdown)
   GuiCreateSpacing(scroll, 20)
 
-  -- ==================================== 货币监控 ==================================== --
+  --#endregion
+
+  --#region ==================================== 货币监控 ====================================
 
   GuiCreateEmptyLine(scroll, 2) --创建空行
   local settingHead = AceGUI:Create("Heading")
@@ -69,7 +75,7 @@ local function DrawSetting(container)
   scroll:AddChild(settingHead)
   GuiCreateEmptyLine(scroll, 2) --创建空行
 
-  -- =============== 显示纹章 ===============
+  -- ------------ 显示纹章 ------------
   local currencyIcon = AceGUI:Create("Icon")
   currencyIcon:SetImage(C_CurrencyInfo.GetCurrencyInfo(CURRENCY_ID[1].ID).iconFileID)
   currencyIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
@@ -87,7 +93,7 @@ local function DrawSetting(container)
   scroll:AddChild(ShowCurrencyDropdown)
   GuiCreateSpacing(scroll, 20)
 
-  -- =============== 显示木材 ===============
+  -- ------------ 显示木材 ------------
   local woodContainer = AceGUI:Create("SimpleGroup")
   woodContainer:SetLayout("Flow")
   scroll:AddChild(woodContainer)
@@ -98,21 +104,20 @@ local function DrawSetting(container)
   woodIcon:SetWidth(35)
   woodContainer:AddChild(woodIcon)
   GuiCreateChatLabel(woodContainer, GetColorText("FFFFFF", "显示木材:"), 90, "LEFT")
-  StoneDropdown = AceGUI:Create("Dropdown")
-  StoneDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
-  StoneDropdown:SetValue(clickPlayer['SHOW_WOOD'])
-  StoneDropdown:SetWidth(130)
-  StoneDropdown:SetCallback("OnValueChanged", function(a, b, key)
+  WoodDropdown = AceGUI:Create("Dropdown")
+  WoodDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
+  WoodDropdown:SetValue(clickPlayer['SHOW_WOOD'])
+  WoodDropdown:SetWidth(130)
+  WoodDropdown:SetCallback("OnValueChanged", function(a, b, key)
     CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_WOOD', key)
   end)
-  woodContainer:AddChild(StoneDropdown)
+  woodContainer:AddChild(WoodDropdown)
   GuiCreateSpacing(woodContainer, 20)
 
+  --#endregion
 
-
-
-  -- ==================================== 其他拓展 ==================================== --
-  -- =============== 炉石 ===============
+  --#region ==================================== 其他拓展 ==================================== --
+  -- ------------ 炉石 ------------
   local stoneContainer = AceGUI:Create("SimpleGroup")
   stoneContainer:SetLayout("Flow")
   stoneContainer:SetFullWidth(true)
@@ -123,12 +128,8 @@ local function DrawSetting(container)
 
   -- 遍历所有炉石
   for _, stone in pairs(HEARTH_STONE) do
-    local itemName, icon = C_Item.GetItemInfo(stone.ID)
-    if itemName then
-      -- print(stone.ID, itemName, icon)
-      table.insert(stoneListOrder, stone.ID)
-      stoneList[stone.ID] = '|TInterface\\Icons\\' .. stone.ICON .. ':0|t ' .. itemName
-    end
+    table.insert(stoneListOrder, stone.ID)
+    stoneList[stone.ID] = '|TInterface\\Icons\\' .. stone.ICON .. ':0|t ' .. stone.NAME
   end
 
   local stoneIcon = AceGUI:Create("Icon")
@@ -139,16 +140,18 @@ local function DrawSetting(container)
   GuiCreateChatLabel(stoneContainer, GetColorText("FFFFFF", "选择炉石:"), 90, "LEFT")
   StoneDropdown = AceGUI:Create("Dropdown")
   StoneDropdown:SetList(stoneList, stoneListOrder)
-  StoneDropdown:SetValue(clickPlayer['HEARTH_STONE'])
+  StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
   StoneDropdown:SetWidth(220)
   StoneDropdown:SetCallback("OnValueChanged", function(a, b, key)
     CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'HEARTH_STONE', key)
+    InitCommonButton()
   end)
   stoneContainer:AddChild(StoneDropdown)
   GuiCreateSpacing(stoneContainer, 20)
 
+  --#endregion
 
-  -- ==================================== 按钮拓展 ==================================== --
+  --#region ==================================== 按钮拓展 ==================================== --
 
   GuiCreateEmptyLine(scroll, 2) --创建空行
   local buttonHead = AceGUI:Create("Heading")
@@ -163,15 +166,17 @@ local function DrawSetting(container)
     cb:SetValue(clickPlayer['SHOW_BTN_' .. button.KEY] == 'SHOW')
     cb:SetWidth(200)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
-      -- print('SHOW_BTN_' .. button.key, ' : ', value)
       if value then
         CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, 'SHOW')
       else
         CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, 'HIDE')
       end
+      InitCommonButton()
     end)
     scroll:AddChild(cb)
   end
+
+  --#endregion
 end
 
 -- 显示主页面
@@ -195,7 +200,7 @@ local function showUI()
       isMainFrameVisible = false
     end)
     XZWTMainFrame:SetWidth(420)
-    XZWTMainFrame:SetHeight(630)
+    XZWTMainFrame:SetHeight(610)
     XZWTMainFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 0)
     XZWTMainFrame:SetLayout("Fill")
 
