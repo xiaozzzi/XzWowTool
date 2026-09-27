@@ -51,7 +51,8 @@
       "ItemUtil",
       "WeeklyRewardsFrame",
       "ChatEdit_InsertLink",
-      "ChatFrameUtil"
+      "ChatFrameUtil",
+      "PlayerFrame"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

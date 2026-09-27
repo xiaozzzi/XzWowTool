@@ -1,5 +1,4 @@
-local _, ns = ...
-
+local addonName, ns = ...
 
 -- 更新间隔, 监听玩家属性
 local updateInterval = 3 -- 每1秒更新一次
@@ -7,6 +6,8 @@ local timeSinceLastUpdate = 0
 
 -- 初始化通用命令
 local function InitCommonCmd()
+  -- 隐藏玩家信息框
+  PlayerFrame:Hide()
   -- 显示套装标签
   EventUtil.ContinueOnAddOnLoaded("Blizzard_EncounterJournal",
     function()
@@ -18,6 +19,7 @@ local function InitCommonCmd()
     end)
 end
 
+
 -------------------------------------------------------------------------------------------------------------
 -- 监听
 -------------------------------------------------------------------------------------------------------------
@@ -26,6 +28,7 @@ XzFrame:RegisterEvent("ADDON_LOADED")            -- 加载插件
 XzFrame:RegisterEvent("BAG_UPDATE_DELAYED")      -- 背包更新
 XzFrame:RegisterEvent("CURRENCY_DISPLAY_UPDATE") -- 货币变更
 XzFrame:RegisterEvent("PLAYER_LOGIN")            -- 角色登录
+XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
 XzFrame:Show()
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
@@ -42,6 +45,10 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
     UpdCurrencyTrack(unit)
+  end
+
+  if event == "GROUP_ROSTER_UPDATE" then
+    HandleDamageMeterWindow()
   end
 
   -- 每帧更新

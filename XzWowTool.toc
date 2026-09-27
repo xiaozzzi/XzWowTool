@@ -21,3 +21,4 @@ Wood.lua
 Core.lua
 Functions.lua
 UI.lua
+DamageMeterWindow.lua
