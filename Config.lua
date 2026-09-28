@@ -121,21 +121,21 @@ function AddPlayerToDB()
   end
 
   local config = {
-    classFilename = classFilename,                       -- 职业
+    classFilename = classFilename,                           -- 职业
     classFilenameSort = CLASS_FILENAME_SORT[classFilename] or 999,
-    unitName = unitName,                                 -- 角色名
-    realm = realm,                                       -- 服务器
-    unitGUID = unitGUID,                                 -- 用户ID
-    HEARTH_STONE = HEARTH_STONE,                         -- 炉石
-    SHOW_WOOD = SHOW_WOOD,                               -- 是否显示木材
-    SHOW_CURRENCY = SHOW_CURRENCY,                       -- 是否显示纹章
-    SHOW_BTN_MACRO_DELVE = SHOW_BTN_MACRO_DELVE,         -- 是否显示地下堡宏
-    SHOW_BTN_THE_GREAT_VAULT = SHOW_BTN_THE_GREAT_VAULT, -- 是否显示宏伟宝库
-    SHOW_BTN_CRAFTING = SHOW_BTN_CRAFTING,               -- 是否显示制造业模拟
-    SHOW_BTN_WAR_BAND_BANK = SHOW_BTN_WAR_BAND_BANK,     -- 是否显示战团银行
-    SHOW_BTN_MAIL_BOX = SHOW_BTN_MAIL_BOX,               -- 是否显示邮件
-    SHOW_BTN_THE_ARCANTINA = SHOW_BTN_THE_ARCANTINA,     -- 是否显示奥术秘社
-    SHOW_BTN_HEARTH_STONE = SHOW_BTN_HEARTH_STONE,       -- 是否显示炉石
+    unitName = unitName,                                     -- 角色名
+    realm = realm,                                           -- 服务器
+    unitGUID = unitGUID,                                     -- 用户ID
+    HEARTH_STONE = HEARTH_STONE,                             -- 炉石
+    SHOW_WOOD = SHOW_WOOD,                                   -- 是否显示木材
+    SHOW_CURRENCY = SHOW_CURRENCY,                           -- 是否显示纹章
+    SHOW_BTN_MACRO_DELVE = SHOW_BTN_MACRO_DELVE,             -- 是否显示地下堡宏
+    SHOW_BTN_THE_GREAT_VAULT = SHOW_BTN_THE_GREAT_VAULT,     -- 是否显示宏伟宝库
+    SHOW_BTN_CRAFTING = SHOW_BTN_CRAFTING,                   -- 是否显示制造业模拟
+    SHOW_BTN_WAR_BAND_BANK = SHOW_BTN_WAR_BAND_BANK,         -- 是否显示战团银行
+    SHOW_BTN_MAIL_BOX = SHOW_BTN_MAIL_BOX,                   -- 是否显示邮件
+    SHOW_BTN_THE_ARCANTINA = SHOW_BTN_THE_ARCANTINA,         -- 是否显示奥术秘社
+    SHOW_BTN_HEARTH_STONE = SHOW_BTN_HEARTH_STONE,           -- 是否显示炉石
   }
 
   XZ_CONFIG_DB[unitGUID] = config

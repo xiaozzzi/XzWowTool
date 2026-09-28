@@ -52,10 +52,28 @@
       "WeeklyRewardsFrame",
       "ChatEdit_InsertLink",
       "ChatFrameUtil",
-      "PlayerFrame"
+      "PlayerFrame",
+      "FrameUtil",
+      "ScrollUtil",
+      "ScrollBoxConstants",
+      "GetOrCreateTableEntry",
+      "CreateScrollBoxListLinearView",
+      "BaseScrollBoxEvents",
+      "CreateDataProvider",
+      "OpenDeathRecapUI",
+      "CreateAnchor",
+      "ApproximatelyEqual",
+      "TextureKitConstants",
+      "SettingsPanel",
+      "EditModeManagerFrame",
+      "GO"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"
     ],
-    "Lua.type.weakUnionCheck": true
+    "Lua.type.weakUnionCheck": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "full",
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
 }

@@ -35,12 +35,15 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
     InitConfigDB()
     InitWoodTrack()
+    CreateDamageMeterTypeButton() -- 创建快速切换伤害列表类型的按钮
   elseif event == 'PLAYER_LOGIN' then
     self:UnregisterEvent("PLAYER_LOGIN")
-    InitConfigDB()
-    InitCurrencyTrack()
-    InitCommonCmd()
-    InitCommonButton()
+    InitConfigDB()            -- 初始化配置数据库
+    InitCurrencyTrack()       -- 初始化货币跟踪
+    InitCommonCmd()           -- 初始化通用命令
+    InitCommonButton()        -- 初始化通用按钮
+    InitCommonButton()        -- 初始化通用按钮
+    HandleDamageMeterWindow() -- 初始化伤害列表窗口位置
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then

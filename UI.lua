@@ -190,7 +190,7 @@ local function showUI()
 
   if XZWTMainFrame then
     XZWTMainFrame:Show()
-    XZWTTabFrame:SelectTab("record")
+    XZWTTabFrame:SelectTab("setting")
   else
     -- 创建主页面
     XZWTMainFrame = AceGUI:Create("Frame")
@@ -208,6 +208,7 @@ local function showUI()
     XZWTTabFrame:SetLayout("Flow")
     XZWTTabFrame:SetTabs({
       { text = "设置", value = "setting" },
+      { text = "伤害统计", value = "damage_meter" },
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")
@@ -218,6 +219,7 @@ local function showUI()
     _G["DRTGlobalFrame"] = XZWTMainFrame.frame
     tinsert(UISpecialFrames, "DRTGlobalFrame")
   end
+  XZWTTabFrame:SelectTab("setting")
 end
 
 --- show and hide XZWTMainFrame

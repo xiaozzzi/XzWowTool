@@ -9,47 +9,13 @@ local raceName, raceFile, raceID = UnitRace("player")
 
 local COMMON_FRAME = CreateFrame("Frame")
 
-local function AddSolidBorder(frame, r, g, b, a, thickness)
-  thickness = thickness or 1
-  r, g, b = r or 0, g or 0, b or 0
-  a = a or 1
-
-  -- 上边框
-  local top = frame:CreateTexture(nil, "OVERLAY")
-  top:SetColorTexture(r, g, b, a)
-  top:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
-  top:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
-  top:SetHeight(thickness)
-
-  -- 下边框
-  local bottom = frame:CreateTexture(nil, "OVERLAY")
-  bottom:SetColorTexture(r, g, b, a)
-  bottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 0, 0)
-  bottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
-  bottom:SetHeight(thickness)
-
-  -- 左边框
-  local left = frame:CreateTexture(nil, "OVERLAY")
-  left:SetColorTexture(r, g, b, a)
-  left:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
-  left:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 0, 0)
-  left:SetWidth(thickness)
-
-  -- 右边框
-  local right = frame:CreateTexture(nil, "OVERLAY")
-  right:SetColorTexture(r, g, b, a)
-  right:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
-  right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
-  right:SetWidth(thickness)
-end
-
 -- ===================================================================================
 -- 创建按钮
 -- ===================================================================================
 
 --- 创建通用按钮, 不包含按钮位置
 local function CreateButton()
-  local button = CreateFrame("Button", "MyButton", UIParent, "SecureActionButtonTemplate")
+  local button = CreateFrame("Button", "MyButton", UIParent)
   button:SetSize(ICON_SIZE, ICON_SIZE)
   button:SetAlpha(0.3)
   -- 背景纹理（类似 CreateTexture）
@@ -322,28 +288,28 @@ local function SecondsToMinutesUp(seconds)
   return math.ceil(seconds / 60)
 end
 
-local function handleSpellCDText(text, cooldownInfo)
-  if (cooldownInfo.isOnGCD) then
-    text:SetText("")
+local function handleSpellCDText(textWidget, cooldownInfo)
+  if issecretvalue(cooldownInfo) or cooldownInfo.isOnGCD then
+    textWidget:SetText("")
     return
   end
   if cooldownInfo and cooldownInfo.duration > 0 then
     local remainingTime = (cooldownInfo.startTime + cooldownInfo.duration) - GetTime()
     if remainingTime > 0 then
-      text:SetText(SecondsToMinutesUp(remainingTime))
+      textWidget:SetText(SecondsToMinutesUp(remainingTime))
     else
-      text:SetText("")
+      textWidget:SetText("")
     end
   else
-    text:SetText("")
+    textWidget:SetText("")
   end
 end
 
-local function handleItemCDText(text, startTime, duration)
+local function handleItemCDText(textWidget, startTime, duration)
   if duration and duration > 0 then
-    text:SetText(SecondsToMinutesUp(duration - GetTime() + startTime))
+    textWidget:SetText(SecondsToMinutesUp(duration - GetTime() + startTime))
   else
-    text:SetText("")
+    textWidget:SetText("")
   end
 end
 
