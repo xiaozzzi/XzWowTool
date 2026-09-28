@@ -9,13 +9,11 @@ local raceName, raceFile, raceID = UnitRace("player")
 
 local COMMON_FRAME = CreateFrame("Frame")
 
--- ===================================================================================
--- 创建按钮
--- ===================================================================================
+--#region ==================================== 公共配置 ====================================
 
 --- 创建通用按钮, 不包含按钮位置
 local function CreateButton()
-  local button = CreateFrame("Button", "MyButton", UIParent)
+  local button = CreateFrame("Button", "MyButton", UIParent, "SecureActionButtonTemplate")
   button:SetSize(ICON_SIZE, ICON_SIZE)
   button:SetAlpha(0.3)
   -- 背景纹理（类似 CreateTexture）
@@ -49,18 +47,39 @@ local function CreateButton()
   return button
 end
 
+--- =====================================================================================
+--- 设置按钮图标
+--- @param button Frame 按钮
+--- @param icon number|table 图标ID
+--- =====================================================================================
+local function CreateButtonTexture(button, icon)
+  if type(icon) == "number" then
+    local texture = UIParent:CreateTexture()
+    texture:SetTexture(icon)
+    texture:SetTexCoord(TEX_COORD_LR, TEX_COORD_TB, TEX_COORD_LR, TEX_COORD_TB)
+    button:SetNormalTexture(texture)
+  end
+
+  if type(icon) == "table" and icon.type and icon.type == 'atlas' then
+    button:SetNormalAtlas(icon.atlas)
+  end
+end
+
+--- =====================================================================================
 --- 设置按钮位置
 ---@param button Frame 按钮
+--- =====================================================================================
 local function SetPosition(button)
   button:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 725, BUTTON_Y)
   button:Show()
   BUTTON_Y = BUTTON_Y + BUTTON_OFFSET
 end
 
-
+--- =====================================================================================
 --- 设置按钮的冷却CD
 ---@param button Frame 按钮
-local function CreateButtonCD(button)
+--- =====================================================================================
+local function CreateButtonCDText(button)
   -- 在框体上创建一个字体字符串
   local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   btnText:SetPoint("CENTER", 0, 0)
@@ -71,9 +90,11 @@ local function CreateButtonCD(button)
   return btnText
 end
 
+--- =====================================================================================
 --- 设置按钮的充能
 ---@param button Frame 按钮
-local function CreateButtonCharge(button)
+--- =====================================================================================
+local function CreateButtonChargeText(button)
   -- 在框体上创建一个字体字符串
   local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   btnText:SetPoint("BOTTOMRIGHT", 0, 0)
@@ -84,14 +105,16 @@ local function CreateButtonCharge(button)
   return btnText
 end
 
--- ===================================================================================
--- 功能按钮
--- ===================================================================================
+--#endregion 公共配置
 
+--#region ==================================== 功能按钮 ====================================
+
+--- =====================================================================================
 -- 法术按钮
 ---@param button Frame 按钮
 ---@param iconId number 按钮的图标
 ---@param spellId number 法术ID
+--- =====================================================================================
 local function SpellButton(button, iconId, spellId)
   button:SetAttribute("type", "spell")
   button:SetAttribute("spell", spellId)
@@ -115,12 +138,13 @@ local function ToyButton(button, toyId)
   return button
 end
 
---- 制造按钮
-local function CraftingButton(button, iconId)
-  local texture = UIParent:CreateTexture()
-  texture:SetTexture(iconId)
-  texture:SetTexCoord(TEX_COORD_LR, TEX_COORD_TB, TEX_COORD_LR, TEX_COORD_TB)
-  button:SetNormalTexture(texture)
+--- =====================================================================================
+--- 制造业按钮
+--- @param button Frame 按钮
+--- @param icon number|table 按钮的图标
+--- =====================================================================================
+local function CraftingButton(button, icon)
+  CreateButtonTexture(button, icon)
   button:SetScript("OnClick", function()
     ItemUtil.GetCraftingReagentCount = function(...) return 999 end
   end)
@@ -128,13 +152,14 @@ local function CraftingButton(button, iconId)
   return button
 end
 
---- 本周奖励按钮
 local TheGreatVaultShow = false
-local function TheGreatVaultButton(button, iconId)
-  local texture = UIParent:CreateTexture()
-  texture:SetTexture(iconId)
-  texture:SetTexCoord(TEX_COORD_LR, TEX_COORD_TB, TEX_COORD_LR, TEX_COORD_TB)
-  button:SetNormalTexture(texture)
+--- =====================================================================================
+--- 本周奖励按钮
+--- @param button Frame 按钮
+--- @param icon number|table 按钮的图标
+--- =====================================================================================
+local function TheGreatVaultButton(button, icon)
+  CreateButtonTexture(button, icon)
   button:SetScript("OnClick", function()
     if not TheGreatVaultShow then
       C_AddOns.LoadAddOn("Blizzard_WeeklyRewards")
@@ -152,12 +177,14 @@ local function TheGreatVaultButton(button, iconId)
   return button
 end
 
+--- =====================================================================================
 -- 执行插件的 CMD 命令
-local function AddonCmdButton(button, iconId, macroIds)
-  local texture = UIParent:CreateTexture()
-  texture:SetTexture(iconId)
-  texture:SetTexCoord(TEX_COORD_LR, TEX_COORD_TB, TEX_COORD_LR, TEX_COORD_TB)
-  button:SetNormalTexture(texture)
+---@param button Frame 按钮
+---@param icon number|table 按钮的图标
+---@param macroIds any[] 命令ID列表
+--- =====================================================================================
+local function AddonCmdButton(button, icon, macroIds)
+  CreateButtonTexture(button, icon)
 
   button:SetScript("OnClick", function()
     for _, macroId in ipairs(macroIds) do
@@ -169,9 +196,9 @@ local function AddonCmdButton(button, iconId, macroIds)
   return button
 end
 
--- =======================================================
--- 初始化按钮
--- =======================================================
+--#endregion
+
+--#region ==================================== 创建按钮 ====================================
 
 local BUTTON_WAR_BAND_BANK = CreateButton()
 local BUTTON_MAIL_BOX = CreateButton()
@@ -181,15 +208,15 @@ local BUTTON_CRAFTING = CreateButton()
 local BUTTON_THE_GREAT_VAULT = CreateButton()
 local BUTTON_MACRO_DELVE = CreateButton()
 
-local BUTTON_WAR_BAND_BANK_CD = CreateButtonCD(BUTTON_WAR_BAND_BANK)
-local BUTTON_MAIL_BOX_CD = CreateButtonCD(BUTTON_MAIL_BOX)
-local BUTTON_THE_ARCANTINA_CD = CreateButtonCD(BUTTON_THE_ARCANTINA)
-local BUTTON_HEARTH_STONE_CD = CreateButtonCD(BUTTON_HEARTH_STONE)
+local BUTTON_WAR_BAND_BANK_CD = CreateButtonCDText(BUTTON_WAR_BAND_BANK)
+local BUTTON_MAIL_BOX_CD = CreateButtonCDText(BUTTON_MAIL_BOX)
+local BUTTON_THE_ARCANTINA_CD = CreateButtonCDText(BUTTON_THE_ARCANTINA)
+local BUTTON_HEARTH_STONE_CD = CreateButtonCDText(BUTTON_HEARTH_STONE)
 
 -- 人类双炉石
 local BUTTON_HUMAN_HS_CHARGE = nil
 if raceFile == 'Human' then
-  BUTTON_HUMAN_HS_CHARGE = CreateButtonCharge(BUTTON_HEARTH_STONE)
+  BUTTON_HUMAN_HS_CHARGE = CreateButtonChargeText(BUTTON_HEARTH_STONE)
 end
 
 -- 萨满星界传送(特殊职业技能)
@@ -198,7 +225,7 @@ local BUTTON_SHAMAN_HS_CD = nil
 
 if classFilename and classFilename == "SHAMAN" then
   BUTTON_SHAMAN_HS = CreateButton()
-  BUTTON_SHAMAN_HS_CD = CreateButtonCD(BUTTON_SHAMAN_HS)
+  BUTTON_SHAMAN_HS_CD = CreateButtonCDText(BUTTON_SHAMAN_HS)
 end
 
 --- 战团银行:     图标ID:4914670; 法术ID:460905;
@@ -255,25 +282,31 @@ function InitCommonButton()
   -- 制造按钮
   if player['SHOW_BTN_CRAFTING'] == 'SHOW' then
     SetPosition(BUTTON_CRAFTING)
-    CraftingButton(BUTTON_CRAFTING, 132326)
+    -- iconId: 132326
+    CraftingButton(BUTTON_CRAFTING, { type = 'atlas', atlas = 'Professions-Icon-Quality-Tier5' })
   else
     BUTTON_CRAFTING:Hide()
   end
   -- 宏伟宝库
   if player['SHOW_BTN_THE_GREAT_VAULT'] == 'SHOW' then
     SetPosition(BUTTON_THE_GREAT_VAULT)
-    TheGreatVaultButton(BUTTON_THE_GREAT_VAULT, 651744)
+    -- iconId: 651744
+    TheGreatVaultButton(BUTTON_THE_GREAT_VAULT, { type = 'atlas', atlas = 'greatVault-whole-normal' })
   else
     BUTTON_THE_GREAT_VAULT:Hide()
   end
   -- 执行插件的 CMD 命令按钮
   if player['SHOW_BTN_MACRO_DELVE'] == 'SHOW' then
     SetPosition(BUTTON_MACRO_DELVE)
-    AddonCmdButton(BUTTON_MACRO_DELVE, 656581, { "DRT", "DFCN_DELVEHELPER" })
+    -- iconId: 656581
+    AddonCmdButton(BUTTON_MACRO_DELVE, { type = 'atlas', atlas = 'majorfactions_icons_delve512' },
+      { "DRT", "DFCN_DELVEHELPER" })
   else
     BUTTON_MACRO_DELVE:Hide()
   end
 end
+
+--#endregion
 
 --#region ==================================== 更新按钮文字 ====================================
 

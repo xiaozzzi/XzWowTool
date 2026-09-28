@@ -39,10 +39,10 @@ function SetDamageMeterHeight(height)
 end
 
 function HandleDamageMeterWindow()
-  local isInGroup = IsInGroup()
-  if isInGroup then
+  local isInRaid = IsInRaid()
+  if isInRaid then
     SetDamageMeterHeight(300)
-  elseif not isInGroup then
+  elseif not isInRaid then
     SetDamageMeterHeight(150)
   end
 end
