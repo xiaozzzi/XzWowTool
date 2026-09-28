@@ -20,5 +20,6 @@ CommonButton.lua
 DamageMeterWindow.lua
 Currency.lua
 Wood.lua
+RaidLeaderMarker.lua
 Core.lua
 UI.lua

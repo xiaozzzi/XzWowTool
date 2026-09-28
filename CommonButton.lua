@@ -322,7 +322,7 @@ local function SecondsToMinutesUp(seconds)
 end
 
 local function handleSpellCDText(textWidget, cooldownInfo)
-  if issecretvalue(cooldownInfo) or cooldownInfo.isOnGCD then
+  if issecrettable(cooldownInfo) or issecretvalue(cooldownInfo.duration) or cooldownInfo.isOnGCD then
     textWidget:SetText("")
     return
   end
