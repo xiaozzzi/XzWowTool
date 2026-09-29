@@ -1,5 +1,17 @@
-# Delve Record Tracker
+# XzWowTool
 
-World of Warcraft Addon。
+自用魔兽世界工具箱
 
-Save the completion records of multiple players delve and display them uniformly.
+1. 伤害统计大小调整
+2. 队伍标记调整
+3. 通用按钮调整
+4. 货币资源监控
+5. 木材数量监控
+6. 各类按钮快捷操作
+   1. 地下堡插件快捷方式
+   2. 宏伟宝库
+   3. 制造业模拟
+   4. 炉石
+   5. 奥术秘社
+   6. 邮箱
+   7. 战团仓库

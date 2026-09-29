@@ -1,9 +1,5 @@
 local addonName, ns = ...
 
--- 更新间隔, 监听玩家属性
-local updateInterval = 3 -- 每1秒更新一次
-local timeSinceLastUpdate = 0
-
 -- 初始化通用命令
 local function InitCommonCmd()
   -- 隐藏玩家信息框
@@ -33,17 +29,16 @@ XzFrame:Show()
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
-    InitConfigDB()
-    InitWoodTrack()
-    CreateDamageMeterTypeButton() -- 创建快速切换伤害列表类型的按钮
+    InitConfigDB()                -- 初始化配置表
+    InitWoodTrack()               -- 初始化木材监控
+    DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
   elseif event == 'PLAYER_LOGIN' then
     self:UnregisterEvent("PLAYER_LOGIN")
-    InitConfigDB()            -- 初始化配置数据库
-    InitCurrencyTrack()       -- 初始化货币跟踪
-    InitCommonCmd()           -- 初始化通用命令
-    InitCommonButton()        -- 初始化通用按钮
-    InitCommonButton()        -- 初始化通用按钮
-    HandleDamageMeterWindow() -- 初始化伤害列表窗口位置
+    InitConfigDB()             -- 初始化配置数据库
+    InitCurrencyTrack()        -- 初始化货币跟踪
+    InitCommonCmd()            -- 初始化通用命令
+    InitCommonButton()         -- 初始化通用按钮
+    DM:SetWindowHeightByRaid() -- 初始化伤害列表窗口位置
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
@@ -51,7 +46,7 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   end
 
   if event == "GROUP_ROSTER_UPDATE" then
-    HandleDamageMeterWindow()
+    DM:SetWindowHeightByRaid()
   end
 
   -- 每帧更新

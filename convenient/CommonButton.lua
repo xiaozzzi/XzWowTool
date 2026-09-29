@@ -26,7 +26,7 @@ local function CreateButton()
   -- border:SetColorTexture(0, 0, 0, 1)
   -- bg:SetPoint("TOPLEFT", 2, -2)
   -- bg:SetPoint("BOTTOMRIGHT", -2, 2)
-  AddSolidBorder(button, 0, 0, 0, 1, 1.5)
+  GUI:SolidBorder(button, 0, 0, 0, 1, 1.5)
 
   button:SetScript("OnEnter", function(self)
     -- border:SetColorTexture(1, 1, 1, 1)

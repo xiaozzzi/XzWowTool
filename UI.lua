@@ -29,15 +29,15 @@ local function DrawSetting(container)
   playerHead:SetFullWidth(true)
   scroll:AddChild(playerHead)
 
-  GuiCreateEmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2) --创建空行
 
-  local currencyIcon = AceGUI:Create("Icon")
-  currencyIcon:SetImage(236439)
-  currencyIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
-  currencyIcon:SetWidth(35)
-  scroll:AddChild(currencyIcon)
+  local playerIcon = AceGUI:Create("Icon")
+  playerIcon:SetImage(236439)
+  playerIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
+  playerIcon:SetWidth(35)
+  scroll:AddChild(playerIcon)
 
-  GuiCreateChatLabel(scroll, GetColorText("FFFFFF", "全部角色:"), 90, "LEFT")
+  GUI:Label(scroll, "全部角色:", 90, "LEFT")
 
   local playerList = {}
   local playerListOrder = {}
@@ -62,18 +62,18 @@ local function DrawSetting(container)
     StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
   end)
   scroll:AddChild(playerDropdown)
-  GuiCreateSpacing(scroll, 20)
+  GUI:Spacing(scroll, 20)
 
   --#endregion
 
   --#region ==================================== 货币监控 ====================================
 
-  GuiCreateEmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2) --创建空行
   local settingHead = AceGUI:Create("Heading")
   settingHead:SetText("货币监控")
   settingHead:SetFullWidth(true)
   scroll:AddChild(settingHead)
-  GuiCreateEmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2) --创建空行
 
   -- ------------ 显示纹章 ------------
   local currencyIcon = AceGUI:Create("Icon")
@@ -82,7 +82,7 @@ local function DrawSetting(container)
   currencyIcon:SetWidth(35)
   scroll:AddChild(currencyIcon)
 
-  GuiCreateChatLabel(scroll, GetColorText("FFFFFF", "显示纹章:"), 90, "LEFT")
+  GUI:Label(scroll, "显示纹章:", 90, "LEFT")
   ShowCurrencyDropdown = AceGUI:Create("Dropdown")
   ShowCurrencyDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
   ShowCurrencyDropdown:SetValue(clickPlayer['SHOW_CURRENCY'])
@@ -91,7 +91,7 @@ local function DrawSetting(container)
     CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_CURRENCY', key)
   end)
   scroll:AddChild(ShowCurrencyDropdown)
-  GuiCreateSpacing(scroll, 20)
+  GUI:Spacing(scroll, 20)
 
   -- ------------ 显示木材 ------------
   local woodContainer = AceGUI:Create("SimpleGroup")
@@ -103,7 +103,7 @@ local function DrawSetting(container)
   woodIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
   woodIcon:SetWidth(35)
   woodContainer:AddChild(woodIcon)
-  GuiCreateChatLabel(woodContainer, GetColorText("FFFFFF", "显示木材:"), 90, "LEFT")
+  GUI:Label(woodContainer, "显示木材:", 90, "LEFT")
   WoodDropdown = AceGUI:Create("Dropdown")
   WoodDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
   WoodDropdown:SetValue(clickPlayer['SHOW_WOOD'])
@@ -112,7 +112,7 @@ local function DrawSetting(container)
     CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_WOOD', key)
   end)
   woodContainer:AddChild(WoodDropdown)
-  GuiCreateSpacing(woodContainer, 20)
+  GUI:Spacing(woodContainer, 20)
 
   --#endregion
 
@@ -137,7 +137,7 @@ local function DrawSetting(container)
   stoneIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
   stoneIcon:SetWidth(35)
   stoneContainer:AddChild(stoneIcon)
-  GuiCreateChatLabel(stoneContainer, GetColorText("FFFFFF", "选择炉石:"), 90, "LEFT")
+  GUI:Label(stoneContainer, "选择炉石:", 90, "LEFT")
   StoneDropdown = AceGUI:Create("Dropdown")
   StoneDropdown:SetList(stoneList, stoneListOrder)
   StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
@@ -147,18 +147,18 @@ local function DrawSetting(container)
     InitCommonButton()
   end)
   stoneContainer:AddChild(StoneDropdown)
-  GuiCreateSpacing(stoneContainer, 20)
+  GUI:Spacing(stoneContainer, 20)
 
   --#endregion
 
   --#region ==================================== 按钮拓展 ==================================== --
 
-  GuiCreateEmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2) --创建空行
   local buttonHead = AceGUI:Create("Heading")
   buttonHead:SetText("按钮拓展")
   buttonHead:SetFullWidth(true)
   scroll:AddChild(buttonHead)
-  GuiCreateEmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2) --创建空行
 
   for _, button in pairs(COMMON_BUTTON) do
     local cb = AceGUI:Create("CheckBox")
@@ -181,10 +181,12 @@ end
 
 -- 显示主页面
 local function showUI()
+
   local function SelectGroup(container, event, group)
     container:ReleaseChildren()
     if group == "setting" then
       DrawSetting(container)
+    elseif group == "team_damage" then
     end
   end
 
@@ -195,7 +197,7 @@ local function showUI()
     -- 创建主页面
     XZWTMainFrame = AceGUI:Create("Frame")
     XZWTMainFrame:EnableResize(false) -- 允许改变窗口大小
-    XZWTMainFrame:SetTitle("自用工具箱")
+    XZWTMainFrame:SetTitle("自用工具箱" .. CONSTANTS.VERSION)
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
     end)
@@ -208,7 +210,7 @@ local function showUI()
     XZWTTabFrame:SetLayout("Flow")
     XZWTTabFrame:SetTabs({
       { text = "设置", value = "setting" },
-      { text = "伤害统计", value = "damage_meter" },
+      { text = "团队标记", value = "team_damage" },
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")
@@ -216,8 +218,8 @@ local function showUI()
     XZWTMainFrame:AddChild(XZWTTabFrame)
 
     -- 设置全局变量, 允许按下 esc 时关闭页面
-    _G["DRTGlobalFrame"] = XZWTMainFrame.frame
-    tinsert(UISpecialFrames, "DRTGlobalFrame")
+    _G["XZWTGlobalFrame"] = XZWTMainFrame.frame
+    tinsert(UISpecialFrames, "XZWTGlobalFrame")
   end
   XZWTTabFrame:SelectTab("setting")
 end

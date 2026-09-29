@@ -1,4 +1,4 @@
-local addonName, addon = ...
+local _, addon = ...
 
 -- 仅用在正式服
 if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
@@ -24,7 +24,7 @@ TARGET_MARKER_CONFIG = {
   size = 16,
 }
 
-local AddonFrame = CreateFrame("Frame")
+local RLFrame = CreateFrame("Frame")
 
 local leaderIcons = {}
 local markerIcons = {}
@@ -167,13 +167,13 @@ end
 
 addon.UpdateRaidMarker = UpdateRaidMarker
 
-AddonFrame:RegisterEvent("ADDON_LOADED")
-AddonFrame:RegisterEvent("PLAYER_LOGIN")
-AddonFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-AddonFrame:RegisterEvent("PARTY_LEADER_CHANGED")
-AddonFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-AddonFrame:RegisterEvent("RAID_TARGET_UPDATE") -- 玩家的标记变化时触发
+RLFrame:RegisterEvent("ADDON_LOADED")
+RLFrame:RegisterEvent("PLAYER_LOGIN")
+RLFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+RLFrame:RegisterEvent("PARTY_LEADER_CHANGED")
+RLFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+RLFrame:RegisterEvent("RAID_TARGET_UPDATE") -- 玩家的标记变化时触发
 
-AddonFrame:SetScript("OnEvent", function(self, event, ...)
+RLFrame:SetScript("OnEvent", function(self, event, ...)
   UpdateRaidMarker()
 end)

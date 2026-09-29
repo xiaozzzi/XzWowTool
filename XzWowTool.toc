@@ -13,13 +13,14 @@ libs/Ace3/AceAddon-3.0/AceAddon-3.0.lua
 libs/Ace3/AceDB-3.0/AceDB-3.0.lua
 libs/Ace3/AceGUI-3.0/AceGUI-3.0.xml
 
-Functions.lua
-Contants.lua
-Config.lua
-CommonButton.lua
-DamageMeterWindow.lua
-Currency.lua
-Wood.lua
-RaidLeaderMarker.lua
+base/GUI.lua
+base/Functions.lua
+base/Contants.lua
+base/Config.lua
+combat/DamageMeterWindow.lua
+combat/RaidLeaderMarker.lua
+convenient/CommonButton.lua
+currency/Currency.lua
+currency/Wood.lua
 Core.lua
 UI.lua

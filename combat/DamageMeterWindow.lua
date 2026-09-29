@@ -4,8 +4,9 @@
 
 AceGUI = LibStub("AceGUI-3.0")
 
+DM = {}
+
 local currentDamageMeterHeight = 0
-local DM_HEIGHT_LEVEL = { 150, 300, 450 }
 
 local function GetFirstDamageMeterWindow()
   for i = 1, 10 do
@@ -17,7 +18,7 @@ local function GetFirstDamageMeterWindow()
 end
 
 --- 设置伤害表窗口高度
-function SetDamageMeterHeight(height)
+local function SetDamageMeterHeight(height)
   if (height == currentDamageMeterHeight) then
     return
   end
@@ -38,7 +39,8 @@ function SetDamageMeterHeight(height)
   end
 end
 
-function HandleDamageMeterWindow()
+--- 根据是否在队伍中设置伤害表窗口高度
+function DM:SetWindowHeightByRaid()
   local isInRaid = IsInRaid()
   if isInRaid then
     SetDamageMeterHeight(300)
@@ -48,7 +50,7 @@ function HandleDamageMeterWindow()
 end
 
 -- 创建快速切换伤害列表类型的按钮
-function CreateDamageMeterTypeButton()
+function DM:CreateWindowHeightButton()
   local win = GetFirstDamageMeterWindow()
   if not win then
     return
