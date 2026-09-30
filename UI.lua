@@ -218,7 +218,7 @@ local function DrawSetting(container)
   col2Container:AddChild(cbFlyMode)
 
   local prof1, prof2 = GetProfessions()
-  if prof1 then
+  if prof1 and prof1 ~= 0 then
     local name = GetProfessionInfo(prof1)
     local cbProf1 = AceGUI:Create("CheckBox")
     cbProf1:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)
@@ -231,7 +231,7 @@ local function DrawSetting(container)
     col2Container:AddChild(cbProf1)
   end
 
-  if prof2 then
+  if prof2 and prof2 ~= 0 then
     local name = GetProfessionInfo(prof2)
     local cbProf2 = AceGUI:Create("CheckBox")
     cbProf2:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)

@@ -92,10 +92,10 @@ local function UpdateHotkeyFontSize()
   end
 end
 
-local HotKeyFrame = CreateFrame("Frame")
-HotKeyFrame:RegisterEvent("PLAYER_LOGIN")
+local HOTKEY_FRAME = CreateFrame("Frame", "HOTKEY_FRAME")
+HOTKEY_FRAME:RegisterEvent("PLAYER_LOGIN")
 
-HotKeyFrame:SetScript("OnEvent", function(self, event, unit, ...)
+HOTKEY_FRAME:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "PLAYER_LOGIN" then
     self:UnregisterEvent("PLAYER_LOGIN")
   end

@@ -17,7 +17,7 @@ local BTN_POSITION_X_COL2 = 754; -- 第二列按钮初始X坐标
 local className, classFilename, classId = UnitClass("player")
 local raceName, raceFile, raceID = UnitRace("player")
 
-local COMMON_FRAME = CreateFrame("Frame")
+local COMMON_FRAME = CreateFrame("Frame", "COMMON_FRAME")
 
 --#region ==================================== 公共配置 ====================================
 
@@ -348,8 +348,8 @@ function InitCommonButtonCol2(player)
   BTN_POSITION_Y_COL2 = 5
 
   local prof1, prof2, archaeology, fishing, cooking, firstAid = GetProfessions()
-
-  if player['SHOW_BTN_PROF2'] == 'SHOW' and prof2 ~= 0 then
+  print(prof1, prof2)
+  if player['SHOW_BTN_PROF2'] == 'SHOW' and prof2 and prof2 ~= 0 then
     local name, icon = GetProfessionInfo(prof2)
     CreateButtonHotKeyText(BUTTON_PROF2, "SR")
     SetPosition(BUTTON_PROF2, 2)
@@ -359,7 +359,7 @@ function InitCommonButtonCol2(player)
     BUTTON_PROF2:Hide()
   end
 
-  if player['SHOW_BTN_PROF1'] == 'SHOW' and prof1 ~= 0 then
+  if player['SHOW_BTN_PROF1'] == 'SHOW' and prof1 and prof1 ~= 0 then
     local name, icon = GetProfessionInfo(prof1)
     CreateButtonHotKeyText(BUTTON_PROF1, "CC")
     SetPosition(BUTTON_PROF1, 2)
@@ -376,7 +376,7 @@ function InitCommonButtonCol2(player)
   else
     BUTTON_FLY_MODE:Hide()
   end
-  
+
   -- 雷菌
   if player['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW' then
     CreateButtonHotKeyText(BUTTON_MOUNT_FUNGAL_STRIDER, "ST")
