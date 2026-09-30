@@ -119,23 +119,53 @@ function AddPlayerToDB()
   if player ~= nil and player.HEARTH_STONE ~= nil then
     HEARTH_STONE = player.HEARTH_STONE
   end
+  -- 牦牛
+  local SHOW_BTN_MOUNT_YAK = 'SHOW'
+  if player ~= nil and player.SHOW_BTN_MOUNT_YAK ~= nil then
+    SHOW_BTN_MOUNT_YAK = player.SHOW_BTN_MOUNT_YAK
+  end
+  -- 真菌行者
+  local SHOW_BTN_MOUNT_FUNGAL_STRIDER = 'SHOW'
+  if player ~= nil and player.SHOW_BTN_MOUNT_FUNGAL_STRIDER ~= nil then
+    SHOW_BTN_MOUNT_FUNGAL_STRIDER = player.SHOW_BTN_MOUNT_FUNGAL_STRIDER
+  end
+  -- 飞行模式
+  local SHOW_BTN_FLY_MODE = 'SHOW'
+  if player ~= nil and player.SHOW_BTN_FLY_MODE ~= nil then
+    SHOW_BTN_FLY_MODE = player.SHOW_BTN_FLY_MODE
+  end
+  -- 专业1
+  local SHOW_BTN_PROF1 = 'SHOW'
+  if player ~= nil and player.SHOW_BTN_PROF1 ~= nil then
+    SHOW_BTN_PROF1 = player.SHOW_BTN_PROF1
+  end
+  -- 专业2
+  local SHOW_BTN_PROF2 = 'SHOW'
+  if player ~= nil and player.SHOW_BTN_PROF2 ~= nil then
+    SHOW_BTN_PROF2 = player.SHOW_BTN_PROF2
+  end
 
   local config = {
-    classFilename = classFilename,                           -- 职业
+    classFilename = classFilename,                                 -- 职业
     classFilenameSort = CLASS_FILENAME_SORT[classFilename] or 999,
-    unitName = unitName,                                     -- 角色名
-    realm = realm,                                           -- 服务器
-    unitGUID = unitGUID,                                     -- 用户ID
-    HEARTH_STONE = HEARTH_STONE,                             -- 炉石
-    SHOW_WOOD = SHOW_WOOD,                                   -- 是否显示木材
-    SHOW_CURRENCY = SHOW_CURRENCY,                           -- 是否显示纹章
-    SHOW_BTN_MACRO_DELVE = SHOW_BTN_MACRO_DELVE,             -- 是否显示地下堡宏
-    SHOW_BTN_THE_GREAT_VAULT = SHOW_BTN_THE_GREAT_VAULT,     -- 是否显示宏伟宝库
-    SHOW_BTN_CRAFTING = SHOW_BTN_CRAFTING,                   -- 是否显示制造业模拟
-    SHOW_BTN_WAR_BAND_BANK = SHOW_BTN_WAR_BAND_BANK,         -- 是否显示战团银行
-    SHOW_BTN_MAIL_BOX = SHOW_BTN_MAIL_BOX,                   -- 是否显示邮件
-    SHOW_BTN_THE_ARCANTINA = SHOW_BTN_THE_ARCANTINA,         -- 是否显示奥术秘社
-    SHOW_BTN_HEARTH_STONE = SHOW_BTN_HEARTH_STONE,           -- 是否显示炉石
+    unitName = unitName,                                           -- 角色名
+    realm = realm,                                                 -- 服务器
+    unitGUID = unitGUID,                                           -- 用户ID
+    HEARTH_STONE = HEARTH_STONE,                                   -- 炉石
+    SHOW_WOOD = SHOW_WOOD,                                         -- 是否显示木材
+    SHOW_CURRENCY = SHOW_CURRENCY,                                 -- 是否显示纹章
+    SHOW_BTN_MACRO_DELVE = SHOW_BTN_MACRO_DELVE,                   -- 是否显示地下堡宏
+    SHOW_BTN_THE_GREAT_VAULT = SHOW_BTN_THE_GREAT_VAULT,           -- 是否显示宏伟宝库
+    SHOW_BTN_CRAFTING = SHOW_BTN_CRAFTING,                         -- 是否显示制造业模拟
+    SHOW_BTN_WAR_BAND_BANK = SHOW_BTN_WAR_BAND_BANK,               -- 是否显示战团银行
+    SHOW_BTN_MAIL_BOX = SHOW_BTN_MAIL_BOX,                         -- 是否显示邮件
+    SHOW_BTN_THE_ARCANTINA = SHOW_BTN_THE_ARCANTINA,               -- 是否显示奥术秘社
+    SHOW_BTN_HEARTH_STONE = SHOW_BTN_HEARTH_STONE,                 -- 是否显示炉石
+    SHOW_BTN_MOUNT_YAK = SHOW_BTN_MOUNT_YAK,                       -- 是否显示载具
+    SHOW_BTN_MOUNT_FUNGAL_STRIDER = SHOW_BTN_MOUNT_FUNGAL_STRIDER, -- 是否显示真菌行者
+    SHOW_BTN_FLY_MODE = SHOW_BTN_FLY_MODE,                         -- 是否显示飞行模式
+    SHOW_BTN_PROF1 = SHOW_BTN_PROF1,                               -- 是否显示专业1
+    SHOW_BTN_PROF2 = SHOW_BTN_PROF2,                               -- 是否显示专业2
   }
 
   XZ_CONFIG_DB[unitGUID] = config

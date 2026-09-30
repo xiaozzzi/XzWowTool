@@ -67,7 +67,9 @@
       "SettingsPanel",
       "EditModeManagerFrame",
       "GO",
-      "SetRaidTargetIconTexture"
+      "SetRaidTargetIconTexture",
+      "FONT_SIZE",
+      "MultiBar6"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

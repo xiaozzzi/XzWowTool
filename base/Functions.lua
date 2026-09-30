@@ -20,7 +20,6 @@ function GetItemCountFromAll(itemID)
   return C_Item.GetItemCount(itemID, true, false)
 end
 
-
 function SecondsToHMS(seconds)
   -- 确保输入为整数
   seconds = math.floor(tonumber(seconds) or 0)
@@ -31,4 +30,9 @@ function SecondsToHMS(seconds)
   local seconds = remainder % 60
   -- 格式化为两位数
   return string.format("%02d:%02d", minutes, seconds)
+end
+
+-- 获取显示隐藏状态
+function GetShowHide(value)
+  return value and "SHOW" or "HIDE"
 end

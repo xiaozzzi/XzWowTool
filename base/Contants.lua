@@ -75,6 +75,20 @@ COMMON_BUTTON = {
   { TYPE = "\124cff00BFFF法术\124r - ", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
 }
 
+PRO_MAPPING = {
+  ["珠宝加工"] = { spellId = "25229", show = true, icon = "ui_profession_jewelcrafting" },
+  ["附魔"] = { spellId = "7411", show = true, icon = "ui_profession_enchanting" },
+  ["铭文"] = { spellId = "45357", show = true, icon = "ui_profession_inscription" },
+  ["工程学"] = { spellId = "4036", show = true, icon = "ui_profession_engineering" },
+  ["炼金术"] = { spellId = "2259", show = true, icon = "ui_profession_alchemy" },
+  ["裁缝"] = { spellId = "3908", show = true, icon = "ui_profession_tailoring" },
+  ["制皮"] = { spellId = "2108", show = true, icon = "ui_profession_leatherworking" },
+  ["锻造"] = { spellId = "2018", show = true, icon = "ui_profession_blacksmithing" },
+  ["剥皮"] = { spellId = "8613", show = false, icon = "ui_profession_skinning" },
+  ["采矿"] = { spellId = "2656", show = false, icon = "ui_profession_mining" },
+  ["草药学"] = { spellId = "2366", show = false, icon = "ui_profession_herbalism" },
+}
+
 -- 种族和天赋
 -- 1力量 2敏捷 4智力
 CLASS_SPEC = {

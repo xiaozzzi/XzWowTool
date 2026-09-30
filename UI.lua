@@ -158,7 +158,19 @@ local function DrawSetting(container)
   buttonHead:SetText("按钮拓展")
   buttonHead:SetFullWidth(true)
   scroll:AddChild(buttonHead)
-  GUI:EmptyLine(scroll, 2) --创建空行
+  GUI:EmptyLine(scroll, 2)                           --创建空行
+
+  local col1Container = AceGUI:Create("InlineGroup") -- 第一列
+  col1Container:SetLayout("Flow")
+  col1Container:SetFullWidth(false)
+  col1Container:SetWidth(230)
+  scroll:AddChild(col1Container)
+
+  local col2Container = AceGUI:Create("InlineGroup") -- 第二列
+  col2Container:SetLayout("Flow")
+  col2Container:SetFullWidth(false)
+  col2Container:SetWidth(230)
+  scroll:AddChild(col2Container)
 
   for _, button in pairs(COMMON_BUTTON) do
     local cb = AceGUI:Create("CheckBox")
@@ -166,22 +178,76 @@ local function DrawSetting(container)
     cb:SetValue(clickPlayer['SHOW_BTN_' .. button.KEY] == 'SHOW')
     cb:SetWidth(200)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
-      if value then
-        CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, 'SHOW')
-      else
-        CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, 'HIDE')
-      end
+      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
       InitCommonButton()
     end)
-    scroll:AddChild(cb)
+    col1Container:AddChild(cb)
   end
 
+  -- 牦牛
+  local cbYak = AceGUI:Create("CheckBox")
+  cbYak:SetLabel("|TInterface\\Icons\\Ability_mount_travellersyakmount:0|t 雄壮远足牦牛")
+  cbYak:SetValue(clickPlayer['SHOW_BTN_MOUNT_YAK'] == 'SHOW')
+  cbYak:SetWidth(200)
+  cbYak:SetCallback("OnValueChanged", function(widget, event, value)
+    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_MOUNT_YAK', GetShowHide(value))
+    InitCommonButton()
+  end)
+  col2Container:AddChild(cbYak)
+
+  -- 真菌行者
+  local cbFungalStrider = AceGUI:Create("CheckBox")
+  cbFungalStrider:SetLabel("真菌行者")
+  cbFungalStrider:SetValue(clickPlayer['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW')
+  cbFungalStrider:SetWidth(200)
+  cbFungalStrider:SetCallback("OnValueChanged", function(widget, event, value)
+    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_MOUNT_FUNGAL_STRIDER', GetShowHide(value))
+    InitCommonButton()
+  end)
+  col2Container:AddChild(cbFungalStrider)
+
+  -- 切换飞行模式
+  local cbFlyMode = AceGUI:Create("CheckBox")
+  cbFlyMode:SetLabel("|TInterface\\Icons\\Ability_dragonriding_swapflightstyles01:0|t 切换飞行模式")
+  cbFlyMode:SetValue(clickPlayer['SHOW_BTN_FLY_MODE'] == 'SHOW')
+  cbFlyMode:SetWidth(200)
+  cbFlyMode:SetCallback("OnValueChanged", function(widget, event, value)
+    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_FLY_MODE', GetShowHide(value))
+    InitCommonButton()
+  end)
+  col2Container:AddChild(cbFlyMode)
+
+  local prof1, prof2 = GetProfessions()
+  if prof1 then
+    local name = GetProfessionInfo(prof1)
+    local cbProf1 = AceGUI:Create("CheckBox")
+    cbProf1:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)
+    cbProf1:SetValue(clickPlayer['SHOW_BTN_PROF1'] == 'SHOW')
+    cbProf1:SetWidth(200)
+    cbProf1:SetCallback("OnValueChanged", function(widget, event, value)
+      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_PROF1', GetShowHide(value))
+      InitCommonButton()
+    end)
+    col2Container:AddChild(cbProf1)
+  end
+
+  if prof2 then
+    local name = GetProfessionInfo(prof2)
+    local cbProf2 = AceGUI:Create("CheckBox")
+    cbProf2:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)
+    cbProf2:SetValue(clickPlayer['SHOW_BTN_PROF2'] == 'SHOW')
+    cbProf2:SetWidth(200)
+    cbProf2:SetCallback("OnValueChanged", function(widget, event, value)
+      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_PROF2', GetShowHide(value))
+      InitCommonButton()
+    end)
+    col2Container:AddChild(cbProf2)
+  end
   --#endregion
 end
 
 -- 显示主页面
 local function showUI()
-
   local function SelectGroup(container, event, group)
     container:ReleaseChildren()
     if group == "setting" then
@@ -201,7 +267,7 @@ local function showUI()
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
     end)
-    XZWTMainFrame:SetWidth(420)
+    XZWTMainFrame:SetWidth(518)
     XZWTMainFrame:SetHeight(610)
     XZWTMainFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 0)
     XZWTMainFrame:SetLayout("Fill")

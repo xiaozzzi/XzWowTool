@@ -15,7 +15,6 @@ local function InitCommonCmd()
     end)
 end
 
-
 -------------------------------------------------------------------------------------------------------------
 -- 监听
 -------------------------------------------------------------------------------------------------------------
@@ -25,7 +24,6 @@ XzFrame:RegisterEvent("BAG_UPDATE_DELAYED")      -- 背包更新
 XzFrame:RegisterEvent("CURRENCY_DISPLAY_UPDATE") -- 货币变更
 XzFrame:RegisterEvent("PLAYER_LOGIN")            -- 角色登录
 XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
-XzFrame:Show()
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
@@ -39,6 +37,7 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     InitCommonCmd()            -- 初始化通用命令
     InitCommonButton()         -- 初始化通用按钮
     DM:SetWindowHeightByRaid() -- 初始化伤害列表窗口位置
+
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then

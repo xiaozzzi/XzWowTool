@@ -20,6 +20,7 @@ base/Config.lua
 combat/DamageMeterWindow.lua
 combat/RaidLeaderMarker.lua
 convenient/CommonButton.lua
+convenient/HotKey.lua
 currency/Currency.lua
 currency/Wood.lua
 Core.lua
