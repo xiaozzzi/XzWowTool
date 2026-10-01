@@ -23,5 +23,6 @@ convenient/CommonButton.lua
 convenient/HotKey.lua
 currency/Currency.lua
 currency/Wood.lua
+unit/UnitPet.lua
 Core.lua
 UI.lua

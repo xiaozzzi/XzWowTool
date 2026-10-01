@@ -69,7 +69,10 @@
       "GO",
       "SetRaidTargetIconTexture",
       "FONT_SIZE",
-      "MultiBar6"
+      "MultiBar6",
+      "UnitPopup_OpenMenu",
+      "RegisterStateDriver",
+      "PetFrame"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"
