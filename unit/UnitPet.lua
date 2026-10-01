@@ -5,16 +5,13 @@ local PET_CLASSES = {
   DEATHKNIGHT = true, -- 死亡骑士
 }
 
-RegisterStateDriver(PetFrame, "visibility", "hide")
-
 local _, playerClass = UnitClass("player")
 if not PET_CLASSES[playerClass] then
   return
 end
 
-local function PixelPerfect(value)
-  return math.floor(value + 0.5)
-end
+RegisterStateDriver(PetFrame, "visibility", "hide")
+local FONT_PATH, FONT_SIZE = ChatFontNormal:GetFont()
 
 -- 创建一个简单的框架作为父级
 local frame = CreateFrame("Button", "UnitPetFrame", UIParent, "SecureUnitButtonTemplate,BackdropTemplate")
@@ -43,7 +40,7 @@ frame:SetAttribute("*type2", "togglemenu")                     -- 右键：由�
 
 frame:SetBackdrop({
   edgeFile = "Interface\\Buttons\\WHITE8X8",
-  edgeSize = 1,   -- 先设为1，如果UI缩放合适，就是1物理像素
+  edgeSize = 1, -- 先设为1，如果UI缩放合适，就是1物理像素
 })
 frame:SetBackdropBorderColor(0, 0, 0, 1)
 
@@ -64,68 +61,34 @@ bg:SetAllPoints()
 bg:SetTexture("Interface\\Buttons\\WHITE8X8")
 bg:SetVertexColor(0, 0, 0, 0.8)
 
--- 添加黑色边框
-local borderSize = 1               -- 边框粗细，可改为 2 更明显
-local borderColor = { 0, 0, 0, 1 } -- 黑色
-local function CreateBorder()
-  -- 计算当前框架对应的一个物理像素等于多少 UI 单位
-  local scale = frame:GetEffectiveScale()
-  local pixel = 1 / scale
-
-  -- 想让边框更粗就把这里改成 2 * pixel
-  local borderSize = pixel
-
-  local top = frame:CreateTexture(nil, "OVERLAY")
-  top:SetTexture("Interface\\Buttons\\WHITE8X8")
-  top:SetVertexColor(unpack(borderColor))
-  top:SetPoint("TOPLEFT", frame, "TOPLEFT", -borderSize, borderSize)
-  top:SetPoint("TOPRIGHT", frame, "TOPRIGHT", borderSize, borderSize)
-  top:SetHeight(borderSize)
-
-  local bottom = frame:CreateTexture(nil, "OVERLAY")
-  bottom:SetTexture("Interface\\Buttons\\WHITE8X8")
-  bottom:SetVertexColor(unpack(borderColor))
-  bottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -borderSize, -borderSize)
-  bottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", borderSize, -borderSize)
-  bottom:SetHeight(borderSize)
-
-  local left = frame:CreateTexture(nil, "OVERLAY")
-  left:SetTexture("Interface\\Buttons\\WHITE8X8")
-  left:SetVertexColor(unpack(borderColor))
-  -- 上下各内缩一个 borderSize，避免和 top / bottom 在四角重叠
-  left:SetPoint("TOPLEFT", frame, "TOPLEFT", -borderSize, 0)
-  left:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -borderSize, 0)
-  left:SetWidth(borderSize)
-
-  local right = frame:CreateTexture(nil, "OVERLAY")
-  right:SetTexture("Interface\\Buttons\\WHITE8X8")
-  right:SetVertexColor(unpack(borderColor))
-  right:SetPoint("TOPRIGHT", frame, "TOPRIGHT", borderSize, 0)
-  right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", borderSize, 0)
-  right:SetWidth(borderSize)
-end
--- CreateBorder()
+--#region ================================================== 血量显示 ==================================================
 
 -- 添加文本显示血量数值
-local HP_Number = healthBar:CreateFontString("HP_Number", "OVERLAY", "GameFontHighlight")
-local fontPath, fontSize = NumberFontNormalSmallGray:GetFont()
+local HP_Number = healthBar:CreateFontString("HP_NUMBER", "OVERLAY", "GameFontHighlight")
 HP_Number:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
-HP_Number:SetFont(fontPath, 14, "OUTLINE")
+HP_Number:SetFont(FONT_PATH, 14, "OUTLINE")
+HP_Number:SetShadowOffset(0, 0)
 healthBar.Text = HP_Number
 
--- 核心更新函数
+-- 更新血量显示
 local function UpdatePetHealth()
   local current = UnitHealth("pet")
   local max = UnitHealthMax("pet")
   healthBar:SetMinMaxValues(0, max)
   healthBar:SetValue(current)
-  HP_Number:SetText(current .. "")
+  HP_Number:SetText(AbbreviateNumbers(current))
 end
 
+--#endregion
+
+--#region ================================================== 宠物名称显示 ==================================================
+
 -- 创建宠物名称文本
-local nameText = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightOutline")
-nameText:SetPoint("BOTTOMLEFT", healthBar, "TOPLEFT", 0, 2) -- 定位在血条左上角外部
+local nameText = healthBar:CreateFontString("PET_NAME", "OVERLAY", "GameFontHighlightOutline")
+nameText:SetPoint("LEFT", healthBar, "LEFT", 3, 0) -- 定位在血条左上角外部
 nameText:SetJustifyH("LEFT")
+nameText:SetFont(FONT_PATH, 14, "OUTLINE")
+nameText:SetShadowOffset(0, 0)
 nameText:SetText("")
 
 local function UpdatePetName()
@@ -135,6 +98,28 @@ local function UpdatePetName()
   else
     nameText:SetText("")
   end
+end
+
+--#endregion
+
+-- 总更新入口：只负责内容，不负责 Show/Hide（显示隐藏交给 StateDriver）
+local function UpdatePetFrame()
+  -- 无宠物：什么都不做，StateDriver 会自动隐藏框架
+  if not UnitExists("pet") then
+    return
+  end
+
+  -- 宠物死亡：血条清空，文字显示“死亡”
+  if UnitIsDead("pet") then
+    healthBar:SetMinMaxValues(0, 1)
+    healthBar:SetValue(0)
+    nameText:SetText("死亡")
+    return
+  end
+
+  -- 宠物存活：正常刷新血量和名称
+  UpdatePetHealth()
+  UpdatePetName()
 end
 
 -- 注册事件
@@ -147,23 +132,15 @@ frame:RegisterEvent("UNIT_PET")              -- 宠物单位信息变化
 -- 首次进入游戏时，即使没有血量变化事件，也主动更新一次
 frame:SetScript("OnEvent", function(self, event, unit)
   if event == "PLAYER_ENTERING_WORLD" then
-    -- CreateBorder()
-    UpdatePetHealth()
-    UpdatePetName()
+    UpdatePetFrame()
   elseif event == "UNIT_PET" and unit == "player" then
-    -- UNIT_PET 的 unit 参数是 "player"，表示玩家自己的宠物变化
-    UpdatePetName()
-    UpdatePetHealth()
-    -- 宠物刚召唤时数据可能未就绪，延迟 0.1 秒再刷新一次兜底
-    C_Timer.After(0.1, function()
-      UpdatePetHealth()
-      UpdatePetName()
-    end)
+    UpdatePetFrame()
+    C_Timer.After(0.1, UpdatePetFrame)
   elseif unit == "pet" then
     if event == "UNIT_HEALTH" or event == "UNIT_MAXHEALTH" then
-      UpdatePetHealth()
+      UpdatePetFrame()
     elseif event == "UNIT_NAME_UPDATE" or event == "UNIT_PET" then
-      UpdatePetName()
+      UpdatePetFrame()
     end
   end
 end)

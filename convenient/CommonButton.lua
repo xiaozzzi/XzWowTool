@@ -348,7 +348,6 @@ function InitCommonButtonCol2(player)
   BTN_POSITION_Y_COL2 = 5
 
   local prof1, prof2, archaeology, fishing, cooking, firstAid = GetProfessions()
-  print(prof1, prof2)
   if player['SHOW_BTN_PROF2'] == 'SHOW' and prof2 and prof2 ~= 0 then
     local name, icon = GetProfessionInfo(prof2)
     CreateButtonHotKeyText(BUTTON_PROF2, "SR")
