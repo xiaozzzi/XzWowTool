@@ -1,3 +1,9 @@
+--·········································································································
+--
+-- 自定义宠物单位框体
+--
+--·········································································································
+
 -- 只在允许宠物的职业上执行，其他职业直接跳过整个脚本
 local PET_CLASSES = {
   HUNTER = true,      -- 猎人
@@ -48,7 +54,7 @@ frame:SetBackdropBorderColor(0, 0, 0, 1)
 RegisterStateDriver(frame, "visibility", "[pet,@target,exists][pet,combat] show; hide")
 
 -- 创建血条（StatusBar）
-local healthBar = CreateFrame("StatusBar", nil, frame)
+local healthBar = CreateFrame("StatusBar", "PET_HEALTH_BAR", frame)
 -- healthBar:SetAllPoints()                                                -- 填满父框架
 healthBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -1)
 healthBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)

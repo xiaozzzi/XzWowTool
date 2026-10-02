@@ -72,7 +72,10 @@
       "MultiBar6",
       "UnitPopup_OpenMenu",
       "RegisterStateDriver",
-      "PetFrame"
+      "PetFrame",
+      "STANDARD_TEXT_FONT",
+      "RAID_CLASS_COLORS",
+      "TargetFrame"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

@@ -24,5 +24,6 @@ convenient/HotKey.lua
 currency/Currency.lua
 currency/Wood.lua
 unit/UnitPet.lua
+unit/UnitTargetTarget.lua
 Core.lua
 UI.lua

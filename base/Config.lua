@@ -23,17 +23,36 @@ local CLASS_FILENAME_SORT = {
   ['PALADIN'] = 43,
 }
 
+-- 默认配置项，集中管理
+local DEFAULT_OPTIONS = {
+  SHOW_WOOD = 'HIDE',                     -- 是否显示木材
+  SHOW_CURRENCY = 'SHOW',                 -- 是否显示货币
+  SHOW_BTN_MACRO_DELVE = 'HIDE',          -- 是否显示地下堡按钮
+  SHOW_BTN_THE_GREAT_VAULT = 'HIDE',      -- 是否显示宏伟宝库
+  SHOW_BTN_CRAFTING = 'HIDE',             -- 是否显示制作模拟
+  SHOW_BTN_WAR_BAND_BANK = 'SHOW',        -- 是否显示战团银行
+  SHOW_BTN_MAIL_BOX = 'SHOW',             -- 是否显示邮件
+  SHOW_BTN_THE_ARCANTINA = 'SHOW',        -- 是否显示奥术秘社
+  SHOW_BTN_HEARTH_STONE = 'SHOW',         -- 是否显示炉石
+  HEARTH_STONE = 265100,                  -- 默认炉石
+  SHOW_BTN_MOUNT_YAK = 'SHOW',            -- 是否显示炉石
+  SHOW_BTN_MOUNT_FUNGAL_STRIDER = 'SHOW', -- 是否显示真菌行者
+  SHOW_BTN_FLY_MODE = 'SHOW',             -- 是否显示飞行模式
+  SHOW_BTN_PROF1 = 'SHOW',                -- 是否显示专业1
+  SHOW_BTN_PROF2 = 'SHOW',                -- 是否显示专业2
+}
+
 --- 获取角色配置
 --- @param unitGUID stringView 用户ID
---- @return table
+--- @return table|nil
 function CONFIG:GetByUnitGUID(unitGUID)
   return XZ_CONFIG_DB[unitGUID]
 end
 
 --- 获取指定配置
 --- @param unitGUID stringView 用户ID
---- @param key stringView 配置键
---- @return stringView 配置值
+--- @param key string  配置键
+--- @return string|nil 配置值
 function CONFIG:GetValue(unitGUID, key)
   local player = CONFIG:GetByUnitGUID(unitGUID)
   if player == nil then
@@ -66,7 +85,10 @@ end
 --- @param key stringView 配置键
 --- @param value stringView 配置值
 function CONFIG:SaveConfigValue(unitGUID, key, value)
-  XZ_CONFIG_DB[unitGUID][key] = value
+  local player = XZ_CONFIG_DB[unitGUID]
+  if player then
+    player[key] = value
+  end
 end
 
 function AddPlayerToDB()
@@ -74,99 +96,28 @@ function AddPlayerToDB()
   if unitGUID == nil then
     return
   end
-  local player = CONFIG:GetByUnitGUID(unitGUID)
+
+  local player = XZ_CONFIG_DB[unitGUID] -- 已有配置（可能为 nil）
   local className, classFilename, classId = UnitClass("player")
   local unitName, realm = UnitFullName("player")
 
-  local SHOW_WOOD = 'HIDE'
-  if player ~= nil and player.SHOW_WOOD ~= nil then
-    SHOW_WOOD = player.SHOW_WOOD
-  end
-  local SHOW_CURRENCY = 'SHOW'
-  if player ~= nil and player.SHOW_CURRENCY ~= nil then
-    SHOW_CURRENCY = player.SHOW_CURRENCY
-  end
-  local SHOW_BTN_MACRO_DELVE = 'HIDE'
-  if player ~= nil and player.SHOW_BTN_MACRO_DELVE ~= nil then
-    SHOW_BTN_MACRO_DELVE = player.SHOW_BTN_MACRO_DELVE
-  end
-  local SHOW_BTN_THE_GREAT_VAULT = 'HIDE'
-  if player ~= nil and player.SHOW_BTN_THE_GREAT_VAULT ~= nil then
-    SHOW_BTN_THE_GREAT_VAULT = player.SHOW_BTN_THE_GREAT_VAULT
-  end
-  local SHOW_BTN_CRAFTING = 'HIDE'
-  if player ~= nil and player.SHOW_BTN_CRAFTING ~= nil then
-    SHOW_BTN_CRAFTING = player.SHOW_BTN_CRAFTING
-  end
-  local SHOW_BTN_WAR_BAND_BANK = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_WAR_BAND_BANK ~= nil then
-    SHOW_BTN_WAR_BAND_BANK = player.SHOW_BTN_WAR_BAND_BANK
-  end
-  local SHOW_BTN_MAIL_BOX = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_MAIL_BOX ~= nil then
-    SHOW_BTN_MAIL_BOX = player.SHOW_BTN_MAIL_BOX
-  end
-  local SHOW_BTN_THE_ARCANTINA = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_THE_ARCANTINA ~= nil then
-    SHOW_BTN_THE_ARCANTINA = player.SHOW_BTN_THE_ARCANTINA
-  end
-  local SHOW_BTN_HEARTH_STONE = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_HEARTH_STONE ~= nil then
-    SHOW_BTN_HEARTH_STONE = player.SHOW_BTN_HEARTH_STONE
-  end
-  -- 炉石
-  local HEARTH_STONE = 265100
-  if player ~= nil and player.HEARTH_STONE ~= nil then
-    HEARTH_STONE = player.HEARTH_STONE
-  end
-  -- 牦牛
-  local SHOW_BTN_MOUNT_YAK = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_MOUNT_YAK ~= nil then
-    SHOW_BTN_MOUNT_YAK = player.SHOW_BTN_MOUNT_YAK
-  end
-  -- 真菌行者
-  local SHOW_BTN_MOUNT_FUNGAL_STRIDER = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_MOUNT_FUNGAL_STRIDER ~= nil then
-    SHOW_BTN_MOUNT_FUNGAL_STRIDER = player.SHOW_BTN_MOUNT_FUNGAL_STRIDER
-  end
-  -- 飞行模式
-  local SHOW_BTN_FLY_MODE = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_FLY_MODE ~= nil then
-    SHOW_BTN_FLY_MODE = player.SHOW_BTN_FLY_MODE
-  end
-  -- 专业1
-  local SHOW_BTN_PROF1 = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_PROF1 ~= nil then
-    SHOW_BTN_PROF1 = player.SHOW_BTN_PROF1
-  end
-  -- 专业2
-  local SHOW_BTN_PROF2 = 'SHOW'
-  if player ~= nil and player.SHOW_BTN_PROF2 ~= nil then
-    SHOW_BTN_PROF2 = player.SHOW_BTN_PROF2
-  end
-
+  -- 基础信息
   local config = {
     classFilename = classFilename,                                 -- 职业
-    classFilenameSort = CLASS_FILENAME_SORT[classFilename] or 999,
-    unitName = unitName,                                           -- 角色名
+    classFilenameSort = CLASS_FILENAME_SORT[classFilename] or 999, -- 职业排序
+    unitName = unitName,                                           -- 角色名称
     realm = realm,                                                 -- 服务器
     unitGUID = unitGUID,                                           -- 用户ID
-    HEARTH_STONE = HEARTH_STONE,                                   -- 炉石
-    SHOW_WOOD = SHOW_WOOD,                                         -- 是否显示木材
-    SHOW_CURRENCY = SHOW_CURRENCY,                                 -- 是否显示纹章
-    SHOW_BTN_MACRO_DELVE = SHOW_BTN_MACRO_DELVE,                   -- 是否显示地下堡宏
-    SHOW_BTN_THE_GREAT_VAULT = SHOW_BTN_THE_GREAT_VAULT,           -- 是否显示宏伟宝库
-    SHOW_BTN_CRAFTING = SHOW_BTN_CRAFTING,                         -- 是否显示制造业模拟
-    SHOW_BTN_WAR_BAND_BANK = SHOW_BTN_WAR_BAND_BANK,               -- 是否显示战团银行
-    SHOW_BTN_MAIL_BOX = SHOW_BTN_MAIL_BOX,                         -- 是否显示邮件
-    SHOW_BTN_THE_ARCANTINA = SHOW_BTN_THE_ARCANTINA,               -- 是否显示奥术秘社
-    SHOW_BTN_HEARTH_STONE = SHOW_BTN_HEARTH_STONE,                 -- 是否显示炉石
-    SHOW_BTN_MOUNT_YAK = SHOW_BTN_MOUNT_YAK,                       -- 是否显示载具
-    SHOW_BTN_MOUNT_FUNGAL_STRIDER = SHOW_BTN_MOUNT_FUNGAL_STRIDER, -- 是否显示真菌行者
-    SHOW_BTN_FLY_MODE = SHOW_BTN_FLY_MODE,                         -- 是否显示飞行模式
-    SHOW_BTN_PROF1 = SHOW_BTN_PROF1,                               -- 是否显示专业1
-    SHOW_BTN_PROF2 = SHOW_BTN_PROF2,                               -- 是否显示专业2
   }
+
+  -- 合并默认配置与已有配置
+  for key, defaultValue in pairs(DEFAULT_OPTIONS) do
+    if player and player[key] ~= nil then
+      config[key] = player[key]
+    else
+      config[key] = defaultValue
+    end
+  end
 
   XZ_CONFIG_DB[unitGUID] = config
 end
