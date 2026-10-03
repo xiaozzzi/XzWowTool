@@ -5,9 +5,9 @@
 --·········································································································
 
 CURRENCY_UI_LIST = {}
-local LEFT = 10
-local TOP = -20
-local WEIGHT = 300
+local OFFSET_LEFT = 10
+local OFFSET_TOP = -20
+local CURRENCY_DISTANCE = 45
 
 local function isShowCurrency()
   local SHOW_CURRENCY = CONFIG:GetValue(UnitGUID("player"), 'SHOW_CURRENCY')
@@ -18,7 +18,10 @@ function InitCurrencyTrack()
   if not isShowCurrency() then
     return
   end
-  for index, currency in pairs(CURRENCY_ID) do
+
+  local lastCurrnecyFrame = nil
+
+  for index, currency in ipairs(CURRENCY_ID) do
     -- 获取货币信息
     local info = C_CurrencyInfo.GetCurrencyInfo(currency.ID)
 
@@ -27,17 +30,23 @@ function InitCurrencyTrack()
 
     -- 货币图标
     local tex = UIParent:CreateTexture()
-    tex:SetPoint("TOPLEFT", UIParent, "TOPLEFT", LEFT + ((index - 1) * WEIGHT), TOP)
     tex:SetScale(0.3)
     tex:SetTexture(info.iconFileID)
+    if index == 1 then
+      tex:SetPoint("TOPLEFT", UIParent, "TOPLEFT", OFFSET_LEFT, OFFSET_TOP)
+    elseif lastCurrnecyFrame then
+      tex:SetPoint("LEFT", lastCurrnecyFrame, "RIGHT", CURRENCY_DISTANCE, 0)
+    end
 
     -- 货币数量
     local countLabel = UIParent:CreateFontString("XzCurrencyLabel_" .. currency.ID, "OVERLAY", "GameFontNormal")
     countLabel:SetFont(ChatFontNormal:GetFont(), 18, 'OUTLINE')
-    -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity .. "(" .. notEarned .. ")")
-    countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
     countLabel:SetPoint("LEFT", tex, "RIGHT", 0, 0)
     countLabel:SetTextColor(currency.R, currency.G, currency.B)
+    -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity .. "(" .. notEarned .. ")")
+    countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
+
+    lastCurrnecyFrame = countLabel
     CURRENCY_UI_LIST[currency.ID] = countLabel
   end
 end
