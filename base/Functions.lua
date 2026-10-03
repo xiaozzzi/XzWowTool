@@ -36,3 +36,16 @@ end
 function GetShowHide(value)
   return value and "SHOW" or "HIDE"
 end
+
+-- 是否为数字或数字字符串
+function IsNumber(v)
+  local t = type(v)
+
+  if t == "number" then
+    return true
+  elseif t == "string" then
+    return tonumber(v) ~= nil
+  end
+
+  return false
+end

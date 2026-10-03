@@ -91,7 +91,7 @@ function CONFIG:SaveConfigValue(unitGUID, key, value)
   end
 end
 
-function AddPlayerToDB()
+local function AddPlayerToDB()
   local unitGUID = UnitGUID("player")
   if unitGUID == nil then
     return
@@ -122,7 +122,7 @@ function AddPlayerToDB()
   XZ_CONFIG_DB[unitGUID] = config
 end
 
-function InitConfigDB()
+function CONFIG:InitConfigDB()
   -- 初始化数据表
   if not XZ_CONFIG_DB or XZ_CONFIG_DB == nil then
     XZ_CONFIG_DB = {}

@@ -158,7 +158,6 @@ local function DrawSetting(container)
   buttonHead:SetText("按钮拓展")
   buttonHead:SetFullWidth(true)
   scroll:AddChild(buttonHead)
-  GUI:EmptyLine(scroll, 2)                           --创建空行
 
   local col1Container = AceGUI:Create("InlineGroup") -- 第一列
   col1Container:SetLayout("Flow")
@@ -252,7 +251,10 @@ local function showUI()
     container:ReleaseChildren()
     if group == "setting" then
       DrawSetting(container)
-    elseif group == "team_damage" then
+    elseif group == "convenient" then
+      UIConvenient:DrawSetting(container)
+    elseif group == "unit" then
+      UIUnit:DrawSetting(container)
     end
   end
 
@@ -276,7 +278,8 @@ local function showUI()
     XZWTTabFrame:SetLayout("Flow")
     XZWTTabFrame:SetTabs({
       { text = "设置", value = "setting" },
-      { text = "团队标记", value = "team_damage" },
+      { text = "界面拓展", value = "convenient" },
+      { text = "单位框体", value = "unit" },
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")

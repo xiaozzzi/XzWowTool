@@ -4,7 +4,7 @@
 ## Author: xzzz
 ## Version: v1.1
 ## DefaultState: enabled
-## SavedVariables: XZ_CONFIG_DB
+## SavedVariables: XZ_CONFIG_DB,XZ_GLOBAL_DB
 
 # Libraries
 libs/Ace3/LibStub/LibStub.lua
@@ -17,13 +17,16 @@ base/GUI.lua
 base/Functions.lua
 base/Contants.lua
 base/Config.lua
+base/GlobalConfig.lua
 combat/DamageMeterWindow.lua
 combat/RaidLeaderMarker.lua
 convenient/CommonButton.lua
 convenient/HotKey.lua
+convenient/UIConvenient.lua
 currency/Currency.lua
 currency/Wood.lua
 unit/UnitPet.lua
 unit/UnitTargetTarget.lua
+unit/UIUnit.lua
 Core.lua
 UI.lua

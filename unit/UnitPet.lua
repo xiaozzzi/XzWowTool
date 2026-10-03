@@ -4,6 +4,8 @@
 --
 --·········································································································
 
+UNIT_PET = {}
+
 -- 只在允许宠物的职业上执行，其他职业直接跳过整个脚本
 local PET_CLASSES = {
   HUNTER = true,      -- 猎人
@@ -21,18 +23,28 @@ local FONT_PATH, FONT_SIZE = ChatFontNormal:GetFont()
 
 -- 创建一个简单的框架作为父级
 local frame = CreateFrame("Button", "UnitPetFrame", UIParent, "SecureUnitButtonTemplate,BackdropTemplate")
-frame:SetSize(200, 30)                                         -- 设置血条大小
-frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 585, 345) -- 设置
+frame:SetSize(200, 30) -- 设置血条大小
+-- frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 578, 348) -- 设置
 frame:EnableMouse(true)
-frame:SetAttribute("unit", "pet")                              -- 设置单位属性为宠物
-frame:RegisterForClicks("AnyUp")                               -- 注册左键和右键的点击事件
-frame:SetAttribute("*type1", "target")                         -- 左键：设为目标
-frame:SetAttribute("*type2", "togglemenu")                     -- 右键：由安全代码打开菜单
+frame:SetAttribute("unit", "pet")          -- 设置单位属性为宠物
+frame:RegisterForClicks("AnyUp")           -- 注册左键和右键的点击事件
+frame:SetAttribute("*type1", "target")     -- 左键：设为目标
+frame:SetAttribute("*type2", "togglemenu") -- 右键：由安全代码打开菜单
+frame:Hide()
 -- frame:SetMovable(true)                                         -- 可拖动
 -- frame:RegisterForDrag("LeftButton")                            -- 注册左键拖动
--- frame:SetScript("OnDragStart", frame.StartMoving)              -- 开始拖动
--- frame:SetScript("OnDragStop", frame.StopMovingOrSizing)        -- 停止拖动
--- 注册拖拽回调
+-- 开始拖动
+-- frame:SetScript("OnDragStart", function(self)
+--   if not self:IsMovable() then
+--     return
+--   end
+--   frame:StartMoving()
+-- end)
+-- -- 停止拖动
+-- frame:SetScript("OnDragStop", function(self)
+--   self:StopMovingOrSizing()
+-- end)
+-- 注册拖拽回调, 拖拽会使锚点重置为 (CENTER,UIParent,CENTER)
 -- frame:SetScript("OnDragStop", function(self)
 --   self:StopMovingOrSizing()
 --   -- 获取当前锚点、相对框架、相对锚点、X 偏移、Y 偏移
@@ -44,10 +56,8 @@ frame:SetAttribute("*type2", "togglemenu")                     -- 右键：由�
 --   ))
 -- end)
 
-frame:SetBackdrop({
-  edgeFile = "Interface\\Buttons\\WHITE8X8",
-  edgeSize = 1, -- 先设为1，如果UI缩放合适，就是1物理像素
-})
+-- 如果UI缩放合适，就是1物理像素
+frame:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8X8", edgeSize = 1 })
 frame:SetBackdropBorderColor(0, 0, 0, 1)
 
 -- 宠物存在 且（有目标 或 处于战斗中）时显示，其他情况隐藏
@@ -55,7 +65,7 @@ RegisterStateDriver(frame, "visibility", "[pet,@target,exists][pet,combat] show;
 
 -- 创建血条（StatusBar）
 local healthBar = CreateFrame("StatusBar", "PET_HEALTH_BAR", frame)
--- healthBar:SetAllPoints()                                                -- 填满父框架
+-- healthBar:SetAllPoints()                                             -- 填满父框架
 healthBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -1)
 healthBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)
 healthBar:SetStatusBarTexture("Interface\\RaidFrame\\Raid-Bar-Hp-Fill") -- 使用默认材质
@@ -66,6 +76,13 @@ local bg = healthBar:CreateTexture(nil, "BACKGROUND")
 bg:SetAllPoints()
 bg:SetTexture("Interface\\Buttons\\WHITE8X8")
 bg:SetVertexColor(0, 0, 0, 0.8)
+
+function UNIT_PET:UpdatePoint()
+  frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT",
+    tonumber(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_X")),
+    tonumber(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_Y")))
+  frame:Show()
+end
 
 --#region ================================================== 血量显示 ==================================================
 
@@ -139,6 +156,7 @@ frame:RegisterEvent("UNIT_PET")              -- 宠物单位信息变化
 frame:SetScript("OnEvent", function(self, event, unit)
   if event == "PLAYER_ENTERING_WORLD" then
     UpdatePetFrame()
+    UNIT_PET:UpdatePoint()
   elseif event == "UNIT_PET" and unit == "player" then
     UpdatePetFrame()
     C_Timer.After(0.1, UpdatePetFrame)

@@ -75,7 +75,9 @@
       "PetFrame",
       "STANDARD_TEXT_FONT",
       "RAID_CLASS_COLORS",
-      "TargetFrame"
+      "TargetFrame",
+      "ObjectiveTrackerFrame",
+      "DAMAGE"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

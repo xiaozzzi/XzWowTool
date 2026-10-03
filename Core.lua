@@ -13,6 +13,8 @@ local function InitCommonCmd()
           PanelTemplates_SetNumTabs(self, #self.Tabs)
         end)
     end)
+  -- 放大任务追踪器
+  ObjectiveTrackerFrame:SetScale(1.2)
 end
 
 -------------------------------------------------------------------------------------------------------------
@@ -27,17 +29,18 @@ XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
-    InitConfigDB()                -- 初始化配置表
+    GLOBAL_CONFIG:InitConfigDB()  -- 初始化公共配置表
+    CONFIG:InitConfigDB()         -- 初始化配置表
     InitWoodTrack()               -- 初始化木材监控
     DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
   elseif event == 'PLAYER_LOGIN' then
     self:UnregisterEvent("PLAYER_LOGIN")
-    InitConfigDB()             -- 初始化配置数据库
-    InitCurrencyTrack()        -- 初始化货币跟踪
-    InitCommonCmd()            -- 初始化通用命令
-    InitCommonButton()         -- 初始化通用按钮
-    DM:SetWindowHeightByRaid() -- 初始化伤害列表窗口位置
-
+    GLOBAL_CONFIG:InitConfigDB() -- 初始化公共配置表
+    CONFIG:InitConfigDB()        -- 初始化配置数据库
+    InitCurrencyTrack()          -- 初始化货币跟踪
+    InitCommonCmd()              -- 初始化通用命令
+    InitCommonButton()           -- 初始化通用按钮
+    DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then

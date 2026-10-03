@@ -3,8 +3,7 @@
 -- 为未绑定快捷键的按钮添加自定义文本
 --
 --·········································································································
-
-local FONT_SIZE = 14 -- 快捷键字体大小
+HOT_KEY = {}
 
 -- 需要修改的动作栏
 local CustomTextActionBars = { 'MultiBar5', 'MultiBar6' }
@@ -65,28 +64,24 @@ local function UpdateAllButtons()
   end
 end
 
-local function UpdateHotkeyFontSize()
-  local ActionBars = {
-    'MultiBarBottomLeft',
-    'MultiBarBottomRight',
-    'MultiBarRight',
-    'MultiBarLeft',
-    'Action',
-    'MultiBar1',
-    'MultiBar2',
-    'MultiBar3',
-    'MultiBar4',
-    'MultiBar5',
-    'MultiBar6',
-    'MultiBar7'
-  }
+local ACTION_BARS = {
+  "Action", "MultiBarBottomLeft", "MultiBarBottomRight",
+  "MultiBarRight", "MultiBarLeft",
+  "MultiBar5", "MultiBar6", "MultiBar7",
+}
 
-  for _, barName in pairs(ActionBars) do
+function HOT_KEY:UpdateHotkeyFontSize()
+  for _, barName in ipairs(ACTION_BARS) do
     for i = 1, 12 do
       local button = _G[barName .. 'Button' .. i]
       if button and button.HotKey then
-        local font, _, flags = button.HotKey:GetFont()
-        button.HotKey:SetFont(font, FONT_SIZE, flags)
+        -- local font, _, flags = button.HotKey:GetFont()
+        -- local font = ChatFontNormal:GetFont()
+        local font = NumberFontNormalSmallGray:GetFont()
+        button.HotKey:SetFont(font, GLOBAL_CONFIG:GetValue("HOTKEY_FONT_SIZE"), "OUTLINE")
+        -- button.HotKey:SetTextColor(1, 0, 0, 1) -- 会被覆盖
+        -- button.HotKey:SetShadowColor(1, 0, 0, 1)
+        -- button.HotKey:SetShadowOffset(1, -1)
       end
     end
   end
@@ -94,11 +89,15 @@ end
 
 local HOTKEY_FRAME = CreateFrame("Frame", "HOTKEY_FRAME")
 HOTKEY_FRAME:RegisterEvent("PLAYER_LOGIN")
+HOTKEY_FRAME:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+HOTKEY_FRAME:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+HOTKEY_FRAME:RegisterEvent("UPDATE_BINDINGS")
+
 
 HOTKEY_FRAME:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "PLAYER_LOGIN" then
     self:UnregisterEvent("PLAYER_LOGIN")
   end
   -- UpdateAllButtons()
-  UpdateHotkeyFontSize()
+  HOT_KEY:UpdateHotkeyFontSize()
 end)
