@@ -3,21 +3,26 @@
 -- [Documentation](https://warcraft.wiki.gg/wiki/Lua_functions)
 -------------------------------------------------------------------------------------------------------------
 
----====================================================================================
 ---当前用户是否 [获取] or [完成] 本周丰裕藏宝图
 ---@return boolean 是否完成
----====================================================================================
 function IsCompletedDelveBountyMap()
   return C_QuestLog.IsQuestFlaggedCompleted(86371)
 end
 
----====================================================================================
 ---从背包和仓库中获取物品数量
 ---@param itemID number 物品ID
 ---@return number 物品数量
----====================================================================================
 function GetItemCountFromAll(itemID)
   return C_Item.GetItemCount(itemID, true, false)
+end
+
+---当前玩家是否已达最大等级
+---@return boolean 是否已达最大等级
+function IsMaxPlayerLevel()
+  if UnitLevel("player") == GetMaxPlayerLevel() then
+    return true
+  end
+  return false
 end
 
 function SecondsToHMS(seconds)

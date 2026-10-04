@@ -1,6 +1,6 @@
 CONFIG = {}
 
-if not XZ_CONFIG_DB or XZ_CONFIG_DB == nil then
+if XZ_CONFIG_DB == nil then
   XZ_CONFIG_DB = {}
 end
 
@@ -123,9 +123,5 @@ local function AddPlayerToDB()
 end
 
 function CONFIG:InitConfigDB()
-  -- 初始化数据表
-  if not XZ_CONFIG_DB or XZ_CONFIG_DB == nil then
-    XZ_CONFIG_DB = {}
-  end
   AddPlayerToDB()
 end

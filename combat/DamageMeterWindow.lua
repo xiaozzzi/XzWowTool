@@ -4,9 +4,6 @@
 -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_DamageMeter/DamageMeterSessionWindow.lua
 --
 --·········································································································
-
-AceGUI = LibStub("AceGUI-3.0")
-
 MODE_DM = {}
 
 local currentDamageMeterHeight = 0

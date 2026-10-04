@@ -1,7 +1,7 @@
+GUI = {}
+
 local TEX_COORD_LR = 0.08 -- 按钮图标纹理坐标左上
 local TEX_COORD_TB = 0.92 -- 按钮图标纹理坐标右下
-
-GUI = {}
 
 ---为文本添加颜色, 文本以 |cFF 开头, |r 结尾
 ---@param color string 颜色, 格式为 RRGGBB

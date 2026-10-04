@@ -3,7 +3,7 @@
 -- 监控家宅木材
 --
 --·········································································································
-
+MODE_WOOD = {}
 WOOD_UI_LIST = {}
 local LEFT = 10
 local TOP = -200
@@ -14,7 +14,7 @@ local function isShowWood()
   return (SHOW_WOOD == 'SHOW')
 end
 
-function InitWoodTrack()
+function MODE_WOOD:InitWoodTrack()
   if not isShowWood() then
     return
   end
@@ -44,13 +44,13 @@ function InitWoodTrack()
   end
 end
 
-function UpdWoodTrack()
+function MODE_WOOD:UpdWoodTrack()
   if not isShowWood() then
     return
   end
   for index, wood in pairs(WOOD_ID) do
     if WOOD_UI_LIST == nil or WOOD_UI_LIST[wood.ID] == nil then
-      InitWoodTrack()
+      MODE_WOOD:InitWoodTrack()
     end
 
     local countLabel = WOOD_UI_LIST[wood.ID]

@@ -5,6 +5,9 @@
 --·········································································································
 
 local ICON_SIZE = 25             -- 按钮图标大小
+local FONT_SIZE_HOTKEY = 10      -- 快捷键字体大小
+local FONT_SIZE_CHARGE = 14      -- 按钮字体大小
+local FONT_SIZE_CD = 17          -- 按钮字体大小
 local BUTTON_OFFSET = 27         -- 按钮间距
 local TEX_COORD_LR = 0.08        -- 按钮图标纹理坐标左上
 local TEX_COORD_TB = 0.92        -- 按钮图标纹理坐标右下
@@ -99,9 +102,8 @@ local function CreateButtonCDText(button)
   -- 在框体上创建一个字体字符串
   local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   btnText:SetPoint("CENTER", 0, 0)
-  btnText:SetFont(ChatFontNormal:GetFont(), 17, "OUTLINE")
+  btnText:SetFont(ChatFontNormal:GetFont(), FONT_SIZE_CD, "OUTLINE")
   btnText:SetText("")
-  -- btnText:SetTextColor(1, 1, 1, 1)
   btnText:SetTextColor(0.015686, 1.0, 0.0, 1)
   return btnText
 end
@@ -114,18 +116,17 @@ local function CreateButtonChargeText(button)
   -- 在框体上创建一个字体字符串
   local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   btnText:SetPoint("BOTTOMRIGHT", 0, 0)
-  btnText:SetFont(ChatFontNormal:GetFont(), 14, "OUTLINE")
+  btnText:SetFont(ChatFontNormal:GetFont(), FONT_SIZE_CHARGE, "OUTLINE")
   btnText:SetText("")
-  -- btnText:SetTextColor(1, 1, 1, 1)
-  btnText:SetTextColor(0.015, 1.0, 0.0, 1)
+  btnText:SetTextColor(0.015, 1.0, 0.0, 1) -- 绿色
   return btnText
 end
 
-local FONT_SIZE = 10 -- 快捷键字体大小
+
 local function CreateButtonHotKeyText(button, text)
   local btnText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   btnText:SetPoint("TOPRIGHT", 0, 0)
-  btnText:SetFont(NumberFontNormalSmallGray:GetFont(), FONT_SIZE, "OUTLINE")
+  btnText:SetFont(NumberFontNormalSmallGray:GetFont(), FONT_SIZE_HOTKEY, "OUTLINE")
   btnText:SetText(text)
   btnText:SetTextColor(0.8, 0.8, 0.8, 1)
   return btnText

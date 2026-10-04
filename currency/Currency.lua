@@ -4,21 +4,33 @@
 --
 --·········································································································
 MODE_CURRENCY = {}
+MODE_CURRENCY.BACKGROUND = {
+  ["housing-bulletinboard-list-header-decorative-line"] = { width = 568, height = 9, X = -200, Y = -15 },
+  ["communities-chat-date-line-orange"] = { width = 456, height = 8, X = 0, Y = -15 },
+  ["communities-chat-date-line"] = { width = 456, height = 8, X = 0, Y = -15 },
+  ["UI-Frame-DastardlyDuos-Line-bottom"] = { width = 370, height = 12, X = 0, Y = -15 },
+  ["UI-Journeys-Renown-divider"] = { width = 366, height = 8, X = 0, Y = -15 },
+}
 local CURRENCY_UI_LIST = {}
 local OFFSET_LEFT = 10
 local OFFSET_TOP = -10
 local CURRENCY_DISTANCE = 45
 
+---是否显示货币监控
+---@return boolean
 local function isShowCurrency()
   local SHOW_CURRENCY = CONFIG:GetValue(UnitGUID("player"), 'SHOW_CURRENCY')
   return (SHOW_CURRENCY == 'SHOW')
 end
 
+---初始化货币监控
+---为每个货币创建一个UI元素，用于显示货币数量, 并将UI元素存储在CURRENCY_UI_LIST中, 便于更新数值
 function MODE_CURRENCY:InitCurrencyTrack()
-  if not isShowCurrency() then
+  if not isShowCurrency() or not IsMaxPlayerLevel() then
     return
   end
 
+  -- 记录上一个UI, 用于设置锚点
   local lastCurrnecyFrame = nil
 
   for index, currency in ipairs(CURRENCY_ID) do
@@ -51,14 +63,7 @@ function MODE_CURRENCY:InitCurrencyTrack()
   end
 end
 
-MODE_CURRENCY.BACKGROUND = {
-  ["housing-bulletinboard-list-header-decorative-line"] = { width = 568, height = 9, X = -200, Y = -15 },
-  ["communities-chat-date-line-orange"] = { width = 456, height = 8, X = 0, Y = -15 },
-  ["communities-chat-date-line"] = { width = 456, height = 8, X = 0, Y = -15 },
-  ["UI-Frame-DastardlyDuos-Line-bottom"] = { width = 370, height = 12, X = 0, Y = -15 },
-  ["UI-Journeys-Renown-divider"] = { width = 366, height = 8, X = 0, Y = -15 },
-  ["GarrMissionLocation-Maw-ButtonBG"] = { width = 380, height = 25, X = -30, Y = 3 },
-}
+--#region 货币背景
 
 local CURRENCY_BG_FRAME = CreateFrame("Frame", "CURRENCY_BACKGROUND_FRAME")
 local CURRENCY_BG_BG = CURRENCY_BG_FRAME:CreateTexture(nil, "BACKGROUND")
@@ -68,8 +73,10 @@ CURRENCY_BG_BG:SetAllPoints()
 
 ---更新货币背景
 function MODE_CURRENCY:UpdBackground()
+  if not isShowCurrency() or not IsMaxPlayerLevel() then
+    return
+  end
   local bgName = CONFIG_GLOBAL:GetValue("CURRENCY_BACKGROUND")
-  print(bgName)
   local config = MODE_CURRENCY.BACKGROUND[bgName]
   if config == nil then
     config = MODE_CURRENCY.BACKGROUND[1]
@@ -79,6 +86,8 @@ function MODE_CURRENCY:UpdBackground()
   CURRENCY_BG_FRAME:SetHeight(config.height)
   CURRENCY_BG_FRAME:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.X, config.Y)
 end
+
+--#endregion 货币背景
 
 -- 更新货币信息
 function MODE_CURRENCY:UpdCurrencyTrack(currencyId)

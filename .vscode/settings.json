@@ -78,7 +78,8 @@
       "TargetFrame",
       "ObjectiveTrackerFrame",
       "DAMAGE",
-      "BACKGROUND"
+      "BACKGROUND",
+      "MODE"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"
