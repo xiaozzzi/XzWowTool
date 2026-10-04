@@ -1,6 +1,6 @@
-GLOBAL_CONFIG = {}
+CONFIG_GLOBAL = {}
 
-if not XZ_GLOBAL_DB or XZ_GLOBAL_DB == nil then
+if XZ_GLOBAL_DB == nil then
   XZ_GLOBAL_DB = {}
 end
 
@@ -13,12 +13,13 @@ GLOBAL_DEFAULT_OPTIONS = {
   UNIT_PET_SIZE_Y = 30,
   UNIT_PET_POINT_X = 578,
   UNIT_PET_POINT_Y = 348,
+  CURRENCY_BACKGROUND = "housing-bulletinboard-list-header-decorative-line",
 }
 
 --- 获取指定配置
 --- @param key string  配置键
 --- @return string|nil 配置值
-function GLOBAL_CONFIG:GetValue(key)
+function CONFIG_GLOBAL:GetValue(key)
   local value = XZ_GLOBAL_DB[key]
   if value == nil then
     return nil
@@ -27,9 +28,9 @@ function GLOBAL_CONFIG:GetValue(key)
 end
 
 --- 保存配置
---- @param key stringView 配置键
---- @param value stringView 配置值
-function GLOBAL_CONFIG:SaveValue(key, value)
+--- @param key string 配置键
+--- @param value string 配置值
+function CONFIG_GLOBAL:SaveValue(key, value)
   XZ_GLOBAL_DB[key] = value
 end
 
@@ -42,10 +43,6 @@ local function AddPlayerToDB()
   end
 end
 
-function GLOBAL_CONFIG:InitConfigDB()
-  -- 初始化数据表
-  if not XZ_GLOBAL_DB or XZ_GLOBAL_DB == nil then
-    XZ_GLOBAL_DB = {}
-  end
+function CONFIG_GLOBAL:InitConfigDB()
   AddPlayerToDB()
 end

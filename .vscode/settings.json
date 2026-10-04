@@ -77,7 +77,8 @@
       "RAID_CLASS_COLORS",
       "TargetFrame",
       "ObjectiveTrackerFrame",
-      "DAMAGE"
+      "DAMAGE",
+      "BACKGROUND"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

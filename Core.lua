@@ -29,26 +29,27 @@ XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
-    GLOBAL_CONFIG:InitConfigDB()  -- 初始化公共配置表
-    CONFIG:InitConfigDB()         -- 初始化配置表
-    InitWoodTrack()               -- 初始化木材监控
-    DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
+    CONFIG_GLOBAL:InitConfigDB()       -- 初始化公共配置表
+    CONFIG:InitConfigDB()              -- 初始化配置表
+    InitWoodTrack()                    -- 初始化木材监控
+    MODE_DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
+    MODE_CURRENCY:UpdBackground()
   elseif event == 'PLAYER_LOGIN' then
     self:UnregisterEvent("PLAYER_LOGIN")
-    GLOBAL_CONFIG:InitConfigDB() -- 初始化公共配置表
-    CONFIG:InitConfigDB()        -- 初始化配置数据库
-    InitCurrencyTrack()          -- 初始化货币跟踪
-    InitCommonCmd()              -- 初始化通用命令
-    InitCommonButton()           -- 初始化通用按钮
-    DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
+    CONFIG_GLOBAL:InitConfigDB()      -- 初始化公共配置表
+    CONFIG:InitConfigDB()             -- 初始化配置数据库
+    MODE_CURRENCY:InitCurrencyTrack() -- 初始化货币跟踪
+    InitCommonCmd()                   -- 初始化通用命令
+    InitCommonButton()                -- 初始化通用按钮
+    MODE_DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
   elseif event == "BAG_UPDATE_DELAYED" then
     UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
-    UpdCurrencyTrack(unit)
+    MODE_CURRENCY:UpdCurrencyTrack(unit)
   end
 
   if event == "GROUP_ROSTER_UPDATE" then
-    DM:SetWindowHeightByRaid()
+    MODE_DM:SetWindowHeightByRaid()
   end
 
   -- 每帧更新

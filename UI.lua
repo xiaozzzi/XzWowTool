@@ -252,7 +252,7 @@ local function showUI()
     if group == "setting" then
       DrawSetting(container)
     elseif group == "convenient" then
-      UIConvenient:DrawSetting(container)
+      UI_Convenient:DrawSetting(container)
     elseif group == "unit" then
       UIUnit:DrawSetting(container)
     end

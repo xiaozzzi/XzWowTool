@@ -16,25 +16,25 @@ function UIUnit:DrawSetting(container)
 
   -- X,Y
   GUI:Label(petRow2, GUI:ColorText("FF00B3FF", "X："), 20, "LEFT")
-  local petX = GUI:EditBox(100, GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_X"), petRow2)
+  local petX = GUI:EditBox(100, CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_X"), petRow2)
   GUI:Spacing(petRow2, 20)
   GUI:Label(petRow2, GUI:ColorText("FF00FF26", "Y："), 20, "LEFT")
-  local petY = GUI:EditBox(100, GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_Y"), petRow2)
+  local petY = GUI:EditBox(100, CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_Y"), petRow2)
 
   petX:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then
-      petX:SetText(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_X"))
+      petX:SetText(CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_X"))
       return
     end
-    GLOBAL_CONFIG:SaveValue("UNIT_PET_POINT_X", value)
+    CONFIG_GLOBAL:SaveValue("UNIT_PET_POINT_X", value)
     UNIT_PET:UpdatePoint()
   end)
   petY:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then
-      petY:SetText(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_Y"))
+      petY:SetText(CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_Y"))
       return
     end
-    GLOBAL_CONFIG:SaveValue("UNIT_PET_POINT_Y", value)
+    CONFIG_GLOBAL:SaveValue("UNIT_PET_POINT_Y", value)
     UNIT_PET:UpdatePoint()
   end)
 

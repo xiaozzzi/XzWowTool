@@ -3,10 +3,10 @@
 -- 监控货币数量
 --
 --·········································································································
-
-CURRENCY_UI_LIST = {}
+MODE_CURRENCY = {}
+local CURRENCY_UI_LIST = {}
 local OFFSET_LEFT = 10
-local OFFSET_TOP = -20
+local OFFSET_TOP = -10
 local CURRENCY_DISTANCE = 45
 
 local function isShowCurrency()
@@ -14,7 +14,7 @@ local function isShowCurrency()
   return (SHOW_CURRENCY == 'SHOW')
 end
 
-function InitCurrencyTrack()
+function MODE_CURRENCY:InitCurrencyTrack()
   if not isShowCurrency() then
     return
   end
@@ -51,8 +51,37 @@ function InitCurrencyTrack()
   end
 end
 
+MODE_CURRENCY.BACKGROUND = {
+  ["housing-bulletinboard-list-header-decorative-line"] = { width = 568, height = 9, X = -200, Y = -15 },
+  ["communities-chat-date-line-orange"] = { width = 456, height = 8, X = 0, Y = -15 },
+  ["communities-chat-date-line"] = { width = 456, height = 8, X = 0, Y = -15 },
+  ["UI-Frame-DastardlyDuos-Line-bottom"] = { width = 370, height = 12, X = 0, Y = -15 },
+  ["UI-Journeys-Renown-divider"] = { width = 366, height = 8, X = 0, Y = -15 },
+  ["GarrMissionLocation-Maw-ButtonBG"] = { width = 380, height = 25, X = -30, Y = 3 },
+}
+
+local CURRENCY_BG_FRAME = CreateFrame("Frame", "CURRENCY_BACKGROUND_FRAME")
+local CURRENCY_BG_BG = CURRENCY_BG_FRAME:CreateTexture(nil, "BACKGROUND")
+CURRENCY_BG_FRAME:SetWidth(330)
+CURRENCY_BG_FRAME:SetFrameStrata("BACKGROUND") -- 背景层
+CURRENCY_BG_BG:SetAllPoints()
+
+---更新货币背景
+function MODE_CURRENCY:UpdBackground()
+  local bgName = CONFIG_GLOBAL:GetValue("CURRENCY_BACKGROUND")
+  print(bgName)
+  local config = MODE_CURRENCY.BACKGROUND[bgName]
+  if config == nil then
+    config = MODE_CURRENCY.BACKGROUND[1]
+  end
+  CURRENCY_BG_BG:SetAtlas(bgName)
+  CURRENCY_BG_FRAME:SetWidth(config.width)
+  CURRENCY_BG_FRAME:SetHeight(config.height)
+  CURRENCY_BG_FRAME:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.X, config.Y)
+end
+
 -- 更新货币信息
-function UpdCurrencyTrack(currencyId)
+function MODE_CURRENCY:UpdCurrencyTrack(currencyId)
   if not isShowCurrency() then
     return
   end
@@ -73,7 +102,7 @@ function UpdCurrencyTrack(currencyId)
   end
 
   if next(CURRENCY_UI_LIST) == nil or CURRENCY_UI_LIST[currencyId] == nil then
-    InitCurrencyTrack()
+    MODE_CURRENCY:InitCurrencyTrack()
   end
 
   if CURRENCY_UI_LIST[currencyId] == nil then

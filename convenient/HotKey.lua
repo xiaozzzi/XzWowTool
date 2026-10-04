@@ -78,7 +78,7 @@ function HOT_KEY:UpdateHotkeyFontSize()
         -- local font, _, flags = button.HotKey:GetFont()
         -- local font = ChatFontNormal:GetFont()
         local font = NumberFontNormalSmallGray:GetFont()
-        button.HotKey:SetFont(font, GLOBAL_CONFIG:GetValue("HOTKEY_FONT_SIZE"), "OUTLINE")
+        button.HotKey:SetFont(font, CONFIG_GLOBAL:GetValue("HOTKEY_FONT_SIZE"), "OUTLINE")
         -- button.HotKey:SetTextColor(1, 0, 0, 1) -- 会被覆盖
         -- button.HotKey:SetShadowColor(1, 0, 0, 1)
         -- button.HotKey:SetShadowOffset(1, -1)

@@ -7,7 +7,7 @@
 
 AceGUI = LibStub("AceGUI-3.0")
 
-DM = {}
+MODE_DM = {}
 
 local currentDamageMeterHeight = 0
 
@@ -43,7 +43,7 @@ local function SetDamageMeterHeight(height)
 end
 
 --- 根据是否在队伍中设置伤害表窗口高度
-function DM:SetWindowHeightByRaid()
+function MODE_DM:SetWindowHeightByRaid()
   local isInRaid = IsInRaid()
   if isInRaid then
     SetDamageMeterHeight(300)
@@ -53,7 +53,7 @@ function DM:SetWindowHeightByRaid()
 end
 
 -- 创建快速切换伤害列表类型的按钮
-function DM:CreateWindowHeightButton()
+function MODE_DM:CreateWindowHeightButton()
   local win = GetFirstDamageMeterWindow()
   if not win then
     return
@@ -81,20 +81,20 @@ function DM:CreateWindowHeightButton()
   lowButton:SetPoint("BOTTOMRIGHT", win, "BOTTOMLEFT", 0, 0)
   lowButton:SetNormalAtlas("128-RedButton-ArrowDown")
   lowButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(GLOBAL_CONFIG:GetValue("DAMAGE_METER_LOW_SIZE"))
+    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"))
   end)
 
   local midButton = GUI:SimpleButton(25, "MID_BUTTON", nil, false)
   midButton:SetPoint("BOTTOMLEFT", lowButton, "TOPLEFT", 0, 0)
   midButton:SetNormalAtlas("128-RedButton-Minus")
   midButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(GLOBAL_CONFIG:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
+    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
   end)
 
   local highButton = GUI:SimpleButton(25, "HIGH_BUTTON", nil, false)
   highButton:SetPoint("BOTTOMLEFT", midButton, "TOPLEFT", 0, 0)
   highButton:SetNormalAtlas("128-RedButton-ArrowUpGlow")
   highButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(GLOBAL_CONFIG:GetValue("DAMAGE_METER_HIGHT_SIZE"))
+    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_HIGHT_SIZE"))
   end)
 end

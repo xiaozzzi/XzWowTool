@@ -79,8 +79,8 @@ bg:SetVertexColor(0, 0, 0, 0.8)
 
 function UNIT_PET:UpdatePoint()
   frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT",
-    tonumber(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_X")),
-    tonumber(GLOBAL_CONFIG:GetValue("UNIT_PET_POINT_Y")))
+    tonumber(CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_X")),
+    tonumber(CONFIG_GLOBAL:GetValue("UNIT_PET_POINT_Y")))
   frame:Show()
 end
 
