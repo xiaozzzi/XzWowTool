@@ -5,14 +5,14 @@
 --·········································································································
 
 local ICON_SIZE = 25             -- 按钮图标大小
-local BUTTON_OFFSET = 28         -- 按钮间距
+local BUTTON_OFFSET = 27         -- 按钮间距
 local TEX_COORD_LR = 0.08        -- 按钮图标纹理坐标左上
 local TEX_COORD_TB = 0.92        -- 按钮图标纹理坐标右下
 
-local BTN_POSITION_Y_COL1 = 5    -- 第一列按钮初始Y坐标
-local BTN_POSITION_Y_COL2 = 5    -- 第二列按钮初始Y坐标
-local BTN_POSITION_X_COL1 = 725; -- 第一列按钮初始X坐标
-local BTN_POSITION_X_COL2 = 754; -- 第二列按钮初始X坐标
+local BTN_POSITION_Y_COL1 = 4    -- 第一列按钮初始Y坐标
+local BTN_POSITION_X_COL1 = 724; -- 第一列按钮初始X坐标
+local BTN_POSITION_Y_COL2 = 4    -- 第二列按钮初始Y坐标
+local BTN_POSITION_X_COL2 = 753; -- 第二列按钮初始X坐标
 
 local className, classFilename, classId = UnitClass("player")
 local raceName, raceFile, raceID = UnitRace("player")

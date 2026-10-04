@@ -84,7 +84,7 @@ PRO_MAPPING = {
   ["裁缝"] = { spellId = "3908", show = true, icon = "ui_profession_tailoring" },
   ["制皮"] = { spellId = "2108", show = true, icon = "ui_profession_leatherworking" },
   ["锻造"] = { spellId = "2018", show = true, icon = "ui_profession_blacksmithing" },
-  ["剥皮"] = { spellId = "8613", show = false, icon = "ui_profession_skinning" },
+  ["剥皮"] = { spellId = "194174", show = false, icon = "ui_profession_skinning" },
   ["采矿"] = { spellId = "2656", show = false, icon = "ui_profession_mining" },
   ["草药学"] = { spellId = "2366", show = false, icon = "ui_profession_herbalism" },
 }

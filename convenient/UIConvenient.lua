@@ -60,3 +60,21 @@ function UIConvenient:DrawSetting(container)
 
   --#endregion
 end
+
+--- 创建一个聊天背景层, 填充输入框与聊天框中间的缝隙
+local function ChatBackground()
+  local frame = CreateFrame("Frame", "CHAT_BACKGROUND")
+  frame:SetWidth(400)
+  frame:SetHeight(40)
+  frame:SetFrameStrata("BACKGROUND") -- 背景层
+  frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+  local bg = frame:CreateTexture(nil, "BACKGROUND")
+  bg:SetAllPoints()
+  -- 1A1A1A 和聊天背景色相同
+  local r = 0.10196
+  local g = 0.10196
+  local b = 0.10196
+  bg:SetColorTexture(r, g, b, 1)
+end
+
+ChatBackground()
