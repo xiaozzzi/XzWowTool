@@ -23,6 +23,7 @@ function GUI:Button(container, text, width)
   button:SetText(text)
   button:SetWidth(width)
   container:AddChild(button)
+  return button
 end
 
 ---创建空行
@@ -39,7 +40,7 @@ end
 
 ---创建 label
 ---@param container AceGUIWidget 容器
----@param text string 文本内容
+---@param text string|number 文本内容
 ---@param width number 文本宽度
 ---@param justifyH string 水平对齐方式
 ---@return AceGUIWidget 标签

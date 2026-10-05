@@ -82,8 +82,8 @@ end
 --- 创建一个聊天背景层, 填充输入框与聊天框中间的缝隙
 local function ChatBackground()
   local frame = CreateFrame("Frame", "CHAT_BACKGROUND")
-  frame:SetWidth(400)
-  frame:SetHeight(40)
+  frame:SetWidth(330)
+  frame:SetHeight(25)
   frame:SetFrameStrata("BACKGROUND") -- 背景层
   frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 0, 0)
   local bg = frame:CreateTexture(nil, "BACKGROUND")
@@ -96,3 +96,38 @@ local function ChatBackground()
 end
 
 ChatBackground()
+
+-- local function ButtonBackground()
+--   local frame = CreateFrame("Frame", "BUTTON_BACKGROUND")
+--   frame:SetWidth(43)
+--   frame:SetHeight(146)
+--   frame:SetFrameStrata("BACKGROUND") -- 背景层
+--   frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 467, 0)
+--   local bg = frame:CreateTexture(nil, "BACKGROUND")
+--   bg:SetAllPoints()
+--   -- 1A1A1A 和聊天背景色相同
+--   local r = 0.10196
+--   local g = 0.10196
+--   local b = 0.10196
+--   bg:SetColorTexture(r, g, b, 0.5)
+-- end
+
+-- ButtonBackground()
+
+-- local function LeftBottomBackground()
+--   local frame = CreateFrame("Frame", "LEFT_BOTTOM__BACKGROUND")
+--   -- frame:SetWidth(510) -- 宽度延伸到按钮背景
+--   -- frame:SetWidth(325) -- 宽度延伸到小地图
+--   -- frame:SetHeight(162)
+--   frame:SetFrameStrata("BACKGROUND") -- 背景层
+--   frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 0, 0)
+--   local bg = frame:CreateTexture(nil, "BACKGROUND")
+--   bg:SetAllPoints()
+--   -- 1A1A1A 和聊天背景色相同
+--   local r = 0.10196
+--   local g = 0.10196
+--   local b = 0.10196
+--   bg:SetColorTexture(r, g, b, 1)
+-- end
+
+-- LeftBottomBackground()

@@ -39,6 +39,7 @@ local function AddPlayerToDB()
   for key, defaultValue in pairs(GLOBAL_DEFAULT_OPTIONS) do
     if XZ_GLOBAL_DB[key] == nil then
       XZ_GLOBAL_DB[key] = defaultValue
+      print(GUI:ColorText("FFFFC400", "新增配置项: ") .. key .. ", 默认值: " .. XZ_GLOBAL_DB[key])
     end
   end
 end

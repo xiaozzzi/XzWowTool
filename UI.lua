@@ -255,6 +255,8 @@ local function showUI()
       UI_Convenient:DrawSetting(container)
     elseif group == "unit" then
       UIUnit:DrawSetting(container)
+    elseif group == "currency_caluator" then
+      UI_CurrencyCaluator:DrawSetting(container)
     end
   end
 
@@ -280,6 +282,7 @@ local function showUI()
       { text = "设置", value = "setting" },
       { text = "界面拓展", value = "convenient" },
       { text = "单位框体", value = "unit" },
+      { text = "货币计算", value = "currency_caluator" },
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")

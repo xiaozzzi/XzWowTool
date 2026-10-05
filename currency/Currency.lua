@@ -13,7 +13,7 @@ MODE_CURRENCY.BACKGROUND = {
 }
 local CURRENCY_UI_LIST = {}
 local OFFSET_LEFT = 10
-local OFFSET_TOP = -10
+local OFFSET_TOP = -20
 local CURRENCY_DISTANCE = 45
 
 ---是否显示货币监控
@@ -41,23 +41,30 @@ function MODE_CURRENCY:InitCurrencyTrack()
     local notEarned = info.maxQuantity - info.totalEarned
 
     -- 货币图标
-    local tex = UIParent:CreateTexture()
-    tex:SetScale(0.3)
-    tex:SetTexture(info.iconFileID)
+    local icon = UIParent:CreateTexture()
+    icon:SetScale(0.3)
+    icon:SetTexture(info.iconFileID)
     if index == 1 then
-      tex:SetPoint("TOPLEFT", UIParent, "TOPLEFT", OFFSET_LEFT, OFFSET_TOP)
+      icon:SetPoint("TOPLEFT", UIParent, "TOPLEFT", OFFSET_LEFT, OFFSET_TOP)
     elseif lastCurrnecyFrame then
-      tex:SetPoint("LEFT", lastCurrnecyFrame, "RIGHT", CURRENCY_DISTANCE, 0)
+      icon:SetPoint("LEFT", lastCurrnecyFrame, "RIGHT", CURRENCY_DISTANCE, 0)
     end
 
     -- 货币数量
     local countLabel = UIParent:CreateFontString("XzCurrencyLabel_" .. currency.ID, "OVERLAY", "GameFontNormal")
     countLabel:SetFont(ChatFontNormal:GetFont(), 18, 'OUTLINE')
-    countLabel:SetPoint("LEFT", tex, "RIGHT", 0, 0)
+    countLabel:SetPoint("LEFT", icon, "RIGHT", 0, 0)
     countLabel:SetTextColor(currency.R, currency.G, currency.B)
     -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity .. "(" .. notEarned .. ")")
     countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
-
+    countLabel:SetScript("OnEnter", function(self)
+      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+      GameTooltip:SetCurrencyByID(currency.ID)
+      GameTooltip:Show()
+    end)
+    countLabel:SetScript("OnLeave", function(self)
+      GameTooltip:Hide()
+    end)
     lastCurrnecyFrame = countLabel
     CURRENCY_UI_LIST[currency.ID] = countLabel
   end
