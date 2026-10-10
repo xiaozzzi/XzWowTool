@@ -1,5 +1,5 @@
 CONSTANTS = {
-  VERSION = 'v0.3'
+  VERSION = 'v0.4'
 }
 
 -- 木头的数量监控
@@ -42,6 +42,7 @@ CURRENCY_ID = {
   -- { ID = 2815, R = 1,    G = 1,    B = 1 },     -- 冒险家
 }
 
+-- 各类炉石的玩具ID和图标
 -- https://www.wowhead.com/cn/search?q=%E7%82%89%E7%9F%B3
 HEARTH_STONE = {
   { ID = 162973, ICON = "Inv_holiday_hearthstonewinterveil", NAME = '冬天爷爷的炉石' },
@@ -75,6 +76,7 @@ COMMON_BUTTON = {
   { TYPE = "\124cff00BFFF法术\124r - ", ICON = "inv_cosmicvoid_orb", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
 }
 
+-- 专业技能的法术ID和图标
 PRO_MAPPING = {
   ["珠宝加工"] = { spellId = "25229", show = true, icon = "ui_profession_jewelcrafting" },
   ["附魔"] = { spellId = "7411", show = true, icon = "ui_profession_enchanting" },

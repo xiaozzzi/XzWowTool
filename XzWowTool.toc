@@ -2,7 +2,7 @@
 ## Title: XzWowTool
 ## Notes-zhCN: 自用工具箱
 ## Author: xzzz
-## Version: v1.1
+## Version: v0.4
 ## DefaultState: enabled
 ## SavedVariables: XZ_CONFIG_DB,XZ_GLOBAL_DB
 
@@ -29,5 +29,8 @@ currency/CurrencyCaluator.lua
 unit/UnitPet.lua
 unit/UnitTargetTarget.lua
 unit/UIUnit.lua
+transmog/TransmogContants.lua
+transmog/TransmogCore.lua
+transmog/UITransmog.lua
 Core.lua
 UI.lua

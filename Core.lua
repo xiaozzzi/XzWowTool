@@ -55,6 +55,9 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     --     print(slotName .. " : " .. characterHighWatermark)
     --   end
     -- end
+
+    -- local appearances = C_TransmogSets.GetSetPrimaryAppearances(setID)
+
   elseif event == "BAG_UPDATE_DELAYED" then
     MODE_WOOD:UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then

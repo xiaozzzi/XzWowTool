@@ -6,6 +6,13 @@ local ShowCurrencyDropdown -- 显示货币
 local WoodDropdown         -- 显示木材
 local StoneDropdown        -- 选择炉石
 
+local UI_SIZE = {
+  NORMAL_WIDTH = 518,
+  NORMAL_HEIGHT = 610,
+  TRANSMOG_WIDTH = 750,
+  TRANSMOG_HEIGHT = 610,
+}
+
 -------------------------------------------------------------------------------------------------------------
 -- 设置页面
 -------------------------------------------------------------------------------------------------------------
@@ -263,6 +270,14 @@ end
 local function showUI()
   local function SelectGroup(container, event, group)
     container:ReleaseChildren()
+    if (group == "transmog") then
+      XZWTMainFrame:SetWidth(UI_SIZE.TRANSMOG_WIDTH)
+      XZWTMainFrame:SetHeight(UI_SIZE.TRANSMOG_HEIGHT)
+    else
+      XZWTMainFrame:SetWidth(UI_SIZE.NORMAL_WIDTH)
+      XZWTMainFrame:SetHeight(UI_SIZE.NORMAL_HEIGHT)
+    end
+
     if group == "setting" then
       DrawSetting(container)
     elseif group == "convenient" then
@@ -271,6 +286,8 @@ local function showUI()
       UIUnit:DrawSetting(container)
     elseif group == "currency_caluator" then
       UI_CurrencyCaluator:DrawSetting(container)
+    elseif group == "transmog" then
+      UI_Transmog:Draw(container)
     end
   end
 
@@ -285,8 +302,8 @@ local function showUI()
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
     end)
-    XZWTMainFrame:SetWidth(518)
-    XZWTMainFrame:SetHeight(610)
+    XZWTMainFrame:SetWidth(UI_SIZE.NORMAL_WIDTH)
+    XZWTMainFrame:SetHeight(UI_SIZE.NORMAL_HEIGHT)
     XZWTMainFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 0)
     XZWTMainFrame:SetLayout("Fill")
 
@@ -297,6 +314,7 @@ local function showUI()
       { text = "界面拓展", value = "convenient" },
       { text = "单位框体", value = "unit" },
       { text = "货币计算", value = "currency_caluator" },
+      { text = "套装收集", value = "transmog" },
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")
