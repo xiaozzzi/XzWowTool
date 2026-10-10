@@ -173,7 +173,11 @@ local function DrawSetting(container)
 
   for _, button in pairs(COMMON_BUTTON) do
     local cb = AceGUI:Create("CheckBox")
-    cb:SetLabel(button.TYPE .. button.TEXT)
+    if button.ICON then
+      cb:SetLabel(button.TYPE .. button.TEXT .. "|TInterface\\Icons\\" .. button.ICON .. ":0|t ")
+    else
+      cb:SetLabel(button.TYPE .. button.TEXT)
+    end
     cb:SetValue(clickPlayer['SHOW_BTN_' .. button.KEY] == 'SHOW')
     cb:SetWidth(200)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
@@ -242,6 +246,16 @@ local function DrawSetting(container)
     end)
     col2Container:AddChild(cbProf2)
   end
+
+  local cbFungalStrider = AceGUI:Create("CheckBox")
+  cbFungalStrider:SetLabel("|TInterface\\Icons\\Inv_111_robocopter_robocopter:0|t 地下堡机器人7001型")
+  cbFungalStrider:SetValue(clickPlayer['SHOW_BTN_DELVE7001'] == 'SHOW')
+  cbFungalStrider:SetWidth(200)
+  cbFungalStrider:SetCallback("OnValueChanged", function(widget, event, value)
+    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
+    InitCommonButton()
+  end)
+  col2Container:AddChild(cbFungalStrider)
   --#endregion
 end
 

@@ -82,7 +82,8 @@
       "MODE",
       "COLOR",
       "ALL",
-      "TARGET"
+      "TARGET",
+      "SHOW"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

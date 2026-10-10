@@ -17,6 +17,10 @@ local BTN_POSITION_X_COL1 = 724; -- 第一列按钮初始X坐标
 local BTN_POSITION_Y_COL2 = 4    -- 第二列按钮初始Y坐标
 local BTN_POSITION_X_COL2 = 753; -- 第二列按钮初始X坐标
 
+local BTN_IDS = {
+  DELVE7001 = { ICON_ID = 6383538, TOY_ID = 230850, }
+}
+
 local className, classFilename, classId = UnitClass("player")
 local raceName, raceFile, raceID = UnitRace("player")
 
@@ -344,9 +348,21 @@ local BUTTON_MOUNT_FUNGAL_STRIDER = CreateButton("BUTTON_MOUNT_FUNGAL_STRIDER")
 local BUTTON_PROF1 = CreateButton("BUTTON_PROF1")
 local BUTTON_PROF2 = CreateButton("BUTTON_PROF2")
 
+local BUTTON_DELVE7001 = CreateButton("BUTTON_DELVE7001")
+local BUTTON_DELVE7001_CD = CreateButtonCDText(BUTTON_DELVE7001)
+
+
 function InitCommonButtonCol2(player)
   -- 重置按钮位置
   BTN_POSITION_Y_COL2 = 5
+
+  -- 地下堡机器人7001型
+  if player['SHOW_BTN_DELVE7001'] == 'SHOW' then
+    SetPosition(BUTTON_DELVE7001, 2)
+    ToyButton(BUTTON_DELVE7001, BTN_IDS.DELVE7001.TOY_ID)
+  else
+    BUTTON_DELVE7001:Hide()
+  end
 
   local prof1, prof2, archaeology, fishing, cooking, firstAid = GetProfessions()
   if player['SHOW_BTN_PROF2'] == 'SHOW' and prof2 and prof2 ~= 0 then
@@ -396,6 +412,7 @@ function InitCommonButtonCol2(player)
   else
     BUTTON_MOUNT_YAK:Hide()
   end
+
 end
 
 function InitCommonButton()
@@ -473,6 +490,10 @@ COMMON_FRAME:SetScript("OnUpdate", function(self, elapsed)
     -- 炉石冷却时间
     local startTime, duration = C_Item.GetItemCooldown(6948)
     handleItemCDText(BUTTON_HEARTH_STONE_CD, startTime, duration)
+
+    -- 地下堡机器人冷却时间
+    local startTime, duration = C_Item.GetItemCooldown(BTN_IDS.DELVE7001.TOY_ID)
+    handleItemCDText(BUTTON_DELVE7001_CD, startTime, duration)
 
     -- 萨满星界传送冷却时间(特殊职业技能)
     if BUTTON_SHAMAN_HS_CD then

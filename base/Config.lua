@@ -40,6 +40,7 @@ local DEFAULT_OPTIONS = {
   SHOW_BTN_FLY_MODE = 'SHOW',             -- 是否显示飞行模式
   SHOW_BTN_PROF1 = 'SHOW',                -- 是否显示专业1
   SHOW_BTN_PROF2 = 'SHOW',                -- 是否显示专业2
+  SHOW_BTN_DELVE7001 = 'SHOW',            -- 是否显示地下堡机器人7001型
 }
 
 --- 获取角色配置

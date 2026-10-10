@@ -71,8 +71,8 @@ COMMON_BUTTON = {
   { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "CRAFTING", TEXT = "制造业模拟", ICON_ID = 132326 },
   { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "HEARTH_STONE", TEXT = "炉石", ICON_ID = 265100 },
   { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "THE_ARCANTINA", TEXT = "奥术秘社钥匙", ICON_ID = 253629 },
-  { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "MAIL_BOX", TEXT = "位面包裹信号器", ICON_ID = 264695 },
-  { TYPE = "\124cff00BFFF法术\124r - ", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
+  { TYPE = "\124cffFFFF00玩具\124r - ", ICON = "Inv_112_raidtrinkets_blobofswirlingvoid_purple", KEY = "MAIL_BOX", TEXT = "位面包裹信号器", ICON_ID = 264695 },
+  { TYPE = "\124cff00BFFF法术\124r - ", ICON = "inv_cosmicvoid_orb", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
 }
 
 PRO_MAPPING = {
