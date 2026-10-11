@@ -9,8 +9,8 @@ local StoneDropdown        -- 选择炉石
 local UI_SIZE = {
   NORMAL_WIDTH = 518,
   NORMAL_HEIGHT = 610,
-  TRANSMOG_WIDTH = 750,
-  TRANSMOG_HEIGHT = 610,
+  TRANSMOG_WIDTH = 830,
+  TRANSMOG_HEIGHT = 630,
 }
 
 -------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,9 @@
 UI_Transmog = {}
 
-local COL_WIDTH = 138
+local COL_WIDTH = 170
 local COL_ALIGN = "CENTER"
+local IMAGE_SIZE = 18
+local ICON_SIZE = 18
 
 --#region 打印团本套装
 
@@ -12,13 +14,13 @@ local DEBUG_DESC_ORDER = {
   ["史诗"] = 4,
 }
 
-local DEBUG_RAID_NAME = "化身巨龙牢窟"
+local DEBUG_RAID_NAME = "尼鲁巴尔王宫"
 
-local function descRank(desc)
+local function DescRank(desc)
   return DEBUG_DESC_ORDER[desc] or 999
 end
 
-local function debugSets()
+local function DebugSets()
   local setInfo = C_TransmogSets.GetAllSets()
   -- 对结果进行排序
   table.sort(setInfo, function(a, b)
@@ -27,7 +29,7 @@ local function debugSets()
       return a.classMask < b.classMask
     end
     -- 2. classMask 相同，按 description 的枚举顺序
-    return descRank(a.description) < descRank(b.description)
+    return DescRank(a.description) < DescRank(b.description)
   end)
 
   for index, value in ipairs(setInfo) do
@@ -40,6 +42,7 @@ local function debugSets()
   end
 end
 
+-- DebugSets()
 -- #endregion
 
 local function GetByClassMask(data, mask)
@@ -75,7 +78,8 @@ local function CheckSetCollectionStatus(setID)
       itemAppearanceID = info.itemAppearanceID,
       collected = appearance.collected,       -- 收集
       icon = info.icon,                       -- 图标
-      itemLink = info.itemLink
+      itemLink = info.itemLink,
+      transmoglink = info.transmoglink,       -- 外观中的链接, 使用该链接可以在外观页面中查看
     })
     table.sort(result, function(a, b)
       return a.category < b.category -- 数字直接比大小
@@ -95,9 +99,19 @@ local function CreateClassHeader(scroll)
   end
 end
 
+
 local RAID_DROPDOWN                                -- 团本下拉列表
 local RAID_DROPDOWN_VALUE = TRANSMOG_SETS[1].LABEL -- 团本下拉列表默认值
+local CB_SHOWTIP                                   -- 显示鼠标提示
+local CB_CLICKTRYON                                -- 单击试穿
 local SCROLL_FRAME                                 -- 滚动框架
+
+-- 试穿外观
+local function DressTryOn(button, itemLink)
+  if not CB_CLICKTRYON:GetValue() then return end
+  if not itemLink then return end
+  DressUpItemLink(itemLink)
+end
 
 local function DrawSet()
   GUI:EmptyLine(SCROLL_FRAME, 1)
@@ -132,7 +146,6 @@ local function DrawSet()
 
         local simpleGroup = GUI:SimpleGroup(SCROLL_FRAME, false)
         simpleGroup:SetWidth(COL_WIDTH)
-        simpleGroup:SetHeight(45)
 
         GUI:Label(simpleGroup, format("|c%s%s|r",
             C_ClassColor.GetClassColor(class.CLASS_FILE_NAME):GenerateHexColor(), class.NAME), COL_WIDTH,
@@ -146,18 +159,22 @@ local function DrawSet()
             for index, appearance in ipairs(appearances) do
               local icon = AceGUI:Create("Icon")
               icon:SetImage(appearance.icon)
-              icon:SetImageSize(15, 15) -- 设置图标显示尺寸
-              icon:SetWidth(15)
-              icon:SetHeight(17)
+              icon:SetImageSize(IMAGE_SIZE, IMAGE_SIZE) -- 设置图标显示尺寸
+              icon:SetWidth(ICON_SIZE)
+              icon:SetHeight(ICON_SIZE)
               icon.image:ClearAllPoints()
               icon.image:SetPoint("CENTER", icon.frame, "CENTER", 0, 0)
               icon:SetCallback("OnEnter", function(widget)
+                if not CB_SHOWTIP:GetValue() then return end
                 GameTooltip:SetOwner(widget.frame, "ANCHOR_RIGHT")
                 GameTooltip:SetHyperlink(appearance.itemLink)
                 GameTooltip:Show()
               end)
               icon:SetCallback("OnLeave", function(widget)
                 GameTooltip:Hide()
+              end)
+              icon:SetCallback("OnClick", function(widget, button)
+                DressTryOn(button, appearance.itemLink)
               end)
               if not appearance.collected then
                 icon.image:SetVertexColor(0, 0, 0, 1)
@@ -166,26 +183,38 @@ local function DrawSet()
             end
           end
         end
+        GUI:Spacing(SCROLL_FRAME, 1)
       end
     end
   end
 end
 
 function UI_Transmog:Draw(container)
-  GUI:Label(container, "选择团本：", 80, "LEFT")
+  GUI:Label(container, "团本：", 40, "LEFT")
 
+  -- 团本下拉列表
   local option = {}
   local optionOrder = {}
   for _, sets in ipairs(TRANSMOG_SETS) do
     option[sets.LABEL] = sets.LABEL
     table.insert(optionOrder, sets.LABEL)
   end
-  RAID_DROPDOWN = GUI:Dropdown(option, optionOrder, TRANSMOG_SETS[1].LABEL, 200, container)
+  RAID_DROPDOWN = GUI:Dropdown(option, optionOrder, TRANSMOG_SETS[1].LABEL, 250, container)
   RAID_DROPDOWN:SetCallback("OnValueChanged", function(a, b, key)
     RAID_DROPDOWN_VALUE = key
     SCROLL_FRAME:ReleaseChildren()
     DrawSet()
   end)
+
+  -- 显示装备提示
+  GUI:Spacing(container, 10)
+  CB_SHOWTIP = GUI:CheckBox("鼠标提示", false, 90, container)
+  GUI:Spacing(container, 10)
+  CB_CLICKTRYON = GUI:CheckBox("单击试穿", true, 90, container)
+  GUI:Spacing(container, 10)
+
+  GUI:Heading("", container, 0, 0)
+
   SCROLL_FRAME = GUI:ScrollMain(container)
   DrawSet()
 end

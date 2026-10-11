@@ -83,7 +83,9 @@
       "COLOR",
       "ALL",
       "TARGET",
-      "SHOW"
+      "SHOW",
+      "DressUpFrame",
+      "DressUpItemLink"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

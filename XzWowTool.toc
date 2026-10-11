@@ -30,7 +30,6 @@ unit/UnitPet.lua
 unit/UnitTargetTarget.lua
 unit/UIUnit.lua
 transmog/TransmogContants.lua
-transmog/TransmogCore.lua
 transmog/UITransmog.lua
 Core.lua
 UI.lua
