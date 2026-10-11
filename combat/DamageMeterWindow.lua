@@ -43,9 +43,9 @@ end
 function MODE_DM:SetWindowHeightByRaid()
   local isInRaid = IsInRaid()
   if isInRaid then
-    SetDamageMeterHeight(300)
+    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
   elseif not isInRaid then
-    SetDamageMeterHeight(150)
+    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"))
   end
 end
 
