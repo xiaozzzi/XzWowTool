@@ -175,10 +175,10 @@ addon.UpdateRaidMarker = UpdateRaidMarker
 
 RLFrame:RegisterEvent("ADDON_LOADED")
 RLFrame:RegisterEvent("PLAYER_LOGIN")
-RLFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-RLFrame:RegisterEvent("PARTY_LEADER_CHANGED")
 RLFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-RLFrame:RegisterEvent("RAID_TARGET_UPDATE") -- 玩家的标记变化时触发
+RLFrame:RegisterEvent("GROUP_ROSTER_UPDATE")  -- 团队成员变更
+RLFrame:RegisterEvent("PARTY_LEADER_CHANGED") -- 团队首领变更
+RLFrame:RegisterEvent("RAID_TARGET_UPDATE")   -- 玩家的标记变化
 
 RLFrame:SetScript("OnEvent", function(self, event, ...)
   UpdateRaidMarker()

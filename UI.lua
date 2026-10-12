@@ -181,7 +181,7 @@ local function DrawSetting(container)
   for _, button in pairs(COMMON_BUTTON) do
     local cb = AceGUI:Create("CheckBox")
     if button.ICON then
-      cb:SetLabel(button.TYPE .. button.TEXT .. "|TInterface\\Icons\\" .. button.ICON .. ":0|t ")
+      cb:SetLabel(button.TYPE .. button.TEXT .. " |TInterface\\Icons\\" .. button.ICON .. ":0|t ")
     else
       cb:SetLabel(button.TYPE .. button.TEXT)
     end

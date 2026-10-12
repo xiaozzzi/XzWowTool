@@ -42,10 +42,6 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     InitCommonCmd()                   -- 初始化通用命令
     InitCommonButton()                -- 初始化通用按钮
     MODE_DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
-
-
-
-
   elseif event == "BAG_UPDATE_DELAYED" then
     MODE_WOOD:UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
