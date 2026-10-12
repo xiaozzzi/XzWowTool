@@ -85,7 +85,8 @@
       "TARGET",
       "SHOW",
       "DressUpFrame",
-      "DressUpItemLink"
+      "DressUpItemLink",
+      "LEVEL"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

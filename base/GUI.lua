@@ -5,7 +5,7 @@ local TEX_COORD_TB = 0.92 -- 按钮图标纹理坐标右下
 
 ---为文本添加颜色, 文本以 |cFF 开头, |r 结尾
 ---@param color string 颜色, 格式为 RRGGBB
----@param text string 内容
+---@param text string|number 内容
 ---@return string 文本
 function GUI:ColorText(color, text)
   if color:sub(1, 1) == "#" then
@@ -221,14 +221,18 @@ end
 ---comment
 ---@param container any
 ---@param full boolean|nil 是否全宽
+---@param width number|nil 容器宽度
 ---@return AceGUIWidget
-function GUI:SimpleGroup(container, full)
+function GUI:SimpleGroup(container, full, width)
   if full == nil or full == "" then
     full = true
   end
   local group = AceGUI:Create("SimpleGroup")
   group:SetLayout("Flow")
   group:SetFullWidth(full)
+  if width ~= nil then
+    group:SetWidth(width)
+  end
   container:AddChild(group)
   return group
 end

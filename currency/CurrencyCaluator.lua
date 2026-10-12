@@ -1,6 +1,36 @@
 UI_CurrencyCaluator = {}
 local COL_W = 50 -- 每一列的宽度
 
+-- 装备槽位名称, 对应 Enum.ItemRedundancySlot
+local SLOT_CN_NAME = {
+  Head = "头部", -- 0
+  Neck = "颈部", -- 1
+  Shoulder = "肩部", -- 2
+  Chest = "胸部", -- 3
+  Waist = "腰部", -- 4
+  Legs = "腿部", -- 5
+  Feet = "脚部", -- 6
+  Wrist = "手腕", -- 7
+  Hand = "手部", -- 8
+  Finger = "手指", -- 9
+  Trinket = "饰品", -- 10
+  Cloak = "披风", -- 11
+  Twohand = "双手", -- 12
+  MainhandWeapon = "主手", -- 13
+  Offhand = "副手", -- 16
+  OnehandWeapon = "单手1", -- 14
+  OnehandWeaponSecond = "单手2", -- 15
+}
+
+-- 装备阈值
+local watermarkColor = {
+  SH = { level = 344, colors = CURRENCY_ID[1] },
+  YX = { level = 321, colors = CURRENCY_ID[2] },
+  YS = { level = 308, colors = CURRENCY_ID[3] },
+  LB = { level = 295, colors = CURRENCY_ID[4] },
+  MX = { level = 276, colors = CURRENCY_ID[5] },
+}
+
 --- 获取货币数量
 --- @param currencyId number 货币ID
 local function GetCruuencyQuantity(currencyId)
@@ -8,10 +38,12 @@ local function GetCruuencyQuantity(currencyId)
   return info.quantity
 end
 
+-- 向下取整并乘以10
 local function FloorAndTenTime(number)
   return math.floor(number) * 10
 end
 
+-- 获取货币颜色
 local function ColorStr(level, quantity)
   if level == "SH" then
     return GUI:ColorText(CURRENCY_ID[1].COLOR, quantity)
@@ -26,15 +58,16 @@ local function ColorStr(level, quantity)
   end
 end
 
+-- 目标数量
 local Target = {
-  TARGET_SH = 0,
-  TARGET_YX = 0,
-  TARGET_YS = 0,
-  TARGET_LB = 0,
-  SH_LABEL = nil,
-  YX_LABEL = nil,
-  YS_LABEL = nil,
-  LB_LABEL = nil,
+  TARGET_SH = 0,  -- 目标神话数量
+  TARGET_YX = 0,  -- 目标英雄数量
+  TARGET_YS = 0,  -- 目标勇士数量
+  TARGET_LB = 0,  -- 目标老兵数量
+  SH_LABEL = nil, -- 目标神话文本
+  YX_LABEL = nil, -- 目标英雄文本
+  YS_LABEL = nil, -- 目标勇士文本
+  LB_LABEL = nil, -- 目标老兵文本
 }
 
 local Quantitys = {
@@ -94,6 +127,87 @@ local function CalculateTarget(type)
     Target.SH_LABEL:SetText(ColorStr("SH", needShCount))
     Target.YX_LABEL:SetText(ColorStr("YX", needYxCount))
   end
+end
+
+-- 角色的历史最高装等
+local function DrawCurrnetHighWatermark(scroll)
+  GUI:Heading("当前各部位最高装等", scroll, 1, 1)
+  local slots = {}
+  for k, v in pairs(Enum.ItemRedundancySlot) do
+    slots[v] = { name = k, cnName = SLOT_CN_NAME[k] };
+  end
+
+  for slotIndex = 0, 21 do
+    local characterHighWatermark, accountHighWatermark = C_ItemUpgrade.GetHighWatermarkForSlot(slotIndex)
+    if characterHighWatermark and characterHighWatermark > 0 then
+      local slot = slots[slotIndex]
+      slot.highWatermark = characterHighWatermark
+    end
+  end
+
+  -- for index, v in ipairs(slots) do print(v.cnName, v.highWatermark) end -- 打印所有装备的最高装等
+
+  local width = 150
+  local col1 = GUI:SimpleGroup(scroll, false, width);
+  local col2 = GUI:SimpleGroup(scroll, false, width);
+  local col3 = GUI:SimpleGroup(scroll, false, width);
+
+  local allYX = 0 -- 套装英雄升满数量
+  local allYS = 0 -- 套装勇士升满数量
+  local allLB = 0 -- 套装老兵升满数量
+
+  local function AppendSlot(index)
+    local name = slots[index].cnName
+    -- 套装部位改变颜色
+    if index == 11 or index == 0 or index >= 2 and index <= 8 then
+      name = GUI:ColorText("FF60BFFF", name)
+    end
+
+    local wm = slots[index].highWatermark or ""
+    if watermarkColor.SH.level == wm then
+      wm = GUI:ColorText(watermarkColor.SH.colors.COLOR, wm)
+    elseif watermarkColor.SH.level > wm and wm > watermarkColor.YX.level then
+      wm = GUI:ColorText(watermarkColor.SH.colors.COLOR_DARK, wm)
+    elseif watermarkColor.YX.level == wm then
+      wm = GUI:ColorText(watermarkColor.YX.colors.COLOR, wm)
+    elseif watermarkColor.YX.level > wm and wm > watermarkColor.YS.level then
+      wm = GUI:ColorText(watermarkColor.YX.colors.COLOR_DARK, wm)
+    elseif watermarkColor.YS.level == wm then
+      wm = GUI:ColorText(watermarkColor.YS.colors.COLOR, wm)
+    elseif watermarkColor.YS.level > wm and wm > watermarkColor.LB.level then
+      wm = GUI:ColorText(watermarkColor.YS.colors.COLOR_DARK, wm)
+    elseif watermarkColor.LB.level == wm then
+      wm = GUI:ColorText(watermarkColor.LB.colors.COLOR, wm)
+    elseif watermarkColor.LB.level > wm and wm > watermarkColor.MX.level then
+      wm = GUI:ColorText(watermarkColor.LB.colors.COLOR_DARK, wm)
+    elseif watermarkColor.MX.level == wm then
+      wm = GUI:ColorText(watermarkColor.MX.colors.COLOR, wm)
+    elseif watermarkColor.MX.level > wm and wm > 0 then
+      wm = GUI:ColorText(watermarkColor.MX.colors.COLOR_DARK, wm)
+    end
+
+    return name .. " : " .. wm
+  end
+
+  GUI:Label(col1, AppendSlot(0), width, "LEFT")  -- 头
+  GUI:Label(col1, AppendSlot(1), width, "LEFT")  -- 颈
+  GUI:Label(col1, AppendSlot(2), width, "LEFT")  -- 肩
+  GUI:Label(col1, AppendSlot(11), width, "LEFT") -- 披风
+  GUI:Label(col1, AppendSlot(3), width, "LEFT")  -- 胸
+  GUI:Label(col1, AppendSlot(7), width, "LEFT")  -- 腕
+
+  GUI:Label(col2, AppendSlot(8), width, "LEFT")  -- 手
+  GUI:Label(col2, AppendSlot(4), width, "LEFT")  -- 腰
+  GUI:Label(col2, AppendSlot(5), width, "LEFT")  -- 腿
+  GUI:Label(col2, AppendSlot(6), width, "LEFT")  -- 脚
+  GUI:Label(col2, AppendSlot(9), width, "LEFT")  -- 手指
+  GUI:Label(col2, AppendSlot(10), width, "LEFT") -- 饰品
+
+  GUI:Label(col3, AppendSlot(12), width, "LEFT") -- 双手
+  GUI:Label(col3, AppendSlot(13), width, "LEFT") -- 主手
+  GUI:Label(col3, AppendSlot(16), width, "LEFT") -- 副手
+  GUI:Label(col3, AppendSlot(14), width, "LEFT") -- 单手1
+  GUI:Label(col3, AppendSlot(15), width, "LEFT") -- 单手2
 end
 
 -- 绘制页面
@@ -180,4 +294,6 @@ function UI_CurrencyCaluator:DrawSetting(container)
   Target.YX_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
   Target.YS_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
   Target.LB_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
+
+  DrawCurrnetHighWatermark(scroll)
 end

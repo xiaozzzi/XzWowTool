@@ -21,12 +21,12 @@ WOOD_ID = {
 -- 货币
 CURRENCY_ID = {
   -- 12.1
-  { ID = 3446, COLOR = "FFFFD100", R = 1,    G = 0.82, B = 0 },    -- 神话
-  { ID = 3445, COLOR = "FFFF7A00", R = 1,    G = 0.48, B = 0 },    -- 英雄
-  { ID = 3444, COLOR = "FFCC4DFF", R = 0.8,  G = 0.3,  B = 1 },    -- 勇士
-  { ID = 3443, COLOR = "FF1C87E3", R = 0.11, G = 0.53, B = 0.89 }, -- 老兵
-  { ID = 3442, COLOR = "FF7AB340", R = 0.48, G = 0.7,  B = 0.25 }, -- 冒险家
-  { ID = 3465, COLOR = "FF7AB340", R = 0.48, G = 0.7,  B = 0.25 }, -- 套装
+  { ID = 3446, COLOR = "FFFFD100", COLOR_DARK = "FFC9A400", R = 1,    G = 0.82, B = 0 },    -- 神话
+  { ID = 3445, COLOR = "FFFF7A00", COLOR_DARK = "FFFFAD61", R = 1,    G = 0.48, B = 0 },    -- 英雄
+  { ID = 3444, COLOR = "FFCC4DFF", COLOR_DARK = "FFE29AFF", R = 0.8,  G = 0.3,  B = 1 },    -- 勇士
+  { ID = 3443, COLOR = "FF1C87E3", COLOR_DARK = "FF6AB5F5", R = 0.11, G = 0.53, B = 0.89 }, -- 老兵
+  { ID = 3442, COLOR = "FF7AB340", COLOR_DARK = "FFADC793", R = 0.48, G = 0.7,  B = 0.25 }, -- 冒险家
+  { ID = 3465, COLOR = "FF7AB340", COLOR_DARK = "FFADC793", R = 0.48, G = 0.7,  B = 0.25 }, -- 套装
 
   -- 12.0
   -- { ID = 3347, R = 1,    G = 0.82, B = 0 },    -- 神话

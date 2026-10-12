@@ -44,19 +44,7 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     MODE_DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
 
 
-    -- 角色的历史最高装等
-    -- local slots = {}
-    -- for k, v in pairs(Enum.ItemRedundancySlot) do slots[v] = k; end
 
-    -- for slotIndex = 0, 21 do
-    --   local characterHighWatermark, accountHighWatermark = C_ItemUpgrade.GetHighWatermarkForSlot(slotIndex)
-    --   if characterHighWatermark and characterHighWatermark > 0 then
-    --     local slotName = slots[slotIndex]
-    --     print(slotName .. " : " .. characterHighWatermark)
-    --   end
-    -- end
-
-    -- local appearances = C_TransmogSets.GetSetPrimaryAppearances(setID)
 
   elseif event == "BAG_UPDATE_DELAYED" then
     MODE_WOOD:UpdWoodTrack()
