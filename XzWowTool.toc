@@ -20,7 +20,6 @@ base/Config.lua
 base/GlobalConfig.lua
 combat/DamageMeterWindow.lua
 combat/RaidLeaderMarker.lua
-combat/RaidTeamSort.lua
 convenient/CommonButton.lua
 convenient/HotKey.lua
 convenient/UIConvenient.lua
