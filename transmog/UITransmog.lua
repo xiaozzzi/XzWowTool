@@ -1,6 +1,6 @@
 UI_Transmog = {}
 
-local COL_WIDTH = 170
+local COL_WIDTH = 188
 local COL_ALIGN = "CENTER"
 local IMAGE_SIZE = 18
 local ICON_SIZE = 18
@@ -107,10 +107,39 @@ local CB_CLICKTRYON                                -- 单击试穿
 local SCROLL_FRAME                                 -- 滚动框架
 
 -- 试穿外观
-local function DressTryOn(button, itemLink)
+local function DressTryOn(itemLink)
   if not CB_CLICKTRYON:GetValue() then return end
   if not itemLink then return end
   DressUpItemLink(itemLink)
+end
+
+local function DressTryOnAllIcon(simpleGroup, itemLinks)
+  local icon = AceGUI:Create("Icon")
+  icon:SetImageByAtlas("lootroll-toast-icon-transmog-up")
+  icon:SetImageSize(IMAGE_SIZE, IMAGE_SIZE)
+  icon:SetWidth(ICON_SIZE)
+  icon:SetHeight(ICON_SIZE)
+  icon.image:ClearAllPoints()
+  icon.image:SetPoint("CENTER", icon.frame, "CENTER", 4, 0)
+  icon.image:SetAlpha(0.2)
+  icon:SetCallback("OnEnter", function(widget)
+    icon.image:SetAlpha(1)
+  end)
+  icon:SetCallback("OnLeave", function(widget)
+    icon.image:SetAlpha(0.2)
+  end)
+  icon:SetCallback("OnClick", function(widget, button)
+    -- print("试穿全部: ")
+    for i, itemLink in ipairs(itemLinks) do
+      if itemLink == '[]' then
+        -- print("套装外观正在加载中, 尝试切换副本后重试")
+      else
+        -- print(" - " .. itemLink)
+      end
+      DressTryOn(itemLink)
+    end
+  end)
+  simpleGroup:AddChild(icon)
 end
 
 local function DrawSet()
@@ -154,9 +183,14 @@ local function DrawSet()
         -- 套装级别: 随机/普通/英雄/史诗
         for index, set in ipairs(classSets) do
           local appearances = CheckSetCollectionStatus(set.SET_ID)
-          -- 部位图标
+          -- 如果有外观
           if appearances then
+            local sjItemLink = {}
+            local ptItemLink = {}
+            local yxItemLink = {}
+            local ssItemLink = {}
             for index, appearance in ipairs(appearances) do
+              -- 创建部位图标
               local icon = AceGUI:Create("Icon")
               icon:SetImage(appearance.icon)
               icon:SetImageSize(IMAGE_SIZE, IMAGE_SIZE) -- 设置图标显示尺寸
@@ -174,12 +208,33 @@ local function DrawSet()
                 GameTooltip:Hide()
               end)
               icon:SetCallback("OnClick", function(widget, button)
-                DressTryOn(button, appearance.itemLink)
+                DressTryOn(appearance.itemLink)
               end)
               if not appearance.collected then
                 icon.image:SetVertexColor(0, 0, 0, 1)
               end
               simpleGroup:AddChild(icon)
+
+              -- 记录套装链接
+              if (math.floor((index - 1) / 9) + 1 == 1) then
+                table.insert(sjItemLink, appearance.itemLink)
+              elseif (math.floor((index - 1) / 9) + 1 == 2) then
+                table.insert(ptItemLink, appearance.itemLink)
+              elseif (math.floor((index - 1) / 9) + 1 == 3) then
+                table.insert(yxItemLink, appearance.itemLink)
+              elseif (math.floor((index - 1) / 9) + 1 == 4) then
+                table.insert(ssItemLink, appearance.itemLink)
+              end
+              -- 创建试穿全部的按钮
+              if (index == 9) then
+                DressTryOnAllIcon(simpleGroup, sjItemLink)
+              elseif index == 18 then
+                DressTryOnAllIcon(simpleGroup, ptItemLink)
+              elseif index == 27 then
+                DressTryOnAllIcon(simpleGroup, yxItemLink)
+              elseif index == 36 then
+                DressTryOnAllIcon(simpleGroup, ssItemLink)
+              end
             end
           end
         end

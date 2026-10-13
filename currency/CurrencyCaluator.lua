@@ -163,30 +163,31 @@ local function DrawCurrnetHighWatermark(scroll)
       name = GUI:ColorText("FF60BFFF", name)
     end
 
-    local wm = slots[index].highWatermark or ""
+    local wm = slots[index].highWatermark or 0
+    local wmStr = ""
     if watermarkColor.SH.level == wm then
-      wm = GUI:ColorText(watermarkColor.SH.colors.COLOR, wm)
+      wmStr = GUI:ColorText(watermarkColor.SH.colors.COLOR, wm)
     elseif watermarkColor.SH.level > wm and wm > watermarkColor.YX.level then
-      wm = GUI:ColorText(watermarkColor.SH.colors.COLOR_DARK, wm)
+      wmStr = GUI:ColorText(watermarkColor.SH.colors.COLOR_DARK, wm)
     elseif watermarkColor.YX.level == wm then
-      wm = GUI:ColorText(watermarkColor.YX.colors.COLOR, wm)
+      wmStr = GUI:ColorText(watermarkColor.YX.colors.COLOR, wm)
     elseif watermarkColor.YX.level > wm and wm > watermarkColor.YS.level then
-      wm = GUI:ColorText(watermarkColor.YX.colors.COLOR_DARK, wm)
+      wmStr = GUI:ColorText(watermarkColor.YX.colors.COLOR_DARK, wm)
     elseif watermarkColor.YS.level == wm then
-      wm = GUI:ColorText(watermarkColor.YS.colors.COLOR, wm)
+      wmStr = GUI:ColorText(watermarkColor.YS.colors.COLOR, wm)
     elseif watermarkColor.YS.level > wm and wm > watermarkColor.LB.level then
-      wm = GUI:ColorText(watermarkColor.YS.colors.COLOR_DARK, wm)
+      wmStr = GUI:ColorText(watermarkColor.YS.colors.COLOR_DARK, wm)
     elseif watermarkColor.LB.level == wm then
-      wm = GUI:ColorText(watermarkColor.LB.colors.COLOR, wm)
+      wmStr = GUI:ColorText(watermarkColor.LB.colors.COLOR, wm)
     elseif watermarkColor.LB.level > wm and wm > watermarkColor.MX.level then
-      wm = GUI:ColorText(watermarkColor.LB.colors.COLOR_DARK, wm)
+      wmStr = GUI:ColorText(watermarkColor.LB.colors.COLOR_DARK, wm)
     elseif watermarkColor.MX.level == wm then
-      wm = GUI:ColorText(watermarkColor.MX.colors.COLOR, wm)
+      wmStr = GUI:ColorText(watermarkColor.MX.colors.COLOR, wm)
     elseif watermarkColor.MX.level > wm and wm > 0 then
-      wm = GUI:ColorText(watermarkColor.MX.colors.COLOR_DARK, wm)
+      wmStr = GUI:ColorText(watermarkColor.MX.colors.COLOR_DARK, wm)
     end
 
-    return name .. " : " .. wm
+    return name .. " : " .. wmStr
   end
 
   GUI:Label(col1, AppendSlot(0), width, "LEFT")  -- 头

@@ -9,7 +9,7 @@ local StoneDropdown        -- 选择炉石
 local UI_SIZE = {
   NORMAL_WIDTH = 518,
   NORMAL_HEIGHT = 610,
-  TRANSMOG_WIDTH = 830,
+  TRANSMOG_WIDTH = 890,
   TRANSMOG_HEIGHT = 630,
 }
 
@@ -299,6 +299,7 @@ local function showUI()
     XZWTMainFrame = AceGUI:Create("Frame")
     XZWTMainFrame:EnableResize(false) -- 允许改变窗口大小
     XZWTMainFrame:SetTitle("自用工具箱" .. CONSTANTS.VERSION)
+    XZWTMainFrame:SetStatusText("各项常用功能轻量级拓展。")
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
     end)
