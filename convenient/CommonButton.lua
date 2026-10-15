@@ -21,19 +21,34 @@ local BTN_IDS = {
   DELVE7001 = { ICON_ID = 6383538, TOY_ID = 230850, }
 }
 
-local className, classFilename, classId = UnitClass("player")
-local raceName, raceFile, raceID = UnitRace("player")
+local className, classFilename, classId = UnitClass("player") -- 玩家职业
+local raceName, raceFile, raceID = UnitRace("player")         -- 玩家种族
 
 local COMMON_FRAME = CreateFrame("Frame", "COMMON_FRAME")
 
 --#region ==================================== 公共配置 ====================================
 
 --- 创建通用按钮, 不包含按钮位置
-local function CreateButton(name)
+--- @param name string 按钮名称
+---@param isBorder boolean| nil 是否显示边框
+---@param isAlpha boolean| nil 是否半透明按钮
+local function CreateButton(name, isBorder, isAlpha)
   local button = CreateFrame("Button", name, UIParent, "SecureActionButtonTemplate")
   button:SetSize(ICON_SIZE, ICON_SIZE)
-  button:SetAlpha(0.3)
-  GUI:SolidBorder(button, 0, 0, 0, 1, 1.5)
+  if isBorder == nil or isBorder then
+    GUI:SolidBorder(button, 0, 0, 0, 1, 1.5)
+  end
+  if isAlpha == nil or isAlpha then
+    button:SetAlpha(0.3)
+    button:SetScript("OnEnter", function(self)
+      -- border:SetColorTexture(1, 1, 1, 1)
+      self:SetAlpha(1)
+    end)
+    button:SetScript("OnLeave", function(self)
+      -- border:SetColorTexture(0, 0, 0, 1)
+      self:SetAlpha(0.3)
+    end)
+  end
   -- 背景纹理（类似 CreateTexture）
   -- local bg = button:CreateTexture(nil, "BACKGROUND")
   -- bg:SetAllPoints()
@@ -44,15 +59,6 @@ local function CreateButton(name)
   -- border:SetColorTexture(0, 0, 0, 1)
   -- bg:SetPoint("TOPLEFT", 2, -2)
   -- bg:SetPoint("BOTTOMRIGHT", -2, 2)
-
-  button:SetScript("OnEnter", function(self)
-    -- border:SetColorTexture(1, 1, 1, 1)
-    self:SetAlpha(1)
-  end)
-  button:SetScript("OnLeave", function(self)
-    -- border:SetColorTexture(0, 0, 0, 1)
-    self:SetAlpha(0.3)
-  end)
   -- button:SetScript("OnEnter", function(self)
   --   GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
   --   GameTooltip:SetToyByItemID(265100)
@@ -234,7 +240,42 @@ end
 
 --#endregion
 
---#region ==================================== 创建按钮 ====================================
+--#reigon ---------------------------------------- 插件开关 ----------------------------------------
+local BUTTON_ADDON_SWITCH = CreateButton("BUTTON_ADDON_SWITCH", false, false)
+BUTTON_ADDON_SWITCH:SetSize(35, 35)
+
+local function InitAddonSwitchButton()
+  CreateButtonTexture(BUTTON_ADDON_SWITCH,
+    { type = 'atlas', atlas = "glues-characterSelect-icon-notify-inProgress" })
+  BUTTON_ADDON_SWITCH:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", -2, -2)
+  BUTTON_ADDON_SWITCH:RegisterForClicks("AnyUp")
+  BUTTON_ADDON_SWITCH:SetScript("OnClick", function(self, btn, down)
+    BUTTON_ADDON_SWITCH:SetNormalAtlas("glues-characterSelect-icon-notify-inProgress-hover")
+    if btn == "LeftButton" then
+      OpenXZWTMainFrame()
+    elseif btn == "RightButton" then
+      if InCombatLockdown() then
+        print("战斗中无法重载界面")
+      else
+        ReloadUI()
+      end
+    end
+    C_Timer.After(0.1, function()
+      BUTTON_ADDON_SWITCH:SetNormalAtlas("glues-characterSelect-icon-notify-inProgress")
+    end)
+  end)
+  BUTTON_ADDON_SWITCH:GetNormalTexture():SetDesaturated(true)
+  BUTTON_ADDON_SWITCH:SetScript("OnEnter", function(self)
+    BUTTON_ADDON_SWITCH:GetNormalTexture():SetDesaturated(false)
+  end)
+  BUTTON_ADDON_SWITCH:SetScript("OnLeave", function(self)
+    BUTTON_ADDON_SWITCH:GetNormalTexture():SetDesaturated(true)
+  end)
+end
+
+--#endregion
+
+--#region ---------------------------------------- 第一列按钮 ----------------------------------------
 
 local BUTTON_WAR_BAND_BANK = CreateButton("BUTTON_WAR_BAND_BANK")
 local BUTTON_MAIL_BOX = CreateButton("BUTTON_MAIL_BOX")
@@ -340,7 +381,10 @@ function InitCommonButtonCol1(player)
   end
 end
 
--- ---------------------------------------- 第二列 ------------------------------------------
+--#endregion
+
+--#region ---------------------------------------- 第二列按钮 ------------------------------------------
+
 local BUTTON_FLY_MODE = CreateButton("BUTTON_FLY_MODE")
 local BUTTON_MOUNT_YAK = CreateButton("BUTTON_MOUNT_YAK")
 local BUTTON_MOUNT_FUNGAL_STRIDER = CreateButton("BUTTON_MOUNT_FUNGAL_STRIDER")
@@ -412,15 +456,6 @@ function InitCommonButtonCol2(player)
   else
     BUTTON_MOUNT_YAK:Hide()
   end
-
-end
-
-function InitCommonButton()
-  local player = CONFIG:GetByUnitGUID(UnitGUID("player"))
-  if not player then return end
-
-  InitCommonButtonCol1(player)
-  InitCommonButtonCol2(player)
 end
 
 --#endregion
@@ -514,4 +549,13 @@ end)
 -- COMMON_FRAME:SetScript("OnEvent", function(self, event, spellID)
 --   print(spellID)
 -- end)
+
 --#endregion
+
+function InitCommonButton()
+  local player = CONFIG:GetByUnitGUID(UnitGUID("player"))
+  if not player then return end
+  InitAddonSwitchButton()
+  InitCommonButtonCol1(player)
+  InitCommonButtonCol2(player)
+end
