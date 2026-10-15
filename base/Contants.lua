@@ -44,6 +44,7 @@ CURRENCY_ID = {
 
 -- 各类炉石的玩具ID和图标
 -- https://www.wowhead.com/cn/search?q=%E7%82%89%E7%9F%B3
+-- https://wago.tools/files 可搜索图标ID对应的文件
 HEARTH_STONE = {
   { ID = 162973, ICON = "Inv_holiday_hearthstonewinterveil", NAME = '冬天爷爷的炉石' },
   { ID = 163045, ICON = "Inv_holiday_hearthstonehallowsend", NAME = '无头骑士的炉石' },
@@ -64,6 +65,8 @@ HEARTH_STONE = {
   { ID = 257736, ICON = "Spell_holy_surgeoflight", NAME = '圣光呼唤炉石' },
   { ID = 263933, ICON = "Inv_enchanting_crystal_color1", NAME = '巡猎者的炉石' },
   { ID = 265100, ICON = "Inv_cosmicvoid_groundsate", NAME = '核心守卫的炉石' },
+  { ID = 281136, ICON = "Inv_scarab_crystal", NAME = '虫巢之裔炉石' },
+  { ID = 281615, ICON = "inv_1215_toy_kithix_hearthstone", NAME = '织影者的炉石' },
 }
 
 COMMON_BUTTON = {
@@ -71,7 +74,7 @@ COMMON_BUTTON = {
   { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "THE_GREAT_VAULT", TEXT = "宏伟宝库", ICON_ID = 651744 },
   { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "CRAFTING", TEXT = "制造业模拟", ICON_ID = 132326 },
   { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "HEARTH_STONE", TEXT = "炉石", ICON_ID = 265100 },
-  { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "THE_ARCANTINA", TEXT = "奥术秘社钥匙", ICON_ID = 253629 },
+  { TYPE = "\124cffFFFF00玩具\124r - ", ICON = "inv_12_ arcantina_key", KEY = "THE_ARCANTINA", TEXT = "奥术秘社钥匙", ICON_ID = 253629 },
   { TYPE = "\124cffFFFF00玩具\124r - ", ICON = "Inv_112_raidtrinkets_blobofswirlingvoid_purple", KEY = "MAIL_BOX", TEXT = "位面包裹信号器", ICON_ID = 264695 },
   { TYPE = "\124cff00BFFF法术\124r - ", ICON = "inv_cosmicvoid_orb", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
 }

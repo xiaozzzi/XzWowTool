@@ -397,7 +397,7 @@ function InitCommonButtonCol2(player)
   if player['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW' then
     CreateButtonHotKeyText(BUTTON_MOUNT_FUNGAL_STRIDER, "ST")
     SetPosition(BUTTON_MOUNT_FUNGAL_STRIDER, 2)
-    MountButton(BUTTON_MOUNT_FUNGAL_STRIDER, 460)
+    MountButton(BUTTON_MOUNT_FUNGAL_STRIDER, 3137)
     SetBinding("SHIFT-T", "CLICK BUTTON_MOUNT_FUNGAL_STRIDER:LeftButton")
   else
     BUTTON_MOUNT_FUNGAL_STRIDER:Hide()

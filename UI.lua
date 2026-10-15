@@ -207,7 +207,7 @@ local function DrawSetting(container)
 
   -- 真菌行者
   local cbFungalStrider = AceGUI:Create("CheckBox")
-  cbFungalStrider:SetLabel("真菌行者")
+  cbFungalStrider:SetLabel("|TInterface\\Icons\\inv_fungalstridermount:0|t 孢囊真菌行者")
   cbFungalStrider:SetValue(clickPlayer['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW')
   cbFungalStrider:SetWidth(200)
   cbFungalStrider:SetCallback("OnValueChanged", function(widget, event, value)
