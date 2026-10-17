@@ -1,6 +1,6 @@
-UIUnit = {}
+UI_Unit = {}
 
-function UIUnit:DrawSetting(container)
+function UI_Unit:DrawSetting(container)
   local SCROLL_FRAME = GUI:ScrollMain(container)
 
   --#region 宠物

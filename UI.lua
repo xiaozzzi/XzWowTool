@@ -96,7 +96,7 @@ local function DrawSetting(container)
     InitCommonButton()
   end)
 
-  GUI:Label(stoneContainer, " 共:" .. #HEARTH_STONE .. "", 60, "LEFT")
+  GUI:Label(stoneContainer, "  共:" .. #HEARTH_STONE .. "", 60, "LEFT")
 
   --#endregion
 
@@ -187,6 +187,11 @@ local function DrawSetting(container)
   --#endregion
 end
 
+-- 增加背景颜色
+local blackBg = UIParent:CreateTexture(nil, "BACKGROUND", nil, -8)
+blackBg:SetColorTexture(0, 0, 0, 0.8)
+blackBg:Hide()
+
 -- 显示主页面
 local function showUI()
   local function SelectGroup(container, event, group)
@@ -204,7 +209,7 @@ local function showUI()
     elseif group == "convenient" then
       UI_Convenient:DrawSetting(container)
     elseif group == "unit" then
-      UIUnit:DrawSetting(container)
+      UI_Unit:DrawSetting(container)
     elseif group == "currency_caluator" then
       UI_CurrencyCaluator:DrawSetting(container)
     elseif group == "transmog" then
@@ -214,6 +219,7 @@ local function showUI()
 
   if XZWTMainFrame then
     XZWTMainFrame:Show()
+    blackBg:Show()
     XZWTTabFrame:SelectTab("setting")
   else
     -- 创建主页面
@@ -223,6 +229,7 @@ local function showUI()
     XZWTMainFrame:SetStatusText("各项常用功能轻量级拓展。")
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
+      blackBg:Hide()
     end)
     XZWTMainFrame:SetWidth(UI_SIZE.NORMAL_WIDTH)
     XZWTMainFrame:SetHeight(UI_SIZE.NORMAL_HEIGHT)
@@ -240,6 +247,12 @@ local function showUI()
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")
+
+    blackBg:Show()
+    blackBg:ClearAllPoints()
+    blackBg:SetPoint("TOPLEFT", XZWTTabFrame.frame, "TOPLEFT", -8, 17)
+    blackBg:SetPoint("BOTTOMRIGHT", XZWTTabFrame.frame, "BOTTOMRIGHT", 8, -28)
+
     XZWTMainFrame:AddChild(XZWTTabFrame)
 
     -- 设置全局变量, 允许按下 esc 时关闭页面
