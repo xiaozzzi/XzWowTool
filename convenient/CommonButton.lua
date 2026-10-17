@@ -553,7 +553,7 @@ end)
 --#endregion
 
 function InitCommonButton()
-  local player = CONFIG:GetByUnitGUID(UnitGUID("player"))
+  local player = CFG:GetByUnitGUID(UnitGUID("player"))
   if not player then return end
   InitAddonSwitchButton()
   InitCommonButtonCol1(player)

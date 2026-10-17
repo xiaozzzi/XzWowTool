@@ -86,7 +86,9 @@
       "SHOW",
       "DressUpFrame",
       "DressUpItemLink",
-      "CompactRaidFrameContainer"
+      "CompactRaidFrameContainer",
+      "DEFAULT",
+      "MACRO"
     ],
     "Lua.diagnostics.disable": [
       "assign-type-mismatch"

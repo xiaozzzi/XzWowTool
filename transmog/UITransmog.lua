@@ -19,7 +19,7 @@ local DEBUG_DESC_ORDER = {
   ["史诗"] = 4,
 }
 
-local DEBUG_RAID_NAME = "尼鲁巴尔王宫"
+local DEBUG_RAID_NAME = "统御圣所"
 
 local function DescRank(desc)
   return DEBUG_DESC_ORDER[desc] or 999
@@ -118,7 +118,7 @@ local function DressTryOn(itemLink)
   DressUpItemLink(itemLink)
 end
 
-local function DressTryOnAllIcon(simpleGroup, itemLinks)
+local function DressTryOnAllIcon(simpleGroup, itemLinks, appearanceCount)
   local icon = AceGUI:Create("Icon")
   icon:SetImageByAtlas("lootroll-toast-icon-transmog-up")
   icon:SetImageSize(IMAGE_SIZE, IMAGE_SIZE)
@@ -145,6 +145,12 @@ local function DressTryOnAllIcon(simpleGroup, itemLinks)
     end
   end)
   simpleGroup:AddChild(icon)
+  -- 如果套装数量不足9个, 在末尾添加占位符以换行
+  if appearanceCount < 9 then
+    for i = 1, 9 - appearanceCount, 1 do
+      GUI:Spacing(simpleGroup, ICON_SIZE)
+    end
+  end
 end
 
 local function DrawSet()
@@ -156,38 +162,47 @@ local function DrawSet()
         return
       end
 
-      -- 职业
-      for _, classMask in ipairs(TRANSMOG_CLASS_MASK_ORDER) do
-        local classSets = GetByClassMask(sets.SETS, classMask)
-        local class = TRANSMOG_CLASS_MASK[classMask]
-        local classColor = RAID_CLASS_COLORS[class.CLASS_FILE_NAME]
-        local r, g, b = classColor.r, classColor.g, classColor.b
+      local order = sets.BY_ARMOR and TRANSMOG_ARMOR_MASK_MASK_ORDER or TRANSMOG_CLASS_MASK_ORDER
 
-        if class.CLASS_FILE_NAME == "WARLOCK" then
+      -- 职业
+      for _, classMask in ipairs(order) do
+        local classSets = GetByClassMask(sets.SETS, classMask) -- 获取套装
+        local class = TRANSMOG_CLASS_MASK[classMask]           -- 职业或护甲类型
+
+        -- 同甲同模型
+        -- if sets.BY_ARMOR then
+        -- else
+        -- 按职业
+        if class.CLASS_FILE_NAME == "WARLOCK" or class.CLASS_FILE_NAME == "CLOTH" then
           GUI:Label(SCROLL_FRAME, "布", 40, "CENTER")
-        elseif class.CLASS_FILE_NAME == "ROGUE" then
+        elseif class.CLASS_FILE_NAME == "ROGUE" or class.CLASS_FILE_NAME == "LEATHERED" then
           GUI:EmptyLine(SCROLL_FRAME, 3)
           GUI:Label(SCROLL_FRAME, "皮", 40, "CENTER")
-        elseif class.CLASS_FILE_NAME == "HUNTER" then
+        elseif class.CLASS_FILE_NAME == "HUNTER" or class.CLASS_FILE_NAME == "MAIL" then
           GUI:EmptyLine(SCROLL_FRAME, 3)
           GUI:Label(SCROLL_FRAME, "锁", 40, "CENTER")
-        elseif class.CLASS_FILE_NAME == "WARRIOR" then
+        elseif class.CLASS_FILE_NAME == "WARRIOR" or class.CLASS_FILE_NAME == "PLATE" then
           GUI:EmptyLine(SCROLL_FRAME, 3)
           GUI:Label(SCROLL_FRAME, "板", 40, "CENTER")
         end
+        -- end
         GUI:Spacing(SCROLL_FRAME, 8)
 
-
+        -- 套装 group
         local simpleGroup = GUI:SimpleGroup(SCROLL_FRAME, false)
         simpleGroup:SetWidth(COL_WIDTH)
 
-        GUI:Label(simpleGroup, format("|c%s%s|r",
-            C_ClassColor.GetClassColor(class.CLASS_FILE_NAME):GenerateHexColor(), class.NAME), COL_WIDTH,
-          "CENTER")
+        -- 不是同甲同模型的套装, 显示职业名称
+        if not sets.BY_ARMOR then
+          GUI:Label(simpleGroup, format("|c%s%s|r",
+              C_ClassColor.GetClassColor(class.CLASS_FILE_NAME):GenerateHexColor(), class.NAME), COL_WIDTH,
+            "CENTER")
+        end
 
         -- 套装级别: 随机/普通/英雄/史诗
         for index, set in ipairs(classSets) do
           local appearances = CheckSetCollectionStatus(set.SET_ID)
+          local appearanceCount = set.COUNT or 9
           -- 如果有外观
           if appearances then
             local sjItemLink = {}
@@ -221,24 +236,25 @@ local function DrawSet()
               simpleGroup:AddChild(icon)
 
               -- 记录套装链接
-              if (math.floor((index - 1) / 9) + 1 == 1) then
+              if (math.floor((index - 1) / appearanceCount) + 1 == 1) then
                 table.insert(sjItemLink, appearance.itemLink)
-              elseif (math.floor((index - 1) / 9) + 1 == 2) then
+              elseif (math.floor((index - 1) / appearanceCount) + 1 == 2) then
                 table.insert(ptItemLink, appearance.itemLink)
-              elseif (math.floor((index - 1) / 9) + 1 == 3) then
+              elseif (math.floor((index - 1) / appearanceCount) + 1 == 3) then
                 table.insert(yxItemLink, appearance.itemLink)
-              elseif (math.floor((index - 1) / 9) + 1 == 4) then
+              elseif (math.floor((index - 1) / appearanceCount) + 1 == 4) then
                 table.insert(ssItemLink, appearance.itemLink)
               end
+
               -- 创建试穿全部的按钮
-              if (index == 9) then
-                DressTryOnAllIcon(simpleGroup, sjItemLink)
-              elseif index == 18 then
-                DressTryOnAllIcon(simpleGroup, ptItemLink)
-              elseif index == 27 then
-                DressTryOnAllIcon(simpleGroup, yxItemLink)
-              elseif index == 36 then
-                DressTryOnAllIcon(simpleGroup, ssItemLink)
+              if (index == appearanceCount) then
+                DressTryOnAllIcon(simpleGroup, sjItemLink, appearanceCount)
+              elseif index == appearanceCount * 2 then
+                DressTryOnAllIcon(simpleGroup, ptItemLink, appearanceCount)
+              elseif index == appearanceCount * 3 then
+                DressTryOnAllIcon(simpleGroup, yxItemLink, appearanceCount)
+              elseif index == appearanceCount * 4 then
+                DressTryOnAllIcon(simpleGroup, ssItemLink, appearanceCount)
               end
             end
           end
@@ -253,13 +269,13 @@ function UI_Transmog:Draw(container)
   GUI:Label(container, "团本：", 40, "LEFT")
 
   -- 团本下拉列表
-  local option = {}
-  local optionOrder = {}
+  local raids = {}
+  local raidsOrder = {}
   for _, sets in ipairs(TRANSMOG_SETS) do
-    option[sets.LABEL] = sets.LABEL
-    table.insert(optionOrder, sets.LABEL)
+    raids[sets.LABEL] = sets.LABEL
+    table.insert(raidsOrder, sets.LABEL)
   end
-  RAID_DROPDOWN = GUI:Dropdown(option, optionOrder, TRANSMOG_SETS[1].LABEL, 250, container)
+  RAID_DROPDOWN = GUI:Dropdown(container, raids, raidsOrder, TRANSMOG_SETS[1].LABEL, 250)
   RAID_DROPDOWN:SetCallback("OnValueChanged", function(a, b, key)
     RAID_DROPDOWN_VALUE = key
     SCROLL_FRAME:ReleaseChildren()

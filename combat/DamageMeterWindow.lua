@@ -43,9 +43,9 @@ end
 function MODE_DM:SetWindowHeightByRaid()
   local isInRaid = IsInRaid()
   if isInRaid then
-    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
+    SetDamageMeterHeight(CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
   elseif not isInRaid then
-    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"))
+    SetDamageMeterHeight(CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"))
   end
 end
 
@@ -78,20 +78,20 @@ function MODE_DM:CreateWindowHeightButton()
   lowButton:SetPoint("BOTTOMRIGHT", win, "BOTTOMLEFT", 0, 0)
   lowButton:SetNormalAtlas("128-RedButton-ArrowDown")
   lowButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"))
+    SetDamageMeterHeight(CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"))
   end)
 
   local midButton = GUI:SimpleButton(25, "MID_BUTTON", nil, false)
   midButton:SetPoint("BOTTOMLEFT", lowButton, "TOPLEFT", 0, 0)
   midButton:SetNormalAtlas("128-RedButton-Minus")
   midButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
+    SetDamageMeterHeight(CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
   end)
 
   local highButton = GUI:SimpleButton(25, "HIGH_BUTTON", nil, false)
   highButton:SetPoint("BOTTOMLEFT", midButton, "TOPLEFT", 0, 0)
   highButton:SetNormalAtlas("128-RedButton-ArrowUpGlow")
   highButton:SetScript("OnClick", function()
-    SetDamageMeterHeight(CONFIG_GLOBAL:GetValue("DAMAGE_METER_HIGHT_SIZE"))
+    SetDamageMeterHeight(CFG_G:GetValue("DAMAGE_METER_HIGHT_SIZE"))
   end)
 end

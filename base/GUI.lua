@@ -151,22 +151,24 @@ function GUI:CheckBox(label, value, width, container)
   checkbox:SetLabel(label)
   checkbox:SetWidth(width)
   checkbox:SetValue(value)
+  checkbox.text:SetFont(ChatFontNormal:GetFont())
   container:AddChild(checkbox)
   return checkbox
 end
 
 ---下拉列表
----@param option any 下拉列表选项
----@param optionOrder any 下拉列表选项排序
+---@param container AceGUIWidget 容器宽度
+---@param list any 下拉列表选项
+---@param listOrder any 下拉列表选项排序
 ---@param value any 下拉列表默认值
 ---@param width number 下拉列表宽度
----@param container any 容器
 ---@return AceGUIWidget
-function GUI:Dropdown(option, optionOrder, value, width, container)
+function GUI:Dropdown(container, list, listOrder, value, width)
   local dropdown = AceGUI:Create("Dropdown")
-  dropdown:SetList(option, optionOrder)
+  dropdown:SetList(list, listOrder)
   dropdown:SetValue(value)
   dropdown:SetWidth(width)
+  dropdown.text:SetFont(ChatFontNormal:GetFont())
   container:AddChild(dropdown)
   return dropdown
 end
@@ -186,7 +188,22 @@ function GUI:EditBox(width, defaultValue, container)
   return editBox
 end
 
---- 滑块
+---图标
+---@param container AceGUIWidget 容器宽度
+---@param image number | string | nil 图标纹理ID
+---@param sizeX number 图标宽度
+---@param sizeY number 图标高度
+---@param width number 图标宽度
+---@return AceGUIWidget
+function GUI:Icon(container, image, sizeX, sizeY, width)
+  local icon = AceGUI:Create("Icon")
+  icon:SetImage(image)
+  icon:SetImageSize(sizeX, sizeY) -- 设置图标显示尺寸
+  icon:SetWidth(width)
+  container:AddChild(icon)
+  return icon
+end
+
 --- @param width number 滑块宽度
 --- @param min number 滑块最小值
 --- @param max number 滑块最大值
@@ -206,10 +223,10 @@ end
 -- 创建滚动主容器
 ---@param container AceGUIWidget tab 页容器
 function GUI:ScrollMain(container)
-  local settingContainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
-  settingContainer:SetFullWidth(true)                   -- 最大宽度
-  settingContainer:SetFullHeight(true)                  -- 最大高度
-  settingContainer:SetLayout("Fill")                    -- important!
+  local settingContainer = AceGUI:Create("SimpleGroup")
+  settingContainer:SetFullWidth(true)  -- 最大宽度
+  settingContainer:SetFullHeight(true) -- 最大高度
+  settingContainer:SetLayout("Fill")   -- important!
   container:AddChild(settingContainer)
 
   local scroll = AceGUI:Create("ScrollFrame")
@@ -232,6 +249,34 @@ function GUI:SimpleGroup(container, full, width)
   group:SetFullWidth(full)
   if width ~= nil then
     group:SetWidth(width)
+  end
+  container:AddChild(group)
+  return group
+end
+
+---comment 创建内联容器
+---@param container any
+---@param fullWidth boolean|nil 是否全宽
+---@param fullHeight boolean|nil 容器高度
+---@param width number|nil 容器宽度
+---@param height number|nil 容器高度
+---@return AceGUIWidget
+function GUI:InlineGroup(container, fullWidth, fullHeight, width, height)
+  if fullWidth == nil or fullWidth == "" then
+    fullWidth = true
+  end
+  if fullHeight == nil or fullHeight == "" then
+    fullHeight = true
+  end
+  local group = AceGUI:Create("InlineGroup")
+  group:SetLayout("Flow")
+  group:SetFullWidth(fullWidth)
+  group:SetFullHeight(fullHeight)
+  if width ~= nil then
+    group:SetWidth(width)
+  end
+  if height ~= nil then
+    group:SetHeight(height)
   end
   container:AddChild(group)
   return group

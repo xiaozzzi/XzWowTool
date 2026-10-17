@@ -69,15 +69,6 @@ HEARTH_STONE = {
   { ID = 281615, ICON = "inv_1215_toy_kithix_hearthstone", NAME = '织影者的炉石' },
 }
 
-COMMON_BUTTON = {
-  { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "MACRO_DELVE", TEXT = "地下堡", ICON_ID = 656581 },
-  { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "THE_GREAT_VAULT", TEXT = "宏伟宝库", ICON_ID = 651744 },
-  { TYPE = "\124cff7FFF00　宏\124r - ", KEY = "CRAFTING", TEXT = "制造业模拟", ICON_ID = 132326 },
-  { TYPE = "\124cffFFFF00玩具\124r - ", KEY = "HEARTH_STONE", TEXT = "炉石", ICON_ID = 265100 },
-  { TYPE = "\124cffFFFF00玩具\124r - ", ICON = "inv_12_ arcantina_key", KEY = "THE_ARCANTINA", TEXT = "奥术秘社钥匙", ICON_ID = 253629 },
-  { TYPE = "\124cffFFFF00玩具\124r - ", ICON = "Inv_112_raidtrinkets_blobofswirlingvoid_purple", KEY = "MAIL_BOX", TEXT = "位面包裹信号器", ICON_ID = 264695 },
-  { TYPE = "\124cff00BFFF法术\124r - ", ICON = "inv_cosmicvoid_orb", KEY = "WAR_BAND_BANK", TEXT = "战团仓库", ICON_ID = 4914670, SPELL = 460905 },
-}
 
 -- 专业技能的法术ID和图标
 PRO_MAPPING = {

@@ -15,14 +15,23 @@ TRANSMOG_CLASS_MASK = {
   [1] = { CLASS_FILE_NAME = "WARRIOR", NAME = "战士" },
   [2] = { CLASS_FILE_NAME = "PALADIN", NAME = "圣骑士" },
   [32] = { CLASS_FILE_NAME = "DEATHKNIGHT", NAME = "死亡骑士" },
+  --
+  [35] = { CLASS_FILE_NAME = "PLATE", NAME = "板甲" },
+  [400] = { CLASS_FILE_NAME = "CLOTH", NAME = "布甲" },
+  [3592] = { CLASS_FILE_NAME = "LEATHERED", NAME = "皮甲" },
+  [4164] = { CLASS_FILE_NAME = "MAIL", NAME = "锁甲" },
 }
 
 -- 定义遍历顺序
 TRANSMOG_CLASS_MASK_ORDER = {
-  256, 128, 16,       -- 第一组
-  8, 2048, 1024, 512, -- 第二组
-  4, 64, 4096,        -- 第三组
-  1, 2, 32,           -- 第四组
+  256, 128, 16,       -- 布甲
+  8, 2048, 1024, 512, -- 皮甲
+  4, 64, 4096,        -- 锁甲
+  1, 2, 32,           -- 板甲
+}
+
+TRANSMOG_ARMOR_MASK_MASK_ORDER = {
+  400, 3592, 4164, 35 -- 同甲
 }
 
 TRANSMOG_SETS = {
@@ -429,7 +438,7 @@ TRANSMOG_SETS = {
     }
   },
   {
-    LABEL = GUI:ColorText("FFA4A4A4", "10.0- 化身巨龙牢窟"),
+    LABEL = GUI:ColorText("FFA4A4A4", "10.0 - 化身巨龙牢窟"),
     SETS = {
       { SET_ID = 2652, NAME = "行走高山之岩", DESCRIPTION = "随机团队", CLASS_MASK = 1 },
       { SET_ID = 2613, NAME = "行走高山之岩", DESCRIPTION = "普通", CLASS_MASK = 1 },
@@ -485,6 +494,105 @@ TRANSMOG_SETS = {
       { SET_ID = 2624, NAME = "觉醒者之鳞", DESCRIPTION = "史诗", CLASS_MASK = 4096 },
     }
   },
+  -- 9.0
+  {
+    LABEL = GUI:ColorText("FFE3E3E3", "9.2 - 初诞者圣墓"),
+    SETS = {
+      { SET_ID = 2415, NAME = "无穷步兵的武装", DESCRIPTION = "随机团队", CLASS_MASK = 1 },
+      { SET_ID = 2414, NAME = "无穷步兵的武装", DESCRIPTION = "普通", CLASS_MASK = 1 },
+      { SET_ID = 2416, NAME = "无穷步兵的武装", DESCRIPTION = "英雄", CLASS_MASK = 1 },
+      { SET_ID = 2417, NAME = "无穷步兵的武装", DESCRIPTION = "史诗", CLASS_MASK = 1 },
+      { SET_ID = 2385, NAME = "光辉骑士之勇", DESCRIPTION = "随机团队", CLASS_MASK = 2 },
+      { SET_ID = 2384, NAME = "光辉骑士之勇", DESCRIPTION = "普通", CLASS_MASK = 2 },
+      { SET_ID = 2386, NAME = "光辉骑士之勇", DESCRIPTION = "英雄", CLASS_MASK = 2 },
+      { SET_ID = 2387, NAME = "光辉骑士之勇", DESCRIPTION = "史诗", CLASS_MASK = 2 },
+      { SET_ID = 2367, NAME = "猎神者的战甲", DESCRIPTION = "随机团队", CLASS_MASK = 4 },
+      { SET_ID = 2366, NAME = "猎神者的战甲", DESCRIPTION = "普通", CLASS_MASK = 4 },
+      { SET_ID = 2368, NAME = "猎神者的战甲", DESCRIPTION = "英雄", CLASS_MASK = 4 },
+      { SET_ID = 2369, NAME = "猎神者的战甲", DESCRIPTION = "史诗", CLASS_MASK = 4 },
+      { SET_ID = 2397, NAME = "魂刃影皮", DESCRIPTION = "随机团队", CLASS_MASK = 8 },
+      { SET_ID = 2396, NAME = "魂刃影皮", DESCRIPTION = "普通", CLASS_MASK = 8 },
+      { SET_ID = 2398, NAME = "魂刃影皮", DESCRIPTION = "英雄", CLASS_MASK = 8 },
+      { SET_ID = 2399, NAME = "魂刃影皮", DESCRIPTION = "史诗", CLASS_MASK = 8 },
+      { SET_ID = 2391, NAME = "穹焰圣服", DESCRIPTION = "随机团队", CLASS_MASK = 16 },
+      { SET_ID = 2390, NAME = "穹焰圣服", DESCRIPTION = "普通", CLASS_MASK = 16 },
+      { SET_ID = 2392, NAME = "穹焰圣服", DESCRIPTION = "英雄", CLASS_MASK = 16 },
+      { SET_ID = 2393, NAME = "穹焰圣服", DESCRIPTION = "史诗", CLASS_MASK = 16 },
+      { SET_ID = 2349, NAME = "初诞幻灵的魂钢", DESCRIPTION = "随机团队", CLASS_MASK = 32 },
+      { SET_ID = 2348, NAME = "初诞幻灵的魂钢", DESCRIPTION = "普通", CLASS_MASK = 32 },
+      { SET_ID = 2350, NAME = "初诞幻灵的魂钢", DESCRIPTION = "英雄", CLASS_MASK = 32 },
+      { SET_ID = 2351, NAME = "初诞幻灵的魂钢", DESCRIPTION = "史诗", CLASS_MASK = 32 },
+      { SET_ID = 2403, NAME = "咒法星语者的圣服", DESCRIPTION = "随机团队", CLASS_MASK = 64 },
+      { SET_ID = 2402, NAME = "咒法星语者的圣服", DESCRIPTION = "普通", CLASS_MASK = 64 },
+      { SET_ID = 2404, NAME = "咒法星语者的圣服", DESCRIPTION = "英雄", CLASS_MASK = 64 },
+      { SET_ID = 2405, NAME = "咒法星语者的圣服", DESCRIPTION = "史诗", CLASS_MASK = 64 },
+      { SET_ID = 2373, NAME = "博学秘闻者的法衣", DESCRIPTION = "随机团队", CLASS_MASK = 128 },
+      { SET_ID = 2372, NAME = "博学秘闻者的法衣", DESCRIPTION = "普通", CLASS_MASK = 128 },
+      { SET_ID = 2374, NAME = "博学秘闻者的法衣", DESCRIPTION = "英雄", CLASS_MASK = 128 },
+      { SET_ID = 2375, NAME = "博学秘闻者的法衣", DESCRIPTION = "史诗", CLASS_MASK = 128 },
+      { SET_ID = 2409, NAME = "恶魔之星外衣", DESCRIPTION = "随机团队", CLASS_MASK = 256 },
+      { SET_ID = 2408, NAME = "恶魔之星外衣", DESCRIPTION = "普通", CLASS_MASK = 256 },
+      { SET_ID = 2410, NAME = "恶魔之星外衣", DESCRIPTION = "英雄", CLASS_MASK = 256 },
+      { SET_ID = 2411, NAME = "恶魔之星外衣", DESCRIPTION = "史诗", CLASS_MASK = 256 },
+      { SET_ID = 2379, NAME = "精纯归宗外套", DESCRIPTION = "随机团队", CLASS_MASK = 512 },
+      { SET_ID = 2378, NAME = "精纯归宗外套", DESCRIPTION = "普通", CLASS_MASK = 512 },
+      { SET_ID = 2380, NAME = "精纯归宗外套", DESCRIPTION = "英雄", CLASS_MASK = 512 },
+      { SET_ID = 2381, NAME = "精纯归宗外套", DESCRIPTION = "史诗", CLASS_MASK = 512 },
+      { SET_ID = 2361, NAME = "恒定星辰织锦", DESCRIPTION = "随机团队", CLASS_MASK = 1024 },
+      { SET_ID = 2360, NAME = "恒定星辰织锦", DESCRIPTION = "普通", CLASS_MASK = 1024 },
+      { SET_ID = 2362, NAME = "恒定星辰织锦", DESCRIPTION = "英雄", CLASS_MASK = 1024 },
+      { SET_ID = 2363, NAME = "恒定星辰织锦", DESCRIPTION = "史诗", CLASS_MASK = 1024 },
+      { SET_ID = 2355, NAME = "善变惩罚者的织痛战甲", DESCRIPTION = "随机团队", CLASS_MASK = 2048 },
+      { SET_ID = 2354, NAME = "善变惩罚者的织痛战甲", DESCRIPTION = "普通", CLASS_MASK = 2048 },
+      { SET_ID = 2356, NAME = "善变惩罚者的织痛战甲", DESCRIPTION = "英雄", CLASS_MASK = 2048 },
+      { SET_ID = 2357, NAME = "善变惩罚者的织痛战甲", DESCRIPTION = "史诗", CLASS_MASK = 2048 },
+    }
+  },
+  {
+    LABEL = GUI:ColorText("FFE3E3E3", "9.1 - 统御圣所"),
+    BY_ARMOR = true,
+    SETS = {
+      { SET_ID = 2251, NAME = "魂铸恐惧板甲", DESCRIPTION = "随机团队", CLASS_MASK = 35, COUNT = 8 },
+      { SET_ID = 2250, NAME = "魂铸恐惧板甲", DESCRIPTION = "普通", CLASS_MASK = 35, COUNT = 8 },
+      { SET_ID = 2252, NAME = "魂铸恐惧板甲", DESCRIPTION = "英雄", CLASS_MASK = 35, COUNT = 8 },
+      { SET_ID = 2253, NAME = "魂铸恐惧板甲", DESCRIPTION = "史诗", CLASS_MASK = 35, COUNT = 8 },
+      { SET_ID = 2263, NAME = "黑暗祈愿者的法袍", DESCRIPTION = "随机团队", CLASS_MASK = 400 },
+      { SET_ID = 2262, NAME = "黑暗祈愿者的法袍", DESCRIPTION = "普通", CLASS_MASK = 400 },
+      { SET_ID = 2264, NAME = "黑暗祈愿者的法袍", DESCRIPTION = "英雄", CLASS_MASK = 400 },
+      { SET_ID = 2265, NAME = "黑暗祈愿者的法袍", DESCRIPTION = "史诗", CLASS_MASK = 400 },
+      { SET_ID = 2259, NAME = "圣所突袭者的礼服", DESCRIPTION = "随机团队", CLASS_MASK = 3592 },
+      { SET_ID = 2258, NAME = "圣所突袭者的礼服", DESCRIPTION = "普通", CLASS_MASK = 3592 },
+      { SET_ID = 2260, NAME = "圣所突袭者的礼服", DESCRIPTION = "英雄", CLASS_MASK = 3592 },
+      { SET_ID = 2261, NAME = "圣所突袭者的礼服", DESCRIPTION = "史诗", CLASS_MASK = 3592 },
+      { SET_ID = 2255, NAME = "攀塔者的战甲", DESCRIPTION = "随机团队", CLASS_MASK = 4164, COUNT = 8 },
+      { SET_ID = 2254, NAME = "攀塔者的战甲", DESCRIPTION = "普通", CLASS_MASK = 4164, COUNT = 8 },
+      { SET_ID = 2256, NAME = "攀塔者的战甲", DESCRIPTION = "英雄", CLASS_MASK = 4164, COUNT = 8 },
+      { SET_ID = 2257, NAME = "攀塔者的战甲", DESCRIPTION = "史诗", CLASS_MASK = 4164, COUNT = 8 },
+    }
+  },
+  {
+    LABEL = GUI:ColorText("FFE3E3E3", "9.0 - 纳斯利亚堡"),
+    BY_ARMOR = true,
+    SETS = {
+      { SET_ID = 2151, NAME = "哨卫总长的重型铠甲", DESCRIPTION = "随机团队", CLASS_MASK = 35 },
+      { SET_ID = 2150, NAME = "哨卫总长的重型铠甲", DESCRIPTION = "普通", CLASS_MASK = 35 },
+      { SET_ID = 2152, NAME = "哨卫总长的重型铠甲", DESCRIPTION = "英雄", CLASS_MASK = 35 },
+      { SET_ID = 2153, NAME = "哨卫总长的重型铠甲", DESCRIPTION = "史诗", CLASS_MASK = 35 },
+      { SET_ID = 2159, NAME = "堕落魅惑者的华服", DESCRIPTION = "随机团队", CLASS_MASK = 400 },
+      { SET_ID = 2158, NAME = "堕落魅惑者的华服", DESCRIPTION = "普通", CLASS_MASK = 400 },
+      { SET_ID = 2160, NAME = "堕落魅惑者的华服", DESCRIPTION = "英雄", CLASS_MASK = 400 },
+      { SET_ID = 2161, NAME = "堕落魅惑者的华服", DESCRIPTION = "史诗", CLASS_MASK = 400 },
+      { SET_ID = 2163, NAME = "屠罪者的皮甲", DESCRIPTION = "随机团队", CLASS_MASK = 3592 },
+      { SET_ID = 2162, NAME = "屠罪者的皮甲", DESCRIPTION = "普通", CLASS_MASK = 3592 },
+      { SET_ID = 2164, NAME = "屠罪者的皮甲", DESCRIPTION = "英雄", CLASS_MASK = 3592 },
+      { SET_ID = 2165, NAME = "屠罪者的皮甲", DESCRIPTION = "史诗", CLASS_MASK = 3592 },
+      { SET_ID = 2155, NAME = "无情谴罚者的伪装", DESCRIPTION = "随机团队", CLASS_MASK = 4164 },
+      { SET_ID = 2154, NAME = "无情谴罚者的伪装", DESCRIPTION = "普通", CLASS_MASK = 4164 },
+      { SET_ID = 2156, NAME = "无情谴罚者的伪装", DESCRIPTION = "英雄", CLASS_MASK = 4164 },
+      { SET_ID = 2157, NAME = "无情谴罚者的伪装", DESCRIPTION = "史诗", CLASS_MASK = 4164 },
+    }
+  }
+
 }
 
 TRANSMOG_SLOT_SORT = {

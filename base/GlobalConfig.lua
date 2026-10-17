@@ -1,4 +1,4 @@
-CONFIG_GLOBAL = {}
+CFG_G = {}
 
 if XZ_GLOBAL_DB == nil then
   XZ_GLOBAL_DB = {}
@@ -19,7 +19,7 @@ GLOBAL_DEFAULT_OPTIONS = {
 --- 获取指定配置
 --- @param key string  配置键
 --- @return string|nil 配置值
-function CONFIG_GLOBAL:GetValue(key)
+function CFG_G:GetValue(key)
   local value = XZ_GLOBAL_DB[key]
   if value == nil then
     return nil
@@ -30,7 +30,7 @@ end
 --- 保存配置
 --- @param key string 配置键
 --- @param value string 配置值
-function CONFIG_GLOBAL:SaveValue(key, value)
+function CFG_G:SaveValue(key, value)
   XZ_GLOBAL_DB[key] = value
 end
 
@@ -44,6 +44,6 @@ local function AddPlayerToDB()
   end
 end
 
-function CONFIG_GLOBAL:InitConfigDB()
+function CFG_G:InitConfigDB()
   AddPlayerToDB()
 end

@@ -29,15 +29,15 @@ XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "ADDON_LOADED" and unit == 'XzWowTool' then
-    CONFIG_GLOBAL:InitConfigDB()       -- 初始化公共配置表
-    CONFIG:InitConfigDB()              -- 初始化配置表
+    CFG_G:InitConfigDB()       -- 初始化公共配置表
+    CFG:InitConfigDB()              -- 初始化配置表
     MODE_WOOD:InitWoodTrack()          -- 初始化木材监控
     MODE_DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
     MODE_CURRENCY:UpdBackground()      -- 创建货币背景
   elseif event == 'PLAYER_LOGIN' then
     self:UnregisterEvent("PLAYER_LOGIN")
-    CONFIG_GLOBAL:InitConfigDB()      -- 初始化公共配置表
-    CONFIG:InitConfigDB()             -- 初始化配置数据库
+    CFG_G:InitConfigDB()      -- 初始化公共配置表
+    CFG:InitConfigDB()             -- 初始化配置数据库
     MODE_CURRENCY:InitCurrencyTrack() -- 初始化货币跟踪
     InitCommonCmd()                   -- 初始化通用命令
     InitCommonButton()                -- 初始化通用按钮

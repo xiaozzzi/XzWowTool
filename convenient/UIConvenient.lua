@@ -10,9 +10,9 @@ function UI_Convenient:DrawSetting(container)
   for k, v in pairs(MODE_CURRENCY.BACKGROUND) do
     list[k] = k
   end
-  local currencyBgDropdown = GUI:Dropdown(list, nil, CONFIG_GLOBAL:GetValue("CURRENCY_BACKGROUND"), 300, currencyRow1)
+  local currencyBgDropdown = GUI:Dropdown(currencyRow1, list, nil, CFG_G:GetValue("CURRENCY_BACKGROUND"), 300)
   currencyBgDropdown:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG_GLOBAL:SaveValue("CURRENCY_BACKGROUND", value)
+    CFG_G:SaveValue("CURRENCY_BACKGROUND", value)
     MODE_CURRENCY:UpdBackground()
   end)
 
@@ -24,14 +24,14 @@ function UI_Convenient:DrawSetting(container)
   -- 字体
   local hotkeyRow1 = GUI:SimpleGroup(scroll)
   GUI:Label(hotkeyRow1, "热键字体:", 120, "LEFT")
-  local dropdown = GUI:Dropdown({ ["DEFAULT"] = "默认" }, nil, "DEFAULT", 150, hotkeyRow1)
+  local dropdown = GUI:Dropdown(hotkeyRow1, { ["DEFAULT"] = "默认" }, nil, "DEFAULT", 150)
 
   -- 字体大小
   local hotkeyRow2 = GUI:SimpleGroup(scroll)
   GUI:Label(hotkeyRow2, "字体大小:", 120, "LEFT")
-  local slider = GUI:Slider(200, 10, 30, 1, CONFIG_GLOBAL:GetValue("HOTKEY_FONT_SIZE"), hotkeyRow2)
+  local slider = GUI:Slider(200, 10, 30, 1, CFG_G:GetValue("HOTKEY_FONT_SIZE"), hotkeyRow2)
   slider:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG_GLOBAL:SaveValue("HOTKEY_FONT_SIZE", value)
+    CFG_G:SaveValue("HOTKEY_FONT_SIZE", value)
     HOT_KEY:UpdateHotkeyFontSize()
   end)
 
@@ -43,37 +43,37 @@ function UI_Convenient:DrawSetting(container)
   -- 最大高度
   local dmRowH = GUI:SimpleGroup(scroll)
   GUI:Label(dmRowH, "最大高度:", 120, "LEFT")
-  local dmHeightBox = GUI:EditBox(150, CONFIG_GLOBAL:GetValue("DAMAGE_METER_HIGHT_SIZE"), dmRowH)
+  local dmHeightBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_HIGHT_SIZE"), dmRowH)
   -- 中等高度
   local dmRowM = GUI:SimpleGroup(scroll)
   GUI:Label(dmRowM, "中等高度:", 120, "LEFT")
-  local dmMediumBox = GUI:EditBox(150, CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"), dmRowM)
+  local dmMediumBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"), dmRowM)
   -- 最小高度
   local dmRowL = GUI:SimpleGroup(scroll)
   GUI:Label(dmRowL, "最小高度:", 120, "LEFT")
-  local dmLowBox = GUI:EditBox(150, CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"), dmRowL)
+  local dmLowBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"), dmRowL)
 
   -- 全部回调
   dmHeightBox:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then
-      dmHeightBox:SetText(CONFIG_GLOBAL:GetValue("DAMAGE_METER_HIGHT_SIZE"))
+      dmHeightBox:SetText(CFG_G:GetValue("DAMAGE_METER_HIGHT_SIZE"))
       return
     end
-    CONFIG_GLOBAL:SaveValue("DAMAGE_METER_HIGHT_SIZE", value)
+    CFG_G:SaveValue("DAMAGE_METER_HIGHT_SIZE", value)
   end)
   dmMediumBox:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then
-      dmMediumBox:SetText(CONFIG_GLOBAL:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
+      dmMediumBox:SetText(CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
       return
     end
-    CONFIG_GLOBAL:SaveValue("DAMAGE_METER_MIDDLE_SIZE", value)
+    CFG_G:SaveValue("DAMAGE_METER_MIDDLE_SIZE", value)
   end)
   dmLowBox:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then
-      dmLowBox:SetText(CONFIG_GLOBAL:GetValue("DAMAGE_METER_LOW_SIZE"))
+      dmLowBox:SetText(CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"))
       return
     end
-    CONFIG_GLOBAL:SaveValue("DAMAGE_METER_LOW_SIZE", value)
+    CFG_G:SaveValue("DAMAGE_METER_LOW_SIZE", value)
   end)
 
   --#endregion

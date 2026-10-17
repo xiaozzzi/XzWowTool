@@ -1,4 +1,4 @@
-CONFIG = {}
+CFG = {}
 
 if XZ_CONFIG_DB == nil then
   XZ_CONFIG_DB = {}
@@ -46,7 +46,7 @@ local DEFAULT_OPTIONS = {
 --- 获取角色配置
 --- @param unitGUID stringView 用户ID
 --- @return table|nil
-function CONFIG:GetByUnitGUID(unitGUID)
+function CFG:GetByUnitGUID(unitGUID)
   return XZ_CONFIG_DB[unitGUID]
 end
 
@@ -54,8 +54,8 @@ end
 --- @param unitGUID stringView 用户ID
 --- @param key string  配置键
 --- @return string|nil 配置值
-function CONFIG:GetValue(unitGUID, key)
-  local player = CONFIG:GetByUnitGUID(unitGUID)
+function CFG:GetValue(unitGUID, key)
+  local player = CFG:GetByUnitGUID(unitGUID)
   if player == nil then
     return nil
   end
@@ -64,7 +64,7 @@ end
 
 --- 获取全部角色配置, 按 classFilenameSort 升序排序
 --- @return table
-function CONFIG:GetAllPlayers()
+function CFG:GetAllPlayers()
   local sortedList = {}
   for guid, charData in pairs(XZ_CONFIG_DB) do
     table.insert(sortedList, charData)
@@ -77,7 +77,7 @@ end
 
 --- 保存角色配置
 --- @param player table 角色配置
-function CONFIG:SaveConfig(player)
+function CFG:SaveConfig(player)
   XZ_CONFIG_DB[player.unitGUID] = player
 end
 
@@ -85,7 +85,7 @@ end
 --- @param unitGUID stringView 用户ID
 --- @param key stringView 配置键
 --- @param value stringView 配置值
-function CONFIG:SaveConfigValue(unitGUID, key, value)
+function CFG:SaveConfigValue(unitGUID, key, value)
   local player = XZ_CONFIG_DB[unitGUID]
   if player then
     player[key] = value
@@ -123,6 +123,6 @@ local function AddPlayerToDB()
   XZ_CONFIG_DB[unitGUID] = config
 end
 
-function CONFIG:InitConfigDB()
+function CFG:InitConfigDB()
   AddPlayerToDB()
 end

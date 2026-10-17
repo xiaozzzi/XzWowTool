@@ -19,7 +19,7 @@ local CURRENCY_DISTANCE = 45
 ---是否显示货币监控
 ---@return boolean
 local function isShowCurrency()
-  local SHOW_CURRENCY = CONFIG:GetValue(UnitGUID("player"), 'SHOW_CURRENCY')
+  local SHOW_CURRENCY = CFG:GetValue(UnitGUID("player"), 'SHOW_CURRENCY')
   return (SHOW_CURRENCY == 'SHOW')
 end
 
@@ -83,7 +83,7 @@ function MODE_CURRENCY:UpdBackground()
   if not isShowCurrency() or not IsMaxPlayerLevel() then
     return
   end
-  local bgName = CONFIG_GLOBAL:GetValue("CURRENCY_BACKGROUND")
+  local bgName = CFG_G:GetValue("CURRENCY_BACKGROUND")
   local config = MODE_CURRENCY.BACKGROUND[bgName]
   if config == nil then
     config = MODE_CURRENCY.BACKGROUND[1]

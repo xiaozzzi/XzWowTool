@@ -20,116 +20,64 @@ local function DrawSetting(container)
   local unitGUID = UnitGUID("player")
 
   --#region ==================================== 角色选择 ====================================
-
-  local settingContainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
-  settingContainer:SetFullWidth(true)                   -- 最大宽度
-  settingContainer:SetFullHeight(true)                  -- 最大高度
-  settingContainer:SetLayout("Fill")                    -- important!
-  container:AddChild(settingContainer)
-
-  local scroll = AceGUI:Create("ScrollFrame")
-  scroll:SetLayout("Flow")
-  settingContainer:AddChild(scroll)
-
-  local playerHead = AceGUI:Create("Heading")
-  playerHead:SetText("选择角色")
-  playerHead:SetFullWidth(true)
-  scroll:AddChild(playerHead)
-
-  GUI:EmptyLine(scroll, 2) --创建空行
-
-  local playerIcon = AceGUI:Create("Icon")
-  playerIcon:SetImage(236439)
-  playerIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
-  playerIcon:SetWidth(35)
-  scroll:AddChild(playerIcon)
-
-  GUI:Label(scroll, "全部角色:", 90, "LEFT")
+  local SCROLL_FRAME = GUI:ScrollMain(container)
+  GUI:Heading("选择角色", SCROLL_FRAME, 0, 2)
+  GUI:Icon(SCROLL_FRAME, 236439, 20, 20, 35)
+  GUI:Label(SCROLL_FRAME, "当前角色:", 90, "LEFT")
 
   local playerList = {}
   local playerListOrder = {}
 
   -- 遍历所有用户
-  for _, player in pairs(CONFIG:GetAllPlayers()) do
+  for _, player in pairs(CFG:GetAllPlayers()) do
     table.insert(playerListOrder, player.unitGUID)
     playerList[player.unitGUID] = format("|c%s%s-%s|r",
       C_ClassColor.GetClassColor(player.classFilename):GenerateHexColor(), player.unitName, player.realm)
   end
 
-  local clickPlayer = CONFIG:GetByUnitGUID(unitGUID)
+  local playerCFG = CFG:GetByUnitGUID(unitGUID)
+  if not playerCFG then
+    return
+  end
 
-  local playerDropdown = AceGUI:Create("Dropdown")
-  playerDropdown:SetList(playerList, playerListOrder)
-  playerDropdown:SetValue(unitGUID)
-  playerDropdown:SetWidth(220)
-  playerDropdown:SetCallback("OnValueChanged", function(a, b, key)
-    clickPlayer = CONFIG:GetByUnitGUID(key)
-    ShowCurrencyDropdown:SetValue(clickPlayer['SHOW_CURRENCY'])
-    WoodDropdown:SetValue(clickPlayer['SHOW_WOOD'])
-    StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
-  end)
-  scroll:AddChild(playerDropdown)
-  GUI:Spacing(scroll, 20)
+  local playerDropdown = GUI:Dropdown(SCROLL_FRAME, playerList, playerListOrder, unitGUID, 220)
+  playerDropdown:SetDisabled(true)
+  -- playerDropdown:SetCallback("OnValueChanged", function(a, b, key)
+  --   playerCFG = CFG:GetByUnitGUID(key)
+  --   ShowCurrencyDropdown:SetValue(CFG:GetValue(key, 'SHOW_CURRENCY'))
+  --   WoodDropdown:SetValue(CFG:GetValue(key, 'SHOW_WOOD'))
+  --   StoneDropdown:SetValue(tonumber(CFG:GetValue(key, 'HEARTH_STONE')))
+  -- end)
+  GUI:Spacing(SCROLL_FRAME, 20)
 
   --#endregion
 
-  --#region ==================================== 货币监控 ====================================
+  --#region ==================================== 货币和木材 ====================================
 
-  GUI:EmptyLine(scroll, 2) --创建空行
-  local settingHead = AceGUI:Create("Heading")
-  settingHead:SetText("货币监控")
-  settingHead:SetFullWidth(true)
-  scroll:AddChild(settingHead)
-  GUI:EmptyLine(scroll, 2) --创建空行
+  GUI:Heading("货币监控", SCROLL_FRAME, 2, 2)
+  local SHOW_HIDE = { ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", }
 
   -- ------------ 显示纹章 ------------
-  local currencyIcon = AceGUI:Create("Icon")
-  currencyIcon:SetImage(C_CurrencyInfo.GetCurrencyInfo(CURRENCY_ID[1].ID).iconFileID)
-  currencyIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
-  currencyIcon:SetWidth(35)
-  scroll:AddChild(currencyIcon)
-
-  GUI:Label(scroll, "显示纹章:", 90, "LEFT")
-  ShowCurrencyDropdown = AceGUI:Create("Dropdown")
-  ShowCurrencyDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
-  ShowCurrencyDropdown:SetValue(clickPlayer['SHOW_CURRENCY'])
-  ShowCurrencyDropdown:SetWidth(130)
+  GUI:Icon(SCROLL_FRAME, C_CurrencyInfo.GetCurrencyInfo(CURRENCY_ID[1].ID).iconFileID, 20, 20, 35)
+  GUI:Label(SCROLL_FRAME, "显示纹章:", 90, "LEFT")
+  ShowCurrencyDropdown = GUI:Dropdown(SCROLL_FRAME, SHOW_HIDE, nil, CFG:GetValue(unitGUID, 'SHOW_CURRENCY'), 130)
   ShowCurrencyDropdown:SetCallback("OnValueChanged", function(a, b, key)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_CURRENCY', key)
+    CFG:SaveConfigValue(unitGUID, 'SHOW_CURRENCY', key)
   end)
-  scroll:AddChild(ShowCurrencyDropdown)
-  GUI:Spacing(scroll, 20)
 
   -- ------------ 显示木材 ------------
-  local woodContainer = AceGUI:Create("SimpleGroup")
-  woodContainer:SetLayout("Flow")
-  scroll:AddChild(woodContainer)
-
-  local woodIcon = AceGUI:Create("Icon")
-  woodIcon:SetImage(C_Item.GetItemIconByID(WOOD_ID[1].ID))
-  woodIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
-  woodIcon:SetWidth(35)
-  woodContainer:AddChild(woodIcon)
+  local woodContainer = GUI:SimpleGroup(SCROLL_FRAME, true)
+  GUI:Icon(woodContainer, C_Item.GetItemIconByID(WOOD_ID[1].ID), 20, 20, 35)
   GUI:Label(woodContainer, "显示木材:", 90, "LEFT")
-  WoodDropdown = AceGUI:Create("Dropdown")
-  WoodDropdown:SetList({ ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", })
-  WoodDropdown:SetValue(clickPlayer['SHOW_WOOD'])
-  WoodDropdown:SetWidth(130)
+  WoodDropdown = GUI:Dropdown(woodContainer, SHOW_HIDE, nil, playerCFG['SHOW_WOOD'], 130)
   WoodDropdown:SetCallback("OnValueChanged", function(a, b, key)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_WOOD', key)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_WOOD', key)
   end)
-  woodContainer:AddChild(WoodDropdown)
-  GUI:Spacing(woodContainer, 20)
 
   --#endregion
 
-  --#region ==================================== 其他拓展 ==================================== --
-  -- ------------ 炉石 ------------
-  local stoneContainer = AceGUI:Create("SimpleGroup")
-  stoneContainer:SetLayout("Flow")
-  stoneContainer:SetFullWidth(true)
-  scroll:AddChild(stoneContainer)
-
+  --#region ==================================== 炉石 ==================================== --
+  local stoneContainer = GUI:SimpleGroup(SCROLL_FRAME, true)
   local stoneList = {}
   local stoneListOrder = {}
 
@@ -139,130 +87,99 @@ local function DrawSetting(container)
     stoneList[stone.ID] = '|TInterface\\Icons\\' .. stone.ICON .. ':0|t ' .. stone.NAME
   end
 
-  local stoneIcon = AceGUI:Create("Icon")
-  stoneIcon:SetImage(C_Item.GetItemIconByID(6948))
-  stoneIcon:SetImageSize(20, 20) -- 设置图标显示尺寸
-  stoneIcon:SetWidth(35)
-  stoneContainer:AddChild(stoneIcon)
+  GUI:Icon(stoneContainer, C_Item.GetItemIconByID(6948), 20, 20, 35)
   GUI:Label(stoneContainer, "选择炉石:", 90, "LEFT")
-  StoneDropdown = AceGUI:Create("Dropdown")
-  StoneDropdown:SetList(stoneList, stoneListOrder)
-  StoneDropdown:SetValue(tonumber(clickPlayer['HEARTH_STONE']))
-  StoneDropdown:SetWidth(220)
+  StoneDropdown = GUI:Dropdown(stoneContainer, stoneList, stoneListOrder, tonumber(playerCFG['HEARTH_STONE']), 250)
   StoneDropdown:SetCallback("OnValueChanged", function(a, b, key)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'HEARTH_STONE', key)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'HEARTH_STONE', key)
     InitCommonButton()
   end)
-  stoneContainer:AddChild(StoneDropdown)
-  GUI:Spacing(stoneContainer, 20)
-
   --#endregion
 
   --#region ==================================== 按钮拓展 ==================================== --
+  local COL_WIDTH = 200
+  local MACRO = GUI:ColorText("FF478E00", "宏 - ")
+  local SPEEL = GUI:ColorText("FF006789", "(法)")
+  local ITEMS = GUI:ColorText("FF8E8E00", "(玩)")
+  local MOUNT = GUI:ColorText("FF8E4C00", "(骑)")
+  GUI:Heading("按钮拓展", SCROLL_FRAME, 2, 0)
+  local col1Container = GUI:InlineGroup(SCROLL_FRAME, false, false, 230)
+  local col2Container = GUI:InlineGroup(SCROLL_FRAME, false, false, 230)
+  local COL1_CFG = {
+    { KEY = "MACRO_DELVE", TEXT = MACRO .. "地下堡" },
+    { KEY = "THE_GREAT_VAULT", TEXT = MACRO .. "宏伟宝库" },
+    { KEY = "CRAFTING", TEXT = MACRO .. "制造业模拟" },
+    { KEY = "HEARTH_STONE", TEXT = "炉石" .. ITEMS, ICON = "inv_misc_rune_01", },
+    { KEY = "THE_ARCANTINA", TEXT = "奥术秘社钥匙" .. ITEMS, ICON = "inv_12_ arcantina_key", },
+    { KEY = "MAIL_BOX", TEXT = "位面包裹信号器" .. ITEMS, ICON = "Inv_112_raidtrinkets_blobofswirlingvoid_purple" },
+    { KEY = "WAR_BAND_BANK", TEXT = "战团仓库" .. SPEEL, ICON = "inv_cosmicvoid_orb" },
+  }
 
-  GUI:EmptyLine(scroll, 2) --创建空行
-  local buttonHead = AceGUI:Create("Heading")
-  buttonHead:SetText("按钮拓展")
-  buttonHead:SetFullWidth(true)
-  scroll:AddChild(buttonHead)
-
-  local col1Container = AceGUI:Create("InlineGroup") -- 第一列
-  col1Container:SetLayout("Flow")
-  col1Container:SetFullWidth(false)
-  col1Container:SetWidth(230)
-  scroll:AddChild(col1Container)
-
-  local col2Container = AceGUI:Create("InlineGroup") -- 第二列
-  col2Container:SetLayout("Flow")
-  col2Container:SetFullWidth(false)
-  col2Container:SetWidth(230)
-  scroll:AddChild(col2Container)
-
-  for _, button in pairs(COMMON_BUTTON) do
-    local cb = AceGUI:Create("CheckBox")
-    if button.ICON then
-      cb:SetLabel(button.TYPE .. button.TEXT .. " |TInterface\\Icons\\" .. button.ICON .. ":0|t ")
-    else
-      cb:SetLabel(button.TYPE .. button.TEXT)
-    end
-    cb:SetValue(clickPlayer['SHOW_BTN_' .. button.KEY] == 'SHOW')
-    cb:SetWidth(200)
+  for _, button in pairs(COL1_CFG) do
+    local label = button.ICON and " |TInterface\\Icons\\" .. button.ICON .. ":0|t " .. button.TEXT or button.TEXT
+    local cb = GUI:CheckBox(label, playerCFG['SHOW_BTN_' .. button.KEY] == 'SHOW', COL_WIDTH, col1Container);
     cb:SetCallback("OnValueChanged", function(widget, event, value)
-      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
+      CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
       InitCommonButton()
     end)
-    col1Container:AddChild(cb)
   end
 
+  local COL2_CFG = {
+    YAK = { LABEL = "|TInterface\\Icons\\Ability_mount_travellersyakmount:0|t 雄壮远足驼牛" .. MOUNT, DEFAULT_VALUE = playerCFG['SHOW_BTN_MOUNT_YAK'] == 'SHOW' },
+    FUNGALSTRIDER = { LABEL = "|TInterface\\Icons\\inv_fungalstridermount:0|t 孢囊真菌行者" .. MOUNT, DEFAULT_VALUE = playerCFG['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW' },
+    FLY_MODE = { LABEL = "|TInterface\\Icons\\Ability_dragonriding_swapflightstyles01:0|t 切换飞行模式" .. SPEEL, DEFAULT_VALUE = playerCFG['SHOW_BTN_FLY_MODE'] == 'SHOW' },
+    DELVE_ROBOT = { LABEL = "|TInterface\\Icons\\Inv_111_robocopter_robocopter:0|t 地下堡机器人7001型" .. ITEMS, DEFAULT_VALUE = playerCFG['SHOW_BTN_DELVE7001'] == 'SHOW' }
+  }
+
   -- 牦牛
-  local cbYak = AceGUI:Create("CheckBox")
-  cbYak:SetLabel("|TInterface\\Icons\\Ability_mount_travellersyakmount:0|t 雄壮远足牦牛")
-  cbYak:SetValue(clickPlayer['SHOW_BTN_MOUNT_YAK'] == 'SHOW')
-  cbYak:SetWidth(200)
+  local cbYak = GUI:CheckBox(COL2_CFG.YAK.LABEL, COL2_CFG.YAK.DEFAULT_VALUE, COL_WIDTH, col2Container)
   cbYak:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_MOUNT_YAK', GetShowHide(value))
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_YAK', GetShowHide(value))
     InitCommonButton()
   end)
-  col2Container:AddChild(cbYak)
 
   -- 真菌行者
-  local cbFungalStrider = AceGUI:Create("CheckBox")
-  cbFungalStrider:SetLabel("|TInterface\\Icons\\inv_fungalstridermount:0|t 孢囊真菌行者")
-  cbFungalStrider:SetValue(clickPlayer['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW')
-  cbFungalStrider:SetWidth(200)
-  cbFungalStrider:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_MOUNT_FUNGAL_STRIDER', GetShowHide(value))
+  local cbFS = GUI:CheckBox(COL2_CFG.FUNGALSTRIDER.LABEL, COL2_CFG.FUNGALSTRIDER.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  cbFS:SetCallback("OnValueChanged", function(widget, event, value)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_FUNGAL_STRIDER', GetShowHide(value))
     InitCommonButton()
   end)
-  col2Container:AddChild(cbFungalStrider)
 
   -- 切换飞行模式
-  local cbFlyMode = AceGUI:Create("CheckBox")
-  cbFlyMode:SetLabel("|TInterface\\Icons\\Ability_dragonriding_swapflightstyles01:0|t 切换飞行模式")
-  cbFlyMode:SetValue(clickPlayer['SHOW_BTN_FLY_MODE'] == 'SHOW')
-  cbFlyMode:SetWidth(200)
+  local cbFlyMode = GUI:CheckBox(COL2_CFG.FLY_MODE.LABEL, COL2_CFG.FLY_MODE.DEFAULT_VALUE, COL_WIDTH, col2Container)
   cbFlyMode:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_FLY_MODE', GetShowHide(value))
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_FLY_MODE', GetShowHide(value))
     InitCommonButton()
   end)
-  col2Container:AddChild(cbFlyMode)
 
+  -- 专业
   local prof1, prof2 = GetProfessions()
   if prof1 and prof1 ~= 0 then
     local name = GetProfessionInfo(prof1)
-    local cbProf1 = AceGUI:Create("CheckBox")
-    cbProf1:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)
-    cbProf1:SetValue(clickPlayer['SHOW_BTN_PROF1'] == 'SHOW')
-    cbProf1:SetWidth(200)
+    local cbProf1 = GUI:CheckBox("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
+      playerCFG['SHOW_BTN_PROF1'] == 'SHOW', COL_WIDTH, col2Container)
     cbProf1:SetCallback("OnValueChanged", function(widget, event, value)
-      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_PROF1', GetShowHide(value))
+      CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF1', GetShowHide(value))
       InitCommonButton()
     end)
-    col2Container:AddChild(cbProf1)
   end
 
   if prof2 and prof2 ~= 0 then
     local name = GetProfessionInfo(prof2)
-    local cbProf2 = AceGUI:Create("CheckBox")
-    cbProf2:SetLabel("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name)
-    cbProf2:SetValue(clickPlayer['SHOW_BTN_PROF2'] == 'SHOW')
-    cbProf2:SetWidth(200)
+    local cbProf2 = GUI:CheckBox("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
+      playerCFG['SHOW_BTN_PROF2'] == 'SHOW', COL_WIDTH, col2Container)
     cbProf2:SetCallback("OnValueChanged", function(widget, event, value)
-      CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_PROF2', GetShowHide(value))
+      CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF2', GetShowHide(value))
       InitCommonButton()
     end)
-    col2Container:AddChild(cbProf2)
   end
 
-  local cbFungalStrider = AceGUI:Create("CheckBox")
-  cbFungalStrider:SetLabel("|TInterface\\Icons\\Inv_111_robocopter_robocopter:0|t 地下堡机器人7001型")
-  cbFungalStrider:SetValue(clickPlayer['SHOW_BTN_DELVE7001'] == 'SHOW')
-  cbFungalStrider:SetWidth(200)
-  cbFungalStrider:SetCallback("OnValueChanged", function(widget, event, value)
-    CONFIG:SaveConfigValue(clickPlayer.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
+  -- 地下堡机器人
+  local cbDR = GUI:CheckBox(COL2_CFG.DELVE_ROBOT.LABEL, COL2_CFG.DELVE_ROBOT.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  cbDR:SetCallback("OnValueChanged", function(widget, event, value)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
     InitCommonButton()
   end)
-  col2Container:AddChild(cbFungalStrider)
   --#endregion
 end
 

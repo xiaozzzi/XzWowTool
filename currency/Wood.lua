@@ -10,7 +10,7 @@ local TOP = -200
 local HEIGHT = 70
 
 local function isShowWood()
-  local SHOW_WOOD = CONFIG:GetValue(UnitGUID("player"), 'SHOW_WOOD')
+  local SHOW_WOOD = CFG:GetValue(UnitGUID("player"), 'SHOW_WOOD')
   return (SHOW_WOOD == 'SHOW')
 end
 
