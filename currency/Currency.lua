@@ -5,12 +5,19 @@
 --·········································································································
 MODE_CURRENCY = {}
 MODE_CURRENCY.BACKGROUND = {
-  ["housing-bulletinboard-list-header-decorative-line"] = { width = 568, height = 9, X = -200, Y = -15 },
-  ["communities-chat-date-line-orange"] = { width = 456, height = 8, X = 0, Y = -15 },
-  ["communities-chat-date-line"] = { width = 456, height = 8, X = 0, Y = -15 },
-  ["UI-Frame-DastardlyDuos-Line-bottom"] = { width = 370, height = 12, X = 0, Y = -15 },
-  ["UI-Journeys-Renown-divider"] = { width = 366, height = 8, X = 0, Y = -15 },
+  ["housing-bulletinboard-list-header-decorative-line"] = { width = 568, height = 9, X = -20, Y = -28 },
+  ["communities-chat-date-line-orange"] = { width = 547, height = 10, X = 0, Y = -28 },
+  ["communities-chat-date-line"] = { width = 547, height = 10, X = 0, Y = -28 },
+  ["UI-Frame-DastardlyDuos-Line-bottom"] = { width = 481, height = 16, X = 0, Y = -28 },
+  ["UI-Journeys-Renown-divider"] = { width = 733, height = 16, X = -150, Y = -28 },
 }
+local MAIN_FRAME = CreateFrame("Frame", "CURRNECY_MAIN_FRAME", UIParent)
+local CURRENCY_BG_BG = MAIN_FRAME:CreateTexture(nil, "BACKGROUND")
+MAIN_FRAME:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
+MAIN_FRAME:SetWidth(10)
+MAIN_FRAME:SetHeight(10)
+MAIN_FRAME:SetFrameStrata("BACKGROUND") -- 背景层
+
 local CURRENCY_UI_LIST = {}
 local OFFSET_LEFT = 10
 local OFFSET_TOP = -20
@@ -23,12 +30,36 @@ local function isShowCurrency()
   return (SHOW_CURRENCY == 'SHOW')
 end
 
+--#region 货币背景
+
+---更新货币背景
+function MODE_CURRENCY:UpdBackground()
+  local bgName = CFG_G:GetValue("CURRENCY_BACKGROUND")
+  local config = MODE_CURRENCY.BACKGROUND[bgName]
+  if config == nil then
+    config = MODE_CURRENCY.BACKGROUND[1]
+  end
+  CURRENCY_BG_BG:SetAtlas(bgName)
+  CURRENCY_BG_BG:SetWidth(config.width)
+  CURRENCY_BG_BG:SetHeight(config.height)
+  CURRENCY_BG_BG:ClearAllPoints()
+  CURRENCY_BG_BG:SetPoint("TOPLEFT", MAIN_FRAME, "TOPLEFT", config.X, config.Y)
+end
+
+--#endregion 货币背景
+
 ---初始化货币监控
 ---为每个货币创建一个UI元素，用于显示货币数量, 并将UI元素存储在CURRENCY_UI_LIST中, 便于更新数值
 function MODE_CURRENCY:InitCurrencyTrack()
   if not isShowCurrency() or not IsMaxPlayerLevel() then
+    print("隐藏货币监控")
+    MAIN_FRAME:Hide()
     return
+  else
+    MAIN_FRAME:Show()
+    print("显示货币监控")
   end
+
 
   -- 记录上一个UI, 用于设置锚点
   local lastCurrnecyFrame = nil
@@ -41,17 +72,17 @@ function MODE_CURRENCY:InitCurrencyTrack()
     local notEarned = info.maxQuantity - info.totalEarned
 
     -- 货币图标
-    local icon = UIParent:CreateTexture()
+    local icon = MAIN_FRAME:CreateTexture()
     icon:SetScale(0.3)
     icon:SetTexture(info.iconFileID)
     if index == 1 then
-      icon:SetPoint("TOPLEFT", UIParent, "TOPLEFT", OFFSET_LEFT, OFFSET_TOP)
+      icon:SetPoint("TOPLEFT", MAIN_FRAME, "TOPLEFT", OFFSET_LEFT, OFFSET_TOP)
     elseif lastCurrnecyFrame then
       icon:SetPoint("LEFT", lastCurrnecyFrame, "RIGHT", CURRENCY_DISTANCE, 0)
     end
 
     -- 货币数量
-    local countLabel = UIParent:CreateFontString("XzCurrencyLabel_" .. currency.ID, "OVERLAY", "GameFontNormal")
+    local countLabel = MAIN_FRAME:CreateFontString("XzCurrencyLabel_" .. currency.ID, "OVERLAY", "GameFontNormal")
     countLabel:SetFont(ChatFontNormal:GetFont(), 18, 'OUTLINE')
     countLabel:SetPoint("LEFT", icon, "RIGHT", 0, 0)
     countLabel:SetTextColor(currency.R, currency.G, currency.B)
@@ -70,35 +101,9 @@ function MODE_CURRENCY:InitCurrencyTrack()
   end
 end
 
---#region 货币背景
-
-local CURRENCY_BG_FRAME = CreateFrame("Frame", "CURRENCY_BACKGROUND_FRAME")
-local CURRENCY_BG_BG = CURRENCY_BG_FRAME:CreateTexture(nil, "BACKGROUND")
-CURRENCY_BG_FRAME:SetWidth(330)
-CURRENCY_BG_FRAME:SetFrameStrata("BACKGROUND") -- 背景层
-CURRENCY_BG_BG:SetAllPoints()
-
----更新货币背景
-function MODE_CURRENCY:UpdBackground()
-  if not isShowCurrency() or not IsMaxPlayerLevel() then
-    return
-  end
-  local bgName = CFG_G:GetValue("CURRENCY_BACKGROUND")
-  local config = MODE_CURRENCY.BACKGROUND[bgName]
-  if config == nil then
-    config = MODE_CURRENCY.BACKGROUND[1]
-  end
-  CURRENCY_BG_BG:SetAtlas(bgName)
-  CURRENCY_BG_FRAME:SetWidth(config.width)
-  CURRENCY_BG_FRAME:SetHeight(config.height)
-  CURRENCY_BG_FRAME:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config.X, config.Y)
-end
-
---#endregion 货币背景
-
 -- 更新货币信息
 function MODE_CURRENCY:UpdCurrencyTrack(currencyId)
-  if not isShowCurrency() then
+  if not isShowCurrency() or not IsMaxPlayerLevel() then
     return
   end
   if currencyId == nil then

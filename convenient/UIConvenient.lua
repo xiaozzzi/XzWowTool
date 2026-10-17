@@ -1,10 +1,10 @@
 UI_Convenient = {}
 
 function UI_Convenient:DrawSetting(container)
-  local scroll = GUI:ScrollMain(container)
+  local SCROLL_FRAME = GUI:ScrollMain(container)
 
-  GUI:Heading("货币背景/分割线", scroll, 0, 2)
-  local currencyRow1 = GUI:SimpleGroup(scroll)
+  GUI:Heading(SCROLL_FRAME, "货币背景/分割线", 0, 2)
+  local currencyRow1 = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(currencyRow1, "货币背景:", 120, "LEFT")
   local list = {}
   for k, v in pairs(MODE_CURRENCY.BACKGROUND) do
@@ -19,17 +19,17 @@ function UI_Convenient:DrawSetting(container)
 
   --#region 热键字体
 
-  GUI:Heading("热键字体", scroll, 2, 2)
+  GUI:Heading(SCROLL_FRAME, "热键字体", 2, 2)
 
   -- 字体
-  local hotkeyRow1 = GUI:SimpleGroup(scroll)
+  local hotkeyRow1 = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(hotkeyRow1, "热键字体:", 120, "LEFT")
-  local dropdown = GUI:Dropdown(hotkeyRow1, { ["DEFAULT"] = "默认" }, nil, "DEFAULT", 150)
+  GUI:Dropdown(hotkeyRow1, { ["DEFAULT"] = "默认" }, nil, "DEFAULT", 150)
 
   -- 字体大小
-  local hotkeyRow2 = GUI:SimpleGroup(scroll)
+  local hotkeyRow2 = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(hotkeyRow2, "字体大小:", 120, "LEFT")
-  local slider = GUI:Slider(200, 10, 30, 1, CFG_G:GetValue("HOTKEY_FONT_SIZE"), hotkeyRow2)
+  local slider = GUI:Slider(hotkeyRow2, 200, 10, 30, 1, CFG_G:GetValue("HOTKEY_FONT_SIZE"))
   slider:SetCallback("OnValueChanged", function(widget, event, value)
     CFG_G:SaveValue("HOTKEY_FONT_SIZE", value)
     HOT_KEY:UpdateHotkeyFontSize()
@@ -38,20 +38,20 @@ function UI_Convenient:DrawSetting(container)
   --#endregion
 
   --#region 伤害列表增强
-  GUI:Heading("伤害列表增强", scroll, 2, 2)
+  GUI:Heading(SCROLL_FRAME, "伤害列表增强", 2, 2)
 
   -- 最大高度
-  local dmRowH = GUI:SimpleGroup(scroll)
+  local dmRowH = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(dmRowH, "最大高度:", 120, "LEFT")
-  local dmHeightBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_HIGHT_SIZE"), dmRowH)
+  local dmHeightBox = GUI:EditBox(dmRowH, 150, CFG_G:GetValue("DAMAGE_METER_HIGHT_SIZE"))
   -- 中等高度
-  local dmRowM = GUI:SimpleGroup(scroll)
+  local dmRowM = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(dmRowM, "中等高度:", 120, "LEFT")
-  local dmMediumBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"), dmRowM)
+  local dmMediumBox = GUI:EditBox(dmRowM, 150, CFG_G:GetValue("DAMAGE_METER_MIDDLE_SIZE"))
   -- 最小高度
-  local dmRowL = GUI:SimpleGroup(scroll)
+  local dmRowL = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(dmRowL, "最小高度:", 120, "LEFT")
-  local dmLowBox = GUI:EditBox(150, CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"), dmRowL)
+  local dmLowBox = GUI:EditBox(dmRowL, 150, CFG_G:GetValue("DAMAGE_METER_LOW_SIZE"))
 
   -- 全部回调
   dmHeightBox:SetCallback("OnEnterPressed", function(widget, event, value)

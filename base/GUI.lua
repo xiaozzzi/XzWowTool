@@ -114,11 +114,11 @@ function GUI:SimpleButton(iconSize, buttonName, iconId, border)
 end
 
 ---创建分割线
----@param text string 分割线文本
 ---@param container AceGUIWidget 容器
+---@param text string 分割线文本
 ---@param buttomEmptyLine number|nil 是否添加底部空行间距
 ---@return AceGUIWidget 分割线
-function GUI:Heading(text, container, topEmptyLine, buttomEmptyLine)
+function GUI:Heading(container, text, topEmptyLine, buttomEmptyLine)
   -- 添加顶部空行
   if (topEmptyLine ~= nil) then
     GUI:EmptyLine(container, topEmptyLine)
@@ -138,12 +138,12 @@ function GUI:Heading(text, container, topEmptyLine, buttomEmptyLine)
 end
 
 ---创建复选框
+---@param container AceGUIWidget 容器
 ---@param label string 复选框文本
 ---@param value boolean 复选框是否选中
 ---@param width number 复选框宽度
----@param container AceGUIWidget 容器
 ---@return AceGUIWidget 复选框
-function GUI:CheckBox(label, value, width, container)
+function GUI:CheckBox(container, label, value, width)
   if not value then
     value = false
   end
@@ -173,12 +173,12 @@ function GUI:Dropdown(container, list, listOrder, value, width)
   return dropdown
 end
 
----文本框
+---输入框
 ---@param width number 文本框宽度
 ---@param defaultValue string 文本框默认值
 ---@param container AceGUIWidget 容器
 ---@return AceGUIWidget
-function GUI:EditBox(width, defaultValue, container)
+function GUI:EditBox(container, width, defaultValue)
   local editBox = AceGUI:Create("EditBox")
   editBox:SetWidth(width)
   if defaultValue ~= nil and defaultValue ~= "" then
@@ -204,14 +204,15 @@ function GUI:Icon(container, image, sizeX, sizeY, width)
   return icon
 end
 
+--- 滑块
 --- @param width number 滑块宽度
 --- @param min number 滑块最小值
 --- @param max number 滑块最大值
 --- @param step number 滑块步长
---- @param value number 滑块默认值
+--- @param value number|string 滑块默认值
 --- @param container AceGUIWidget 容器
 --- @return AceGUIWidget
-function GUI:Slider(width, min, max, step, value, container)
+function GUI:Slider(container, width, min, max, step, value)
   local slider = AceGUI:Create("Slider")
   slider:SetWidth(width)
   slider:SetSliderValues(min, max, step)
@@ -282,7 +283,6 @@ function GUI:InlineGroup(container, fullWidth, fullHeight, width, height)
   return group
 end
 
----====================================================================================
 --- 为框架添加边框
 ---@param frame Frame 框架
 ---@param r number 边框颜色 R
@@ -290,7 +290,6 @@ end
 ---@param b number 边框颜色 B
 ---@param a number 边框颜色 A
 ---@param thickness number 边框宽度
----====================================================================================
 function GUI:SolidBorder(frame, r, g, b, a, thickness)
   thickness = thickness or 1
   r, g, b = r or 0, g or 0, b or 0

@@ -21,7 +21,7 @@ local function DrawSetting(container)
 
   --#region ==================================== 角色选择 ====================================
   local SCROLL_FRAME = GUI:ScrollMain(container)
-  GUI:Heading("选择角色", SCROLL_FRAME, 0, 2)
+  GUI:Heading(SCROLL_FRAME, "选择角色", 0, 2)
   GUI:Icon(SCROLL_FRAME, 236439, 20, 20, 35)
   GUI:Label(SCROLL_FRAME, "当前角色:", 90, "LEFT")
 
@@ -54,7 +54,7 @@ local function DrawSetting(container)
 
   --#region ==================================== 货币和木材 ====================================
 
-  GUI:Heading("货币监控", SCROLL_FRAME, 2, 2)
+  GUI:Heading(SCROLL_FRAME, "货币监控", 2, 2)
   local SHOW_HIDE = { ['SHOW'] = "|cFF7DDA58显示|r", ['HIDE'] = "|cFFE4080A隐藏|r", }
 
   -- ------------ 显示纹章 ------------
@@ -63,6 +63,7 @@ local function DrawSetting(container)
   ShowCurrencyDropdown = GUI:Dropdown(SCROLL_FRAME, SHOW_HIDE, nil, CFG:GetValue(unitGUID, 'SHOW_CURRENCY'), 130)
   ShowCurrencyDropdown:SetCallback("OnValueChanged", function(a, b, key)
     CFG:SaveConfigValue(unitGUID, 'SHOW_CURRENCY', key)
+    MODE_CURRENCY:InitCurrencyTrack()
   end)
 
   -- ------------ 显示木材 ------------
@@ -89,11 +90,14 @@ local function DrawSetting(container)
 
   GUI:Icon(stoneContainer, C_Item.GetItemIconByID(6948), 20, 20, 35)
   GUI:Label(stoneContainer, "选择炉石:", 90, "LEFT")
-  StoneDropdown = GUI:Dropdown(stoneContainer, stoneList, stoneListOrder, tonumber(playerCFG['HEARTH_STONE']), 250)
+  StoneDropdown = GUI:Dropdown(stoneContainer, stoneList, stoneListOrder, tonumber(playerCFG['HEARTH_STONE']), 240)
   StoneDropdown:SetCallback("OnValueChanged", function(a, b, key)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'HEARTH_STONE', key)
     InitCommonButton()
   end)
+
+  GUI:Label(stoneContainer, " 共:" .. #HEARTH_STONE .. "", 60, "LEFT")
+
   --#endregion
 
   --#region ==================================== 按钮拓展 ==================================== --
@@ -102,7 +106,7 @@ local function DrawSetting(container)
   local SPEEL = GUI:ColorText("FF006789", "(法)")
   local ITEMS = GUI:ColorText("FF8E8E00", "(玩)")
   local MOUNT = GUI:ColorText("FF8E4C00", "(骑)")
-  GUI:Heading("按钮拓展", SCROLL_FRAME, 2, 0)
+  GUI:Heading(SCROLL_FRAME, "按钮拓展", 2, 0)
   local col1Container = GUI:InlineGroup(SCROLL_FRAME, false, false, 230)
   local col2Container = GUI:InlineGroup(SCROLL_FRAME, false, false, 230)
   local COL1_CFG = {
@@ -117,7 +121,7 @@ local function DrawSetting(container)
 
   for _, button in pairs(COL1_CFG) do
     local label = button.ICON and " |TInterface\\Icons\\" .. button.ICON .. ":0|t " .. button.TEXT or button.TEXT
-    local cb = GUI:CheckBox(label, playerCFG['SHOW_BTN_' .. button.KEY] == 'SHOW', COL_WIDTH, col1Container);
+    local cb = GUI:CheckBox(col1Container, label, playerCFG['SHOW_BTN_' .. button.KEY] == 'SHOW', COL_WIDTH)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
       InitCommonButton()
@@ -132,21 +136,21 @@ local function DrawSetting(container)
   }
 
   -- 牦牛
-  local cbYak = GUI:CheckBox(COL2_CFG.YAK.LABEL, COL2_CFG.YAK.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  local cbYak = GUI:CheckBox(col2Container, COL2_CFG.YAK.LABEL, COL2_CFG.YAK.DEFAULT_VALUE, COL_WIDTH)
   cbYak:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_YAK', GetShowHide(value))
     InitCommonButton()
   end)
 
   -- 真菌行者
-  local cbFS = GUI:CheckBox(COL2_CFG.FUNGALSTRIDER.LABEL, COL2_CFG.FUNGALSTRIDER.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  local cbFS = GUI:CheckBox(col2Container, COL2_CFG.FUNGALSTRIDER.LABEL, COL2_CFG.FUNGALSTRIDER.DEFAULT_VALUE, COL_WIDTH)
   cbFS:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_FUNGAL_STRIDER', GetShowHide(value))
     InitCommonButton()
   end)
 
   -- 切换飞行模式
-  local cbFlyMode = GUI:CheckBox(COL2_CFG.FLY_MODE.LABEL, COL2_CFG.FLY_MODE.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  local cbFlyMode = GUI:CheckBox(col2Container, COL2_CFG.FLY_MODE.LABEL, COL2_CFG.FLY_MODE.DEFAULT_VALUE, COL_WIDTH)
   cbFlyMode:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_FLY_MODE', GetShowHide(value))
     InitCommonButton()
@@ -156,8 +160,8 @@ local function DrawSetting(container)
   local prof1, prof2 = GetProfessions()
   if prof1 and prof1 ~= 0 then
     local name = GetProfessionInfo(prof1)
-    local cbProf1 = GUI:CheckBox("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
-      playerCFG['SHOW_BTN_PROF1'] == 'SHOW', COL_WIDTH, col2Container)
+    local cbProf1 = GUI:CheckBox(col2Container, "|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
+      playerCFG['SHOW_BTN_PROF1'] == 'SHOW', COL_WIDTH)
     cbProf1:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF1', GetShowHide(value))
       InitCommonButton()
@@ -166,8 +170,8 @@ local function DrawSetting(container)
 
   if prof2 and prof2 ~= 0 then
     local name = GetProfessionInfo(prof2)
-    local cbProf2 = GUI:CheckBox("|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
-      playerCFG['SHOW_BTN_PROF2'] == 'SHOW', COL_WIDTH, col2Container)
+    local cbProf2 = GUI:CheckBox(col2Container, "|TInterface\\Icons\\" .. PRO_MAPPING[name].icon .. ":0|t " .. name,
+      playerCFG['SHOW_BTN_PROF2'] == 'SHOW', COL_WIDTH)
     cbProf2:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF2', GetShowHide(value))
       InitCommonButton()
@@ -175,7 +179,7 @@ local function DrawSetting(container)
   end
 
   -- 地下堡机器人
-  local cbDR = GUI:CheckBox(COL2_CFG.DELVE_ROBOT.LABEL, COL2_CFG.DELVE_ROBOT.DEFAULT_VALUE, COL_WIDTH, col2Container)
+  local cbDR = GUI:CheckBox(col2Container, COL2_CFG.DELVE_ROBOT.LABEL, COL2_CFG.DELVE_ROBOT.DEFAULT_VALUE, COL_WIDTH)
   cbDR:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
     InitCommonButton()
@@ -215,14 +219,14 @@ local function showUI()
     -- 创建主页面
     XZWTMainFrame = AceGUI:Create("Frame")
     XZWTMainFrame:EnableResize(false) -- 允许改变窗口大小
-    XZWTMainFrame:SetTitle("自用工具箱" .. CONSTANTS.VERSION)
+    XZWTMainFrame:SetTitle(GUI:ColorText("FFF9F9F9", "自用工具箱 XzWowTool - xzzz  (版本: " .. CONSTANTS.VERSION .. ")"))
     XZWTMainFrame:SetStatusText("各项常用功能轻量级拓展。")
     XZWTMainFrame:SetCallback("OnClose", function(widget)
       isMainFrameVisible = false
     end)
     XZWTMainFrame:SetWidth(UI_SIZE.NORMAL_WIDTH)
     XZWTMainFrame:SetHeight(UI_SIZE.NORMAL_HEIGHT)
-    XZWTMainFrame:SetPoint("CENTER", UIParent, "CENTER", -250, 0)
+    XZWTMainFrame:SetPoint("CENTER", UIParent, "CENTER", -400, 100)
     XZWTMainFrame:SetLayout("Fill")
 
     XZWTTabFrame = AceGUI:Create("TabGroup")
@@ -236,7 +240,6 @@ local function showUI()
     })
     XZWTTabFrame:SetCallback("OnGroupSelected", SelectGroup)
     XZWTTabFrame:SelectTab("setting")
-
     XZWTMainFrame:AddChild(XZWTTabFrame)
 
     -- 设置全局变量, 允许按下 esc 时关闭页面

@@ -284,12 +284,12 @@ function UI_Transmog:Draw(container)
 
   -- 显示装备提示
   GUI:Spacing(container, 10)
-  CB_SHOWTIP = GUI:CheckBox("鼠标提示", false, 90, container)
+  CB_SHOWTIP = GUI:CheckBox(container, "鼠标提示", false, 90)
   GUI:Spacing(container, 10)
-  CB_CLICKTRYON = GUI:CheckBox("单击试穿", true, 90, container)
+  CB_CLICKTRYON = GUI:CheckBox(container, "单击试穿", true, 90)
   GUI:Spacing(container, 10)
 
-  GUI:Heading("", container, 0, 0)
+  GUI:Heading(container, "", 0, 0)
 
   SCROLL_FRAME = GUI:ScrollMain(container)
   DrawSet()

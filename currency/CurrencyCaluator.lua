@@ -1,3 +1,8 @@
+--·········································································································
+--
+-- 计算需要的货币数
+--
+--·········································································································
 UI_CurrencyCaluator = {}
 local COL_W = 50 -- 每一列的宽度
 
@@ -130,8 +135,8 @@ local function CalculateTarget(type)
 end
 
 -- 角色的历史最高装等
-local function DrawCurrnetHighWatermark(scroll)
-  GUI:Heading("当前各部位最高装等", scroll, 1, 1)
+local function DrawCurrnetHighWatermark(SCROLL_FRAME)
+  GUI:Heading(SCROLL_FRAME, "当前各部位最高装等", 1, 1)
   local slots = {}
   for k, v in pairs(Enum.ItemRedundancySlot) do
     slots[v] = { name = k, cnName = SLOT_CN_NAME[k] };
@@ -148,9 +153,9 @@ local function DrawCurrnetHighWatermark(scroll)
   -- for index, v in ipairs(slots) do print(v.cnName, v.highWatermark) end -- 打印所有装备的最高装等
 
   local width = 150
-  local col1 = GUI:SimpleGroup(scroll, false, width);
-  local col2 = GUI:SimpleGroup(scroll, false, width);
-  local col3 = GUI:SimpleGroup(scroll, false, width);
+  local col1 = GUI:SimpleGroup(SCROLL_FRAME, false, width);
+  local col2 = GUI:SimpleGroup(SCROLL_FRAME, false, width);
+  local col3 = GUI:SimpleGroup(SCROLL_FRAME, false, width);
 
   local allYX = 0 -- 套装英雄升满数量
   local allYS = 0 -- 套装勇士升满数量
@@ -213,22 +218,23 @@ end
 
 -- 绘制页面
 function UI_CurrencyCaluator:DrawSetting(container)
-  local scroll = GUI:ScrollMain(container)
-  GUI:Label(scroll, "填入需要的" .. "英雄" .. "纹章数量:", 200, "LEFT")
-  local targetYX = GUI:EditBox(100, 0, scroll)
+  local SCROLL_FRAME = GUI:ScrollMain(container)
+  GUI:Label(SCROLL_FRAME, "填入需要的" .. "英雄" .. "纹章数量:", 200, "LEFT")
+  local targetYX = GUI:EditBox(SCROLL_FRAME, 100, 0)
   targetYX:SetCallback("OnEnterPressed", function(widget, event, value)
     if not IsNumber(value) then return end
     Target.TARGET_YX = tonumber(value)
+    CalculateTarget("YX")
   end)
-  GUI:Spacing(scroll, 20)
-  local button = GUI:Button(scroll, "计算", 80)
+  GUI:Spacing(SCROLL_FRAME, 20)
+  local button = GUI:Button(SCROLL_FRAME, "计算", 80)
   button:SetCallback("OnClick", function(widget, btn) CalculateTarget("YX") end)
 
   GetAllCurrencyQuantity()
 
   -- head
-  GUI:EmptyLine(scroll, 4)
-  local headRow = GUI:SimpleGroup(scroll)
+  GUI:EmptyLine(SCROLL_FRAME, 4)
+  local headRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(headRow, "类型", COL_W, "CENTER")
   GUI:Label(headRow, ColorStr("SH", "神话"), COL_W, "RIGHT")
   GUI:Label(headRow, ColorStr("YX", "英雄"), COL_W, "RIGHT")
@@ -236,31 +242,31 @@ function UI_CurrencyCaluator:DrawSetting(container)
   GUI:Label(headRow, ColorStr("LB", "老兵"), COL_W, "RIGHT")
   GUI:Label(headRow, ColorStr("MX", "冒险"), COL_W, "RIGHT")
 
-  GUI:Heading("", scroll, 0, 0)
+  GUI:Heading(SCROLL_FRAME, "", 0, 0)
 
   -- 神话
-  local shRow = GUI:SimpleGroup(scroll)
+  local shRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(shRow, ColorStr("SH", "神话:"), COL_W, "CENTER")
   local shCount = GUI:Label(shRow, ColorStr("SH", Quantitys.SH), 50, "RIGHT")
 
   -- 英雄
-  GUI:EmptyLine(scroll, 1)
-  local yxRow = GUI:SimpleGroup(scroll)
+  GUI:EmptyLine(SCROLL_FRAME, 1)
+  local yxRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(yxRow, ColorStr("YX", "英雄:"), COL_W, "CENTER")
   GUI:Label(yxRow, ColorStr("SH", Quantitys.YX2SH), COL_W, "RIGHT") -- 转神话
   GUI:Label(yxRow, ColorStr("YX", Quantitys.YX), COL_W, "RIGHT")    -- 英雄本身
 
   -- 勇士
-  GUI:EmptyLine(scroll, 1)
-  local ysRow = GUI:SimpleGroup(scroll)
+  GUI:EmptyLine(SCROLL_FRAME, 1)
+  local ysRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(ysRow, ColorStr("YS", "勇士:"), COL_W, "CENTER")
   GUI:Label(ysRow, ColorStr("SH", Quantitys.YS2SH), COL_W, "RIGHT") -- 转神话
   GUI:Label(ysRow, ColorStr("YX", Quantitys.YS2YX), COL_W, "RIGHT") -- 转英雄
   GUI:Label(ysRow, ColorStr("YS", Quantitys.YS), COL_W, "RIGHT")    -- 勇士本身
 
   -- 老兵
-  GUI:EmptyLine(scroll, 1)
-  local lbRow = GUI:SimpleGroup(scroll)
+  GUI:EmptyLine(SCROLL_FRAME, 1)
+  local lbRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(lbRow, ColorStr("LB", "老兵:"), COL_W, "CENTER")
   GUI:Label(lbRow, ColorStr("SH", Quantitys.LB2SH), COL_W, "RIGHT") -- 转神话
   GUI:Label(lbRow, ColorStr("YX", Quantitys.LB2YX), COL_W, "RIGHT") -- 转英雄
@@ -268,8 +274,8 @@ function UI_CurrencyCaluator:DrawSetting(container)
   GUI:Label(lbRow, ColorStr("LB", Quantitys.LB), COL_W, "RIGHT")    -- 老兵本身
 
   -- 冒险者
-  GUI:EmptyLine(scroll, 1)
-  local mxzRow = GUI:SimpleGroup(scroll)
+  GUI:EmptyLine(SCROLL_FRAME, 1)
+  local mxzRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(mxzRow, ColorStr("MX", "冒险:"), COL_W, "CENTER")
   GUI:Label(mxzRow, ColorStr("SH", Quantitys.MX2SH), COL_W, "RIGHT") -- 转神话
   GUI:Label(mxzRow, ColorStr("YX", Quantitys.MX2YX), COL_W, "RIGHT") -- 转英雄
@@ -277,10 +283,10 @@ function UI_CurrencyCaluator:DrawSetting(container)
   GUI:Label(mxzRow, ColorStr("LB", Quantitys.MX2LB), COL_W, "RIGHT") -- 转老兵
   GUI:Label(mxzRow, ColorStr("MX", Quantitys.MX), COL_W, "RIGHT")    -- 冒险者本身
 
-  GUI:Heading("", scroll, 0, 0)
+  GUI:Heading(SCROLL_FRAME, "", 0, 0)
 
   -- 总数
-  local footRow = GUI:SimpleGroup(scroll)
+  local footRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(footRow, "已有:", COL_W, "CENTER")
   GUI:Label(footRow, ColorStr("SH", Quantitys.ALL_SH), COL_W, "RIGHT")
   GUI:Label(footRow, ColorStr("YX", Quantitys.ALL_YX), COL_W, "RIGHT")
@@ -288,13 +294,13 @@ function UI_CurrencyCaluator:DrawSetting(container)
   GUI:Label(footRow, ColorStr("LB", Quantitys.ALL_LB), COL_W, "RIGHT")
 
   -- 距离目标
-  GUI:Heading("", scroll, 0, 0)
-  local targetRow = GUI:SimpleGroup(scroll)
+  GUI:Heading(SCROLL_FRAME, "", 0, 0)
+  local targetRow = GUI:SimpleGroup(SCROLL_FRAME)
   GUI:Label(targetRow, "距目标:", COL_W, "CENTER")
   Target.SH_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
   Target.YX_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
   Target.YS_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
   Target.LB_LABEL = GUI:Label(targetRow, " ", COL_W, "RIGHT")
 
-  DrawCurrnetHighWatermark(scroll)
+  DrawCurrnetHighWatermark(SCROLL_FRAME)
 end
