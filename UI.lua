@@ -9,7 +9,7 @@ local StoneDropdown        -- 选择炉石
 local UI_SIZE = {
   NORMAL_WIDTH = 518,
   NORMAL_HEIGHT = 610,
-  TRANSMOG_WIDTH = 890,
+  TRANSMOG_WIDTH = 920,
   TRANSMOG_HEIGHT = 630,
 }
 
@@ -188,7 +188,7 @@ local function DrawSetting(container)
 end
 
 -- 增加背景颜色
-local blackBg = UIParent:CreateTexture(nil, "BACKGROUND", nil, -8)
+local blackBg = UIParent:CreateTexture(nil, "BACKGROUND")
 blackBg:SetColorTexture(0, 0, 0, 0.8)
 blackBg:Hide()
 

@@ -19,7 +19,7 @@ local DEBUG_DESC_ORDER = {
   ["史诗"] = 4,
 }
 
-local DEBUG_RAID_NAME = "统御圣所"
+local DEBUG_RAID_NAME = "恐惧之心"
 
 local function DescRank(desc)
   return DEBUG_DESC_ORDER[desc] or 999
@@ -93,18 +93,6 @@ local function CheckSetCollectionStatus(setID)
   return result
 end
 
--- 创建职业标题
-local function CreateClassHeader(scroll)
-  -- GUI:Label(scroll, "来源", 80, "LEFT")
-  for _, classMask in ipairs(TRANSMOG_CLASS_MASK_ORDER) do
-    local class = TRANSMOG_CLASS_MASK[classMask]
-    if class then
-      GUI:Label(scroll, class.NAME, COL_WIDTH, COL_ALIGN)
-    end
-  end
-end
-
-
 local RAID_DROPDOWN                                -- 团本下拉列表
 local RAID_DROPDOWN_VALUE = TRANSMOG_SETS[1].LABEL -- 团本下拉列表默认值
 local CB_SHOWTIP                                   -- 显示鼠标提示
@@ -113,11 +101,13 @@ local SCROLL_FRAME                                 -- 滚动框架
 
 -- 试穿外观
 local function DressTryOn(itemLink)
+  if InCombatLockdown() then return end
   if not CB_CLICKTRYON:GetValue() then return end
   if not itemLink then return end
   DressUpItemLink(itemLink)
 end
 
+-- 创建试穿全部图标
 local function DressTryOnAllIcon(simpleGroup, itemLinks, appearanceCount)
   local icon = AceGUI:Create("Icon")
   icon:SetImageByAtlas("lootroll-toast-icon-transmog-up")
@@ -134,6 +124,7 @@ local function DressTryOnAllIcon(simpleGroup, itemLinks, appearanceCount)
     icon.image:SetAlpha(0.2)
   end)
   icon:SetCallback("OnClick", function(widget, button)
+    if InCombatLockdown() then return end
     -- print("试穿全部: ")
     for i, itemLink in ipairs(itemLinks) do
       if itemLink == '[]' then
