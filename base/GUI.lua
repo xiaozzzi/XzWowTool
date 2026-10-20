@@ -283,6 +283,13 @@ function GUI:InlineGroup(container, fullWidth, fullHeight, width, height)
   return group
 end
 
+local function AlignTexture(tex)
+  if tex.SetSnapToPixelGrid then
+    tex:SetSnapToPixelGrid(true)
+    tex:SetTexelSnappingBias(0)
+  end
+end
+
 --- 为框架添加边框
 ---@param frame Frame 框架
 ---@param r number 边框颜色 R

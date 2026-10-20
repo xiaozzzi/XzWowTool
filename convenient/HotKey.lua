@@ -4,7 +4,7 @@
 --
 --·········································································································
 HOT_KEY = {}
-
+local FONT = NumberFontNormalSmallGray:GetFont()
 -- 需要修改的动作栏
 local CustomTextActionBars = { 'MultiBar5', 'MultiBar6' }
 
@@ -75,17 +75,33 @@ function HOT_KEY:UpdateHotkeyFontSize()
     for i = 1, 12 do
       local button = _G[barName .. 'Button' .. i]
       if button and button.HotKey then
-        -- local font, _, flags = button.HotKey:GetFont()
-        -- local font = ChatFontNormal:GetFont()
-        local font = NumberFontNormalSmallGray:GetFont()
-        button.HotKey:SetFont(font, CFG_G:GetValue("HOTKEY_FONT_SIZE"), "OUTLINE")
-        -- button.HotKey:SetTextColor(1, 0, 0, 1) -- 会被覆盖
-        -- button.HotKey:SetShadowColor(1, 0, 0, 1)
-        -- button.HotKey:SetShadowOffset(1, -1)
+        local hotkeyText = button.HotKey
+        hotkeyText:SetFont(FONT, CFG_G:GetValue("HOTKEY_FONT_SIZE"), "OUTLINE")
       end
+      -- 修改充能文本字体和大小
+      -- if button and button.Count then
+      --   local countText = button.Count
+      --   countText:SetFont(FONT, 17, "THICKOUTLINE")
+      --   countText:SetVertexColor(0.0, 1.0, 0.0)
+      --   countText:ClearAllPoints()
+      --   countText:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 1)
+      -- end
     end
   end
 end
+
+-- 使用 hooksecurefunc 确保在动作条更新后样式依然生效
+-- 这是为了避免被游戏后续的界面更新覆盖掉你的设置
+-- for _, barName in pairs({ 'Action', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarRight', 'MultiBarLeft', 'MultiBar5', 'MultiBar6', 'MultiBar7' }) do
+--   for i = 1, 12 do
+--     local button = _G[barName .. 'Button' .. i]
+--     if button then
+--       hooksecurefunc(button, "Update", function()
+--         HOT_KEY:UpdateHotkeyFontSize()
+--       end)
+--     end
+--   end
+-- end
 
 local HOTKEY_FRAME = CreateFrame("Frame", "HOTKEY_FRAME")
 HOTKEY_FRAME:RegisterEvent("PLAYER_LOGIN")
@@ -98,6 +114,5 @@ HOTKEY_FRAME:SetScript("OnEvent", function(self, event, unit, ...)
   if event == "PLAYER_LOGIN" then
     self:UnregisterEvent("PLAYER_LOGIN")
   end
-  -- UpdateAllButtons()
   HOT_KEY:UpdateHotkeyFontSize()
 end)

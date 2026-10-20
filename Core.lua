@@ -38,13 +38,13 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     MODE_DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
     MODE_CURRENCY:UpdBackground()      -- 创建货币背景
   elseif event == 'PLAYER_LOGIN' then
+    CFG_G:InitConfigDB()               -- 初始化公共配置表
+    CFG:InitConfigDB()                 -- 初始化配置数据库
+    InitCommonCmd()                    -- 初始化通用命令
+    MODE_CURRENCY:InitCurrencyTrack()  -- 初始化货币跟踪
+    MODE_CB:InitCommonButton()         -- 初始化通用按钮
+    MODE_DM:SetWindowHeightByRaid()    -- 初始化伤害列表窗口位置
     self:UnregisterEvent("PLAYER_LOGIN")
-    CFG_G:InitConfigDB()              -- 初始化公共配置表
-    CFG:InitConfigDB()                -- 初始化配置数据库
-    MODE_CURRENCY:InitCurrencyTrack() -- 初始化货币跟踪
-    InitCommonCmd()                   -- 初始化通用命令
-    InitCommonButton()                -- 初始化通用按钮
-    MODE_DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
   elseif event == "BAG_UPDATE_DELAYED" then
     MODE_WOOD:UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then

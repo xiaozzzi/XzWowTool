@@ -196,6 +196,8 @@ blackBg:Hide()
 local function showUI()
   local function SelectGroup(container, event, group)
     container:ReleaseChildren()
+
+    -- 幻化套装用不同的窗口大小
     if (group == "transmog") then
       XZWTMainFrame:SetWidth(UI_SIZE.TRANSMOG_WIDTH)
       XZWTMainFrame:SetHeight(UI_SIZE.TRANSMOG_HEIGHT)

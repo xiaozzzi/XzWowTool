@@ -1,3 +1,8 @@
+local LSM = LibStub("LibSharedMedia-3.0")
+
+-- 注册状态栏纹理
+LSM:Register("statusbar", "XZ Satin", "Interface\\AddOns\\XzWowTool\\assets\\xz_satin.png")
+
 CFG_G = {}
 
 if XZ_GLOBAL_DB == nil then

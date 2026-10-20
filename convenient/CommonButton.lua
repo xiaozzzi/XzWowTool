@@ -3,8 +3,9 @@
 -- 添加自定义按钮, 支持法术, 玩具, 游戏代码
 --
 --·········································································································
+MODE_CB = {}
 
-local ICON_SIZE = 25             -- 按钮图标大小
+local ICON_SIZE = 24             -- 按钮图标大小
 local FONT_SIZE_HOTKEY = 10      -- 快捷键字体大小
 local FONT_SIZE_CHARGE = 14      -- 按钮字体大小
 local FONT_SIZE_CD = 17          -- 按钮字体大小
@@ -36,16 +37,26 @@ local function CreateButton(name, isBorder, isAlpha)
   local button = CreateFrame("Button", name, UIParent, "SecureActionButtonTemplate")
   button:SetSize(ICON_SIZE, ICON_SIZE)
   if isBorder == nil or isBorder then
-    GUI:SolidBorder(button, 0, 0, 0, 1, 1.5)
+    -- 绘制四条边
+    GUI:SolidBorder(button, 0, 0, 0, 1, 1)
+    -- atlas 九宫格边框
+    -- local border = button:CreateTexture(nil, "OVERLAY")
+    -- border:SetAtlas("UI-HUD-ActionBar-Frame")                     -- 或你自己的边框材质
+    -- border:SetAllPoints(button)
+    -- border:SetTextureSliceMargins(0, 0, 0, 0)                     -- 设置九宫格边缘的像素边距 左, 右, 上, 下
+    -- border:SetTextureSliceMode(Enum.UITextureSliceMode.Tiled) -- 设置边缘和中心区域的填充模式（拉伸或平铺）
+    -- local borderContainer = button:CreateTexture(nil, "OVERLAY")
+    -- borderContainer:SetAllPoints(button)
   end
+
+
+  -- isAlpha = false
   if isAlpha == nil or isAlpha then
     button:SetAlpha(0.3)
     button:SetScript("OnEnter", function(self)
-      -- border:SetColorTexture(1, 1, 1, 1)
       self:SetAlpha(1)
     end)
     button:SetScript("OnLeave", function(self)
-      -- border:SetColorTexture(0, 0, 0, 1)
       self:SetAlpha(0.3)
     end)
   end
@@ -552,7 +563,7 @@ end)
 
 --#endregion
 
-function InitCommonButton()
+function MODE_CB:InitCommonButton()
   local player = CFG:GetByUnitGUID(UnitGUID("player"))
   if not player then return end
   InitAddonSwitchButton()
