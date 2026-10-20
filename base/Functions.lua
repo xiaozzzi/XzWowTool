@@ -54,3 +54,9 @@ function IsNumber(v)
 
   return false
 end
+
+LOG = {}
+
+function LOG:info(msg)
+  print(GUI:ColorText("FF59DF00", "[XZWT] > ") .. msg)
+end

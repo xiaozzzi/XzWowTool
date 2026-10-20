@@ -52,12 +52,10 @@ end
 ---为每个货币创建一个UI元素，用于显示货币数量, 并将UI元素存储在CURRENCY_UI_LIST中, 便于更新数值
 function MODE_CURRENCY:InitCurrencyTrack()
   if not isShowCurrency() or not IsMaxPlayerLevel() then
-    print("隐藏货币监控")
     MAIN_FRAME:Hide()
     return
   else
     MAIN_FRAME:Show()
-    print("显示货币监控")
   end
 
 

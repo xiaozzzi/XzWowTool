@@ -17,6 +17,7 @@ local function InitCommonCmd()
   ObjectiveTrackerFrame:SetScale(1.2)
 
   -- 自动加入大脚世界频道
+  LOG:info("自动加入大脚世界频道")
   JoinPermanentChannel("大脚世界频道")
 end
 
@@ -28,6 +29,7 @@ XzFrame:RegisterEvent("ADDON_LOADED")            -- 加载插件
 XzFrame:RegisterEvent("BAG_UPDATE_DELAYED")      -- 背包更新
 XzFrame:RegisterEvent("CURRENCY_DISPLAY_UPDATE") -- 货币变更
 XzFrame:RegisterEvent("PLAYER_LOGIN")            -- 角色登录
+XzFrame:RegisterEvent("PLAYER_ENTERING_WORLD")   -- 角色进入世界
 XzFrame:RegisterEvent("GROUP_ROSTER_UPDATE")     -- 群组成员变更
 
 XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
@@ -40,11 +42,15 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
   elseif event == 'PLAYER_LOGIN' then
     CFG_G:InitConfigDB()               -- 初始化公共配置表
     CFG:InitConfigDB()                 -- 初始化配置数据库
-    InitCommonCmd()                    -- 初始化通用命令
     MODE_CURRENCY:InitCurrencyTrack()  -- 初始化货币跟踪
     MODE_CB:InitCommonButton()         -- 初始化通用按钮
     MODE_DM:SetWindowHeightByRaid()    -- 初始化伤害列表窗口位置
     self:UnregisterEvent("PLAYER_LOGIN")
+  elseif event == "PLAYER_ENTERING_WORLD" then
+    C_Timer.After(5, function()
+      InitCommonCmd()
+    end)
+    self:UnregisterEvent("PLAYER_ENTERING_WORLD")
   elseif event == "BAG_UPDATE_DELAYED" then
     MODE_WOOD:UpdWoodTrack()
   elseif event == "CURRENCY_DISPLAY_UPDATE" then
