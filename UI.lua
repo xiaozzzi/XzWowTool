@@ -93,7 +93,7 @@ local function DrawSetting(container)
   StoneDropdown = GUI:Dropdown(stoneContainer, stoneList, stoneListOrder, tonumber(playerCFG['HEARTH_STONE']), 240)
   StoneDropdown:SetCallback("OnValueChanged", function(a, b, key)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'HEARTH_STONE', key)
-    InitCommonButton()
+    MODE_CB:InitCommonButton()
   end)
 
   GUI:Label(stoneContainer, "  共:" .. #HEARTH_STONE .. "", 60, "LEFT")
@@ -124,7 +124,7 @@ local function DrawSetting(container)
     local cb = GUI:CheckBox(col1Container, label, playerCFG['SHOW_BTN_' .. button.KEY] == 'SHOW', COL_WIDTH)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
-      InitCommonButton()
+      MODE_CB:InitCommonButton()
     end)
   end
 
@@ -139,21 +139,21 @@ local function DrawSetting(container)
   local cbYak = GUI:CheckBox(col2Container, COL2_CFG.YAK.LABEL, COL2_CFG.YAK.DEFAULT_VALUE, COL_WIDTH)
   cbYak:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_YAK', GetShowHide(value))
-    InitCommonButton()
+    MODE_CB:InitCommonButton()
   end)
 
   -- 真菌行者
   local cbFS = GUI:CheckBox(col2Container, COL2_CFG.FUNGALSTRIDER.LABEL, COL2_CFG.FUNGALSTRIDER.DEFAULT_VALUE, COL_WIDTH)
   cbFS:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_MOUNT_FUNGAL_STRIDER', GetShowHide(value))
-    InitCommonButton()
+    MODE_CB:InitCommonButton()
   end)
 
   -- 切换飞行模式
   local cbFlyMode = GUI:CheckBox(col2Container, COL2_CFG.FLY_MODE.LABEL, COL2_CFG.FLY_MODE.DEFAULT_VALUE, COL_WIDTH)
   cbFlyMode:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_FLY_MODE', GetShowHide(value))
-    InitCommonButton()
+    MODE_CB:InitCommonButton()
   end)
 
   -- 专业
@@ -164,7 +164,7 @@ local function DrawSetting(container)
       playerCFG['SHOW_BTN_PROF1'] == 'SHOW', COL_WIDTH)
     cbProf1:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF1', GetShowHide(value))
-      InitCommonButton()
+      MODE_CB:InitCommonButton()
     end)
   end
 
@@ -174,7 +174,7 @@ local function DrawSetting(container)
       playerCFG['SHOW_BTN_PROF2'] == 'SHOW', COL_WIDTH)
     cbProf2:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_PROF2', GetShowHide(value))
-      InitCommonButton()
+      MODE_CB:InitCommonButton()
     end)
   end
 
@@ -182,7 +182,7 @@ local function DrawSetting(container)
   local cbDR = GUI:CheckBox(col2Container, COL2_CFG.DELVE_ROBOT.LABEL, COL2_CFG.DELVE_ROBOT.DEFAULT_VALUE, COL_WIDTH)
   cbDR:SetCallback("OnValueChanged", function(widget, event, value)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
-    InitCommonButton()
+    MODE_CB:InitCommonButton()
   end)
   --#endregion
 end
