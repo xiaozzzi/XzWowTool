@@ -1,7 +1,7 @@
 local addonName, ns = ...
 
 -- 初始化通用命令
-local function InitCommonCmd()
+local function ImmediatelyCommonCmd()
   -- 隐藏玩家信息框
   PlayerFrame:Hide()
   -- 显示套装标签
@@ -15,9 +15,10 @@ local function InitCommonCmd()
     end)
   -- 放大任务追踪器
   ObjectiveTrackerFrame:SetScale(1.2)
+end
 
+local function DelayCommonCmd()
   -- 自动加入大脚世界频道
-  LOG:info("自动加入大脚世界频道")
   JoinPermanentChannel("大脚世界频道")
 end
 
@@ -40,15 +41,16 @@ XzFrame:SetScript("OnEvent", function(self, event, unit, ...)
     MODE_DM:CreateWindowHeightButton() -- 创建快速切换伤害列表类型的按钮
     MODE_CURRENCY:UpdBackground()      -- 创建货币背景
   elseif event == 'PLAYER_LOGIN' then
-    CFG_G:InitConfigDB()               -- 初始化公共配置表
-    CFG:InitConfigDB()                 -- 初始化配置数据库
-    MODE_CURRENCY:InitCurrencyTrack()  -- 初始化货币跟踪
-    MODE_CB:InitCommonButton()         -- 初始化通用按钮
-    MODE_DM:SetWindowHeightByRaid()    -- 初始化伤害列表窗口位置
+    ImmediatelyCommonCmd()
+    CFG_G:InitConfigDB()              -- 初始化公共配置表
+    CFG:InitConfigDB()                -- 初始化配置数据库
+    MODE_CURRENCY:InitCurrencyTrack() -- 初始化货币跟踪
+    MODE_CB:InitCommonButton()        -- 初始化通用按钮
+    MODE_DM:SetWindowHeightByRaid()   -- 初始化伤害列表窗口位置
     self:UnregisterEvent("PLAYER_LOGIN")
   elseif event == "PLAYER_ENTERING_WORLD" then
     C_Timer.After(5, function()
-      InitCommonCmd()
+      DelayCommonCmd()
     end)
     self:UnregisterEvent("PLAYER_ENTERING_WORLD")
   elseif event == "BAG_UPDATE_DELAYED" then
