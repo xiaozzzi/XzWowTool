@@ -66,8 +66,13 @@ function MODE_CURRENCY:InitCurrencyTrack()
     -- 获取货币信息
     local info = C_CurrencyInfo.GetCurrencyInfo(currency.ID)
 
-    -- 可获取的数量
-    local notEarned = info.maxQuantity - info.totalEarned
+    -- 可获取的数量, 如果接触上限, 则 info.maxQuantity 为 0
+    local notEarned
+    if info.maxQuantity == 0 then
+      notEarned = "∞"
+    else
+      notEarned = info.maxQuantity - info.totalEarned
+    end
 
     -- 货币图标
     local icon = MAIN_FRAME:CreateTexture()
