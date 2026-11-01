@@ -406,6 +406,18 @@ local BUTTON_PROF2 = CreateButton("BUTTON_PROF2")
 local BUTTON_DELVE7001 = CreateButton("BUTTON_DELVE7001")
 local BUTTON_DELVE7001_CD = CreateButtonCDText(BUTTON_DELVE7001)
 
+-- 幻化方案按钮: 点击显示第三列(主要逻辑在 transmog/OutfitPanel.lua)
+local BUTTON_TRANSMOG_OUTFIT = CreateButton("BUTTON_TRANSMOG_OUTFIT")
+BUTTON_TRANSMOG_OUTFIT:HookScript("OnEnter", function(self)
+  GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+  GameTooltip:AddLine("幻化方案")
+  GameTooltip:AddLine("点击显示第三列: 当前角色的所有幻化方案", 0.8, 0.8, 0.8, true)
+  GameTooltip:Show()
+end)
+BUTTON_TRANSMOG_OUTFIT:HookScript("OnLeave", function()
+  GameTooltip:Hide()
+end)
+
 
 function InitCommonButtonCol2(player)
   -- 重置按钮位置
@@ -467,7 +479,25 @@ function InitCommonButtonCol2(player)
   else
     BUTTON_MOUNT_YAK:Hide()
   end
+
+  -- 幻化方案: 点击显示第三列(所有幻化方案), 具体逻辑见 transmog/OutfitPanel.lua
+  if player['SHOW_BTN_TRANSMOG_OUTFIT'] == 'SHOW' then
+    SetPosition(BUTTON_TRANSMOG_OUTFIT, 2)
+    CreateButtonTexture(BUTTON_TRANSMOG_OUTFIT, { type = 'atlas', atlas = 'lootroll-toast-icon-transmog-up' })
+    BUTTON_TRANSMOG_OUTFIT:RegisterForClicks("AnyUp")
+    BUTTON_TRANSMOG_OUTFIT:SetScript("OnClick", function()
+      if UI_OutfitPanel then
+        UI_OutfitPanel:Toggle()
+      end
+    end)
+  else
+    BUTTON_TRANSMOG_OUTFIT:Hide()
+    if UI_OutfitPanel then
+      UI_OutfitPanel:Hide()
+    end
+  end
 end
+
 
 --#endregion
 

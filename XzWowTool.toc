@@ -31,5 +31,6 @@ unit/UnitTargetTarget.lua
 unit/UIUnit.lua
 transmog/TransmogContants.lua
 transmog/UITransmog.lua
+transmog/OutfitPanel.lua
 Core.lua
 UI.lua

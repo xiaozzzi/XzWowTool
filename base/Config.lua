@@ -41,6 +41,7 @@ local DEFAULT_OPTIONS = {
   SHOW_BTN_PROF1 = 'SHOW',                -- 是否显示专业1
   SHOW_BTN_PROF2 = 'SHOW',                -- 是否显示专业2
   SHOW_BTN_DELVE7001 = 'SHOW',            -- 是否显示地下堡机器人7001型
+  SHOW_BTN_TRANSMOG_OUTFIT = 'SHOW',      -- 是否显示幻化方案按钮(第三列)
 }
 
 --- 获取角色配置

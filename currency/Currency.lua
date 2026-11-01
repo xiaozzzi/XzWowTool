@@ -46,6 +46,19 @@ function MODE_CURRENCY:UpdBackground()
   CURRENCY_BG_BG:SetPoint("TOPLEFT", MAIN_FRAME, "TOPLEFT", config.X, config.Y)
 end
 
+local function GetText(info)
+  if not info then
+    return "无INFO"
+  end
+  local notEarned
+  if info.maxQuantity == 0 then
+    notEarned = "∞"
+  else
+    notEarned = info.maxQuantity - info.totalEarned
+  end
+  return "" .. info.quantity .. '/' .. notEarned
+end
+
 --#endregion 货币背景
 
 ---初始化货币监控
@@ -65,15 +78,6 @@ function MODE_CURRENCY:InitCurrencyTrack()
   for index, currency in ipairs(CURRENCY_ID) do
     -- 获取货币信息
     local info = C_CurrencyInfo.GetCurrencyInfo(currency.ID)
-
-    -- 可获取的数量, 如果接触上限, 则 info.maxQuantity 为 0
-    local notEarned
-    if info.maxQuantity == 0 then
-      notEarned = "∞"
-    else
-      notEarned = info.maxQuantity - info.totalEarned
-    end
-
     -- 货币图标
     local icon = MAIN_FRAME:CreateTexture()
     icon:SetScale(0.3)
@@ -90,7 +94,7 @@ function MODE_CURRENCY:InitCurrencyTrack()
     countLabel:SetPoint("LEFT", icon, "RIGHT", 0, 0)
     countLabel:SetTextColor(currency.R, currency.G, currency.B)
     -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity .. "(" .. notEarned .. ")")
-    countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
+    countLabel:SetText(GetText(info))
     countLabel:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
       GameTooltip:SetCurrencyByID(currency.ID)
@@ -135,8 +139,5 @@ function MODE_CURRENCY:UpdCurrencyTrack(currencyId)
 
   local countLabel = CURRENCY_UI_LIST[currencyId]
   local info = C_CurrencyInfo.GetCurrencyInfo(currencyId)
-  -- countLabel:SetText("" .. info.quantity .. '/' .. info.maxQuantity)
-  -- 可获取的数量
-  local notEarned = info.maxQuantity - info.totalEarned
-  countLabel:SetText("" .. info.quantity .. '/' .. notEarned)
+  countLabel:SetText(GetText(info))
 end

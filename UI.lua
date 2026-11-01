@@ -184,6 +184,14 @@ local function DrawSetting(container)
     CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_DELVE7001', GetShowHide(value))
     MODE_CB:InitCommonButton()
   end)
+
+  -- 幻化方案(第三列)
+  local cbOutfit = GUI:CheckBox(col2Container, "幻化方案(第三列)",
+    playerCFG['SHOW_BTN_TRANSMOG_OUTFIT'] == 'SHOW', COL_WIDTH)
+  cbOutfit:SetCallback("OnValueChanged", function(widget, event, value)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_TRANSMOG_OUTFIT', GetShowHide(value))
+    MODE_CB:InitCommonButton()
+  end)
   --#endregion
 end
 
