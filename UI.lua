@@ -120,7 +120,7 @@ local function DrawSetting(container)
   }
 
   for _, button in pairs(COL1_CFG) do
-    local label = button.ICON and " |TInterface\\Icons\\" .. button.ICON .. ":0|t " .. button.TEXT or button.TEXT
+    local label = button.ICON and "|TInterface\\Icons\\" .. button.ICON .. ":0|t " .. button.TEXT or button.TEXT
     local cb = GUI:CheckBox(col1Container, label, playerCFG['SHOW_BTN_' .. button.KEY] == 'SHOW', COL_WIDTH)
     cb:SetCallback("OnValueChanged", function(widget, event, value)
       CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_' .. button.KEY, GetShowHide(value))
@@ -129,11 +129,19 @@ local function DrawSetting(container)
   end
 
   local COL2_CFG = {
+    OUTFIT = { LABEL = "|TInterface\\Icons\\ui_transmog_showequippedgear:0|t 幻化方案", DEFAULT_VALUE = playerCFG['SHOW_BTN_TRANSMOG_OUTFIT'] == 'SHOW' },
     YAK = { LABEL = "|TInterface\\Icons\\Ability_mount_travellersyakmount:0|t 雄壮远足驼牛" .. MOUNT, DEFAULT_VALUE = playerCFG['SHOW_BTN_MOUNT_YAK'] == 'SHOW' },
     FUNGALSTRIDER = { LABEL = "|TInterface\\Icons\\inv_fungalstridermount:0|t 孢囊真菌行者" .. MOUNT, DEFAULT_VALUE = playerCFG['SHOW_BTN_MOUNT_FUNGAL_STRIDER'] == 'SHOW' },
     FLY_MODE = { LABEL = "|TInterface\\Icons\\Ability_dragonriding_swapflightstyles01:0|t 切换飞行模式" .. SPEEL, DEFAULT_VALUE = playerCFG['SHOW_BTN_FLY_MODE'] == 'SHOW' },
     DELVE_ROBOT = { LABEL = "|TInterface\\Icons\\Inv_111_robocopter_robocopter:0|t 地下堡机器人7001型" .. ITEMS, DEFAULT_VALUE = playerCFG['SHOW_BTN_DELVE7001'] == 'SHOW' }
   }
+
+  -- 幻化方案(第三列)
+  local cbOutfit = GUI:CheckBox(col2Container, COL2_CFG.OUTFIT.LABEL, COL2_CFG.OUTFIT.DEFAULT_VALUE, COL_WIDTH)
+  cbOutfit:SetCallback("OnValueChanged", function(widget, event, value)
+    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_TRANSMOG_OUTFIT', GetShowHide(value))
+    MODE_CB:InitCommonButton()
+  end)
 
   -- 牦牛
   local cbYak = GUI:CheckBox(col2Container, COL2_CFG.YAK.LABEL, COL2_CFG.YAK.DEFAULT_VALUE, COL_WIDTH)
@@ -185,13 +193,6 @@ local function DrawSetting(container)
     MODE_CB:InitCommonButton()
   end)
 
-  -- 幻化方案(第三列)
-  local cbOutfit = GUI:CheckBox(col2Container, "幻化方案(第三列)",
-    playerCFG['SHOW_BTN_TRANSMOG_OUTFIT'] == 'SHOW', COL_WIDTH)
-  cbOutfit:SetCallback("OnValueChanged", function(widget, event, value)
-    CFG:SaveConfigValue(playerCFG.unitGUID, 'SHOW_BTN_TRANSMOG_OUTFIT', GetShowHide(value))
-    MODE_CB:InitCommonButton()
-  end)
   --#endregion
 end
 
